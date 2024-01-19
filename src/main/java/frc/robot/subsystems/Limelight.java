@@ -34,4 +34,8 @@ public class Limelight extends SubsystemBase {
   private void refreshValues() {
     limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
   }
+
+  public long getTagId() {
+    return limelightTable.getEntry("tid").getInteger(-1);
+  }
 }

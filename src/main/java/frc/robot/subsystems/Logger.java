@@ -17,7 +17,8 @@ public class Logger extends SubsystemBase{
     private static ArrayList<String> names = new ArrayList<>();
     private static ArrayList<Supplier> suppliers = new ArrayList<>();
 
-    private static File dump = new File(System.getProperty("user.dir"), "src\\main\\java\\frc\\logger\\dump.txt");
+    private static File dump = new File("dump.txt");
+    
     
     private static FileWriter writer;
     

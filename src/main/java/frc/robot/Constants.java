@@ -18,13 +18,13 @@ public final class Constants {
     public static final class Swerve {
         public static final int pigeonID = 1;
 
-        public static final COTSTalonFXSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot, currently (2023)
-        COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(7.13); // COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios does not have the same ratio as included in last year's robot.
+        public static final COTSTalonFXSwerveConstants chosenModule = 
+        COTSTalonFXSwerveConstants.CHUCK.Falcon500();
 
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(23); //TODO: This must be tuned to specific robot (2023)
-        public static final double wheelBase = Units.inchesToMeters(22.6875); //TODO: This must be tuned to specific robot (2023)
-        public static final double wheelCircumference = chosenModule.wheelCircumference;
+        public static final double trackWidth = Units.inchesToMeters(23); 
+        public static final double wheelBase = Units.inchesToMeters(22.6875);
+        public static final double wheelCircumference = Units.inchesToMeters(4.0);
 
         /* Swerve Kinematics 
          * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
@@ -35,8 +35,8 @@ public final class Constants {
             new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
         /* Module Gear Ratios */
-        public static final double driveGearRatio = chosenModule.driveGearRatio;
-        public static final double angleGearRatio = chosenModule.angleGearRatio;
+        public static final double driveGearRatio = 7.13;
+        public static final double angleGearRatio = 15.43;
 
         /* Motor Inverts */
         public static final InvertedValue angleMotorInvert = chosenModule.angleMotorInvert;
@@ -67,21 +67,21 @@ public final class Constants {
         public static final double angleKD = chosenModule.angleKD;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.12; //TODO: This must be tuned to specific robot
+        public static final double driveKP = 0.025; //TODO: This must be tuned to specific robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
-        public static final double driveKF = 0.0;
+        public static final double driveKF = 0.045;
 
         /* Drive Motor Characterization Values From SYSID */
-        public static final double driveKS = 0.32; //TODO: This must be tuned to specific robot
-        public static final double driveKV = 1.51;
-        public static final double driveKA = 0.27;
+        public static final double driveKS = 0.1388 / 12.0 ; //TODO: This must be tuned to specific robot
+        public static final double driveKV = 0.25173 / 12.0;
+        public static final double driveKA = 0.014411 / 12.0;
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 4.5; //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 1.75; //TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 10.0; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 1.75; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;

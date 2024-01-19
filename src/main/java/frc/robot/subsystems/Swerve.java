@@ -8,25 +8,40 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
-import com.ctre.phoenix6.hardware.Pigeon2;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
-    public Pigeon2 gyro;
+    public AHRS gyro;
+
+    public boolean fieldCentricBoolean = true;
 
     public Swerve() {
-        gyro = new Pigeon2(Constants.Swerve.pigeonID);
-        gyro.getConfigurator().apply(new Pigeon2Configuration());
-        gyro.setYaw(0);
+       
+
+        try {
+            System.out.println("--------------");
+            gyro = new AHRS(SPI.Port.kMXP); 
+
+            System.out.println("NavX plugged in");
+            System.out.println("--------------");
+
+
+        } catch (RuntimeException ex ) {
+            System.out.println("NavX not plugged in");
+            System.out.println("--------------");
+        }
+        zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -35,17 +50,39 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
+        /* By pausing init for a second before setting module offsets, we avoid a bug with inverting motors.
+         * See https://github.com/Team364/BaseFalconSwerve/issues/8 for more info.
+         */
+        Timer.delay(1.0);
+        resetModulesToAbsolute();
+
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
     }
 
-    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+    // Helper variables for drive command
+    private double translationX = 0;
+    private double translationY = 0;
+    private double rotationCommand = 0; 
+
+
+    public void drive(Translation2d translation, double rotation, boolean isOpenLoop) {
+        
+        // Gets the values of x y and rotation and assigns them to their repestive variables
+        translationX = translation.getX();
+        
+        translationY = translation.getY();
+
+        rotationCommand = rotation;
+
+        
+        
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                fieldCentricBoolean ? ChassisSpeeds.fromFieldRelativeSpeeds(
                                     translation.getX(), 
                                     translation.getY(), 
                                     rotation, 
-                                    getHeading()
+                                    getGyroYaw()
                                 )
                                 : new ChassisSpeeds(
                                     translation.getX(), 
@@ -58,6 +95,13 @@ public class Swerve extends SubsystemBase {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
     }    
+
+
+
+    public void zeroGyro(){
+        gyro.zeroYaw();
+    }
+
 
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -105,7 +149,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(gyro.getYaw().getValue());
+        return Rotation2d.fromDegrees(-gyro.getYaw());
     }
 
     public void resetModulesToAbsolute(){
@@ -123,5 +167,29 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
+
+        
+        SmartDashboard.putNumber("Commanded Velocity Y", translationY);
+
+        SmartDashboard.putNumber("Commanded Velocity X", translationX);
+        
+        SmartDashboard.putNumber("Commanded Rotation", rotationCommand);
+
+        SmartDashboard.putNumber("Velocity X Error", Math.abs(translationX) - Math.abs(mSwerveMods[0].getState().speedMetersPerSecond));
+
+        SmartDashboard.putNumber("Gyro Value", gyro.getAngle());
+
+        SmartDashboard.putNumber("Gyro Nice Value", this.getGyroYaw().getDegrees());
+
+        SmartDashboard.putBoolean("Field Centric", fieldCentricBoolean);
+
+        SmartDashboard.putNumber("Position", mSwerveMods[0].getPosition().distanceMeters);
+    }
+
+
+
+    public void toggleFieldCentric() {
+        
+       fieldCentricBoolean = ! fieldCentricBoolean;
     }
 }
