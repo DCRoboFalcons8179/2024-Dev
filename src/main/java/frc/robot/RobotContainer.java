@@ -39,7 +39,6 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-    private final Logger logger = Logger.getInstance();
     private final Limelight limelight = new Limelight();
 
     
@@ -78,7 +77,6 @@ public class RobotContainer {
         /* Driver Buttons */
         //zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
 
-        dumpToLogger.whileTrue(new InstantCommand(() -> logger.dump()).andThen(new WaitCommand(0.2)));
         
     }
 
@@ -89,8 +87,7 @@ public class RobotContainer {
 
     private void configureLogger() {
         
-        logger.addValue("translationAxis", () -> driver.getRawAxis(translationAxis));
-        logger.addValue("Current Tag", () -> limelight.getTagId());
+
     }
 
     /**
