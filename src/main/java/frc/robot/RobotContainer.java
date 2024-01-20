@@ -33,9 +33,9 @@ public class RobotContainer {
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
-    private final POVButton perfectForward = new POVButton(driver, 0);
-    private final POVButton turn90Degrees = new POVButton(driver, 270);
-    private final POVButton fancyDanyPath = new POVButton(driver, 180);
+    private final POVButton povUp = new POVButton(driver, 0);
+    private final POVButton povLeft = new POVButton(driver, 270);
+    private final POVButton povDown = new POVButton(driver, 180);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
@@ -56,14 +56,13 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis)
+                () -> driver.getRawAxis(rotationAxis)
             )
         );
 
         // Configure the button bindings
         configureButtonBindings();
         buttonCommands();
-        // configureLogger();
     }
 
     /**
@@ -82,7 +81,8 @@ public class RobotContainer {
 
     private void buttonCommands() {
         // TODO Auto-generated method stub
-
+        povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
+        robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
     }
 
     private void configureLogger() {

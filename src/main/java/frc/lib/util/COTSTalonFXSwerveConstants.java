@@ -34,24 +34,24 @@ public class COTSTalonFXSwerveConstants {
     public static final class CHUCK {
             public static final COTSTalonFXSwerveConstants Falcon500(){
 
-            double wheelDiameter = Units.inchesToMeters(4.0);
-    
-            /** 15.43 : 1 */
-            double angleGearRatio = (15.43/ 1.0);
-            double driveGearRatio = 7.13;
+                double wheelDiameter = Units.inchesToMeters(4.0);
+        
+                /** 15.43 : 1 */
+                double angleGearRatio = (15.43/ 1.0);
+                double driveGearRatio = 7.13;
 
-            double angleKP = 0.18;
-            double angleKI = 0.0;
-            double angleKD = 0.0;
-    
-            // InvertedValue driveMotorInvert = false;
-            // InvertedValue angleMotorInvert = true;
-            // SensorDirectionValue canCoderInvert = false;
-            InvertedValue driveMotorInvert = InvertedValue.CounterClockwise_Positive;
-            InvertedValue angleMotorInvert = InvertedValue.Clockwise_Positive;
-            SensorDirectionValue cancoderInvert = SensorDirectionValue.CounterClockwise_Positive;
+                double angleKP = 100d;
+                double angleKI = 0.0;
+                double angleKD = 0.0;
+        
+                // InvertedValue driveMotorInvert = false;
+                // InvertedValue angleMotorInvert = true;
+                // SensorDirectionValue canCoderInvert = false;
+                InvertedValue driveMotorInvert = InvertedValue.CounterClockwise_Positive;
+                InvertedValue angleMotorInvert = InvertedValue.Clockwise_Positive;
+                SensorDirectionValue cancoderInvert = SensorDirectionValue.CounterClockwise_Positive;
 
-            return new COTSTalonFXSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, driveMotorInvert, angleMotorInvert, cancoderInvert);
+                return new COTSTalonFXSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, driveMotorInvert, angleMotorInvert, cancoderInvert);
             }
     }
     

@@ -24,7 +24,7 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
 
-    public boolean fieldCentricBoolean = true;
+    public boolean fieldCentricBoolean = false;
 
     public Swerve() {
        
@@ -172,6 +172,9 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Commanded Velocity Y", translationY);
 
         SmartDashboard.putNumber("Commanded Velocity X", translationX);
+
+        SmartDashboard.putNumber("Commanded Velocity", (new Translation2d(translationX, translationY)).getNorm());
+
         
         SmartDashboard.putNumber("Commanded Rotation", rotationCommand);
 

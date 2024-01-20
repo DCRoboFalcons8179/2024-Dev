@@ -24,7 +24,7 @@ public final class Constants {
         /* Drivetrain Constants */
         public static final double trackWidth = Units.inchesToMeters(23); 
         public static final double wheelBase = Units.inchesToMeters(22.6875);
-        public static final double wheelCircumference = Units.inchesToMeters(4.0);
+        public static final double wheelCircumference = Units.inchesToMeters(4.0 * Math.PI);
 
         /* Swerve Kinematics 
          * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
@@ -66,11 +66,17 @@ public final class Constants {
         public static final double angleKI = chosenModule.angleKI;
         public static final double angleKD = chosenModule.angleKD;
 
+        // /* Drive Motor PID Values */
+        // public static final double driveKP = 0.025; //TODO: This must be tuned to specific robot
+        // public static final double driveKI = 0.0;
+        // public static final double driveKD = 0.0;
+        // public static final double driveKF = 0.045;
+
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.025; //TODO: This must be tuned to specific robot
+        public static final double driveKP = 1.7; //TODO: This must be tuned to specific robot
         public static final double driveKI = 0.0;
-        public static final double driveKD = 0.0;
-        public static final double driveKF = 0.045;
+        public static final double driveKD = 0.017;
+        public static final double driveKF = 0.83;
 
         /* Drive Motor Characterization Values From SYSID */
         public static final double driveKS = 0.1388 / 12.0 ; //TODO: This must be tuned to specific robot
@@ -79,7 +85,7 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 1.75; //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 1.0; //TODO: This must be tuned to specific robot
         /** Radians per Second */
         public static final double maxAngularVelocity = 1.75; //TODO: This must be tuned to specific robot
 

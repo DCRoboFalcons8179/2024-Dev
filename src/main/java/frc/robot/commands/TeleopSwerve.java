@@ -43,6 +43,11 @@ public class TeleopSwerve extends Command {
             rotationVal = 0;
         }
 
+        translationVal = Math.pow(translationVal, 3);
+        strafeVal = Math.pow(strafeVal, 3);
+        rotationVal = Math.pow(rotationVal, 3);
+
+
         /* Drive */
         s_Swerve.drive(
             new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed), 
