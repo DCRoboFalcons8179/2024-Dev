@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -17,9 +18,14 @@ import frc.robot.subsystems.Limelight;
 public class ApproachTag extends Command {
   /** Creates a new ApproachTag. */
   private Translation3d translationOffset;
+  private Translation2d finalTranslationOffset;
   private Rotation3d rotationOffset;
   private Swerve s_Swerve;
   private Limelight limelight;
+  private double rot;
+  private double mag;
+  LinearFilter magFilter;
+  LinearFilter rotFilter;
 
   public ApproachTag(Swerve s_Swerve, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,9 +35,12 @@ public class ApproachTag extends Command {
   }
 
   // Called when the command is initially scheduled.
+
+
   @Override
   public void initialize() {
-
+    magFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
+    rotFilter = LinearFilter.singlePoleIIR(0.2, 0.02);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,41 +50,51 @@ public class ApproachTag extends Command {
     translationOffset = limelight.offsetFromTag();
     rotationOffset = limelight.rotationFromTag();
 
+    //SmartDashboard offset logging
     SmartDashboard.putNumber("tX", translationOffset.getX());
     SmartDashboard.putNumber("tY", translationOffset.getY());
     SmartDashboard.putNumber("tZ", translationOffset.getZ());
     SmartDashboard.putNumber("roll", rotationOffset.getX());
     SmartDashboard.putNumber("pitch", rotationOffset.getY());
-    SmartDashboard.putNumber("yaw", rotationOffset.getZ());
+    SmartDashboard.putNumber("rz", limelight.getRobotRZ());
 
     // Mapping inputs to the trapizoidd speed controller]
-    Translation2d offset = (new Translation2d(translationOffset.getZ() + 2, -translationOffset.getX()));
-    double mag = offset.getNorm();
-    Translation2d dir = offset.div(mag);
+    finalTranslationOffset = (new Translation2d(translationOffset.getZ() + 2, -translationOffset.getX()));
+    
+    Translation2d dir = finalTranslationOffset.div(finalTranslationOffset.getNorm());
 
-    if (mag > 0.5) {
-      mag = 0.5;
-    } else if (mag < 0.2) {
+    double mag = magFilter.calculate(finalTranslationOffset.getNorm());
+    double rot = rotFilter.calculate(limelight.getRobotRZ());
+
+    SmartDashboard.putNumber("mag", mag);
+    SmartDashboard.putNumber("rot", rot);
+
+
+
+    //mapping numbers
+    if (mag > 1) {
+      mag = 1;
+    } else if (mag < 0.3) {
       mag = 0;
     } else {
-      mag = 0.2;
+      mag = Math.pow(mag, 2);
     }
 
-    double rotOff = rotationOffset.getZ();
-
-     if (rotOff > 0.5) {
-      rotOff = 0.5;
-    } else if (mag < -0.5) {
-      rotOff = -0.5;
-    } else if (Math.abs(rotOff) < 0.2) {
-      rotOff = 0;
+     if (rot > 2) {
+      rot = 1;
+    } else if (rot < -2) {
+      rot = -1;
+    } else if (Math.abs(rot) < 0.6) {
+      rot = 0;
     } else {
-      rotOff = Math.pow(rotOff, 3);
+      
     }
 
+    if (limelight.getTagId() == -1) mag = 0;
 
-    s_Swerve.drive(dir.times(mag),  -rotOff / 5, false);
-      
+    //drive mapped values
+    s_Swerve.drive(dir.times(mag).times(0.6),  -rot/5, false);
+
   }
 
   // Called once the command ends or is interrupted.

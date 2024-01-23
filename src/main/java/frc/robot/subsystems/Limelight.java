@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -11,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
 
 
 
@@ -55,6 +57,10 @@ public class Limelight extends SubsystemBase {
 
   public Limelight() {
     pose = new RelativeRobotPose();
+  }
+
+  public double getRobotRZ() {
+    return LimelightHelpers.getCameraPose_TargetSpace("limelight")[6];
   }
 
   // This method will be called once per scheduler run
