@@ -84,7 +84,7 @@ public class RobotContainer {
         // TODO Auto-generated method stub
         povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
-        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight));
+        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 1, 8, 3, 8, 0.08, 8, 10));
         
     }
 

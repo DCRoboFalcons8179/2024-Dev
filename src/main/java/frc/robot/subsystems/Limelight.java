@@ -60,12 +60,27 @@ public class Limelight extends SubsystemBase {
   }
 
   public double getRobotRZ() {
-    return LimelightHelpers.getCameraPose_TargetSpace("limelight")[6];
+    return LimelightHelpers.getBotPose_TargetSpace("limelight")[5];
+  }
+
+  public double getRobotRY() {
+    return LimelightHelpers.getBotPose_TargetSpace("limelight")[4];
   }
 
   // This method will be called once per scheduler run
   @Override
   public void periodic() {
+
+    Translation3d translationOffset = offsetFromTag();
+    Rotation3d rotationOffset = rotationFromTag();
+
+    //SmartDashboard offset logging
+    SmartDashboard.putNumber("tX", translationOffset.getX());
+    SmartDashboard.putNumber("tY", translationOffset.getY());
+    SmartDashboard.putNumber("tZ", translationOffset.getZ());
+    SmartDashboard.putNumber("roll", rotationOffset.getX());
+    SmartDashboard.putNumber("ry", getRobotRY());
+    SmartDashboard.putNumber("rz", getRobotRZ());
 
     refreshValues();
     SmartDashboard.putNumber("Tag ID", getTagId());
