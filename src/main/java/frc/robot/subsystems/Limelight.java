@@ -42,13 +42,7 @@ public class Limelight extends SubsystemBase {
       pose = limelightTable.getEntry("botpose_targetspace").getDoubleArray(new double[6]);
     }
 
-    public Rotation3d getRotationOffset() {
-      return new Rotation3d(pose[ri],pose[pi],pose[yawi]);
-    }
-
-    public Translation3d getTranslationOffset() {
-      return new Translation3d(pose[xi], pose[yi], pose[zi]);
-    }
+    
 
   }
 
@@ -78,7 +72,7 @@ public class Limelight extends SubsystemBase {
     SmartDashboard.putNumber("tX", translationOffset.getX());
     SmartDashboard.putNumber("tY", translationOffset.getY());
     SmartDashboard.putNumber("tZ", translationOffset.getZ());
-    SmartDashboard.putNumber("roll", rotationOffset.getX());
+    SmartDashboard.putNumber("roll",  rotationOffset.getX());
     SmartDashboard.putNumber("ry", getRobotRY());
     SmartDashboard.putNumber("rz", getRobotRZ());
 
@@ -103,12 +97,12 @@ public class Limelight extends SubsystemBase {
   }
 
   public Rotation3d rotationFromTag() {
-    return pose.getRotationOffset().times(-1);
-  }
+      return LimelightHelpers.getBotPose3d_TargetSpace("limelight").getRotation();
+    }
 
-  public Translation3d offsetFromTag() {
-    return pose.getTranslationOffset();
-  }
+    public Translation3d offsetFromTag() {
+      return LimelightHelpers.getBotPose3d_TargetSpace("limelight").getTranslation();
+    }
 
 
 }

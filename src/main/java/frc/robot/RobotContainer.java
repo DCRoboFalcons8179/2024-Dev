@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -84,7 +85,7 @@ public class RobotContainer {
         // TODO Auto-generated method stub
         povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
-        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 1, 8, 3, 8, 0.08, 8, 10));
+        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0));
         
     }
 
