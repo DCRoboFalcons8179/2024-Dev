@@ -53,6 +53,14 @@ public class Limelight extends SubsystemBase {
     pose = new RelativeRobotPose();
   }
 
+
+  /*
+   * ok this is so dumb.
+   * within LIMELIGHT SOFTWARE, rotation about the vertical axis (normal to the ground) is the Z axis
+   * within LIMELIGHT API,      rotation about the vertical axis (normal to the ground) is the Y AXIS.
+   * 
+   * change for consistency if you want
+   */
   public double getRobotRZ() {
     return LimelightHelpers.getBotPose_TargetSpace("limelight")[5];
   }
