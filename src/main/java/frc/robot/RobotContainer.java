@@ -35,6 +35,7 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
     private final JoystickButton approachTag = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
     private final POVButton povUp = new POVButton(driver, 0);
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povDown = new POVButton(driver, 180);
@@ -42,6 +43,7 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final Limelight limelight = new Limelight();
+    public final Shooter shooter = new Shooter();
 
     
 
@@ -52,6 +54,7 @@ public class RobotContainer {
         // Controller Filtering and Modification
         //robotCentric.debounce(0.04).onTrue(new toggleFieldCentric(s_Swerve));
 
+
         
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
@@ -61,6 +64,8 @@ public class RobotContainer {
                 () -> driver.getRawAxis(rotationAxis)
             )
         );
+
+        shooter.setDefaultCommand(new ShooterDefault(shooter));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -86,7 +91,8 @@ public class RobotContainer {
         povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
         approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0));
-        
+        bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
+        bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
     }
 
     private void configureLogger() {
