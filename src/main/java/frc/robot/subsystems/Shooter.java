@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
 
   /** Creates a new Shooter. */
   public Shooter() {
-    mBeaterBar = new TalonFX(62);
+    mBeaterBar = new TalonFX(62); //TODO: set these to actual motor numbers
     mShooter = new TalonFX(61);
     mRightShooter = new TalonFX(60);
 
@@ -36,6 +36,8 @@ public class Shooter extends SubsystemBase {
   private double shooterSetSpeed;
   public void setShooterSpeed(double speed) {
 
+    //speed = speed; //for changing ratios later
+
     if (speed < -1) {
       shooterSetSpeed = -1;
     } else if (speed > 1) {
@@ -52,6 +54,8 @@ public class Shooter extends SubsystemBase {
 
   private double beaterBarSetSpeed;
   public void setBeaterBarSpeed(double speed) {
+
+      //speed = speed; //for changing ratios later
 
       if (speed < -1) {
         beaterBarSetSpeed = -1;

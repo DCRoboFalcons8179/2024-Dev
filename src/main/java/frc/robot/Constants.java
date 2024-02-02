@@ -154,4 +154,17 @@ public final class Constants {
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
+
+    public static final class ATATConstants {
+        //linear motor maximums are estimates, please measure!
+        public static final double backPostMaxLength = Units.inchesToMeters(23.6757d);
+        public static final double backPostMinLength = Units.inchesToMeters(15.6757d);
+
+        public static final double frontPostMaxLength = Units.inchesToMeters(30d);
+        public static final double frontPostMinLength = Units.inchesToMeters(21d);
+
+        public static final double distanceBetweenPostTops = Units.inchesToMeters(9.3942d);
+
+        public static final double maxDTheta = Units.degreesToRadians(120);
+    }
 }

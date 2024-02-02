@@ -69,6 +69,8 @@ public class ApproachTag extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     
     addRequirements(s_Swerve);
+
+    //TrapezoidProfile.Constraints() ?
     this.s_Swerve               = s_Swerve;
     this.limelight              = limelight;
     this.MAX_MAG                = MAX_MAG;                              //default 2 (double), distance from desired position when the robot starts ramping down speed
