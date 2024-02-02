@@ -426,7 +426,7 @@ public class LimelightHelpers {
     }
 
     public static double[] getLimelightNTDoubleArray(String tableName, String entryName) {
-        return getLimelightNTTableEntry(tableName, entryName).getDoubleArray(new double[0]);
+        return getLimelightNTTableEntry(tableName, entryName).getDoubleArray(new double[6]);
     }
 
     public static String getLimelightNTString(String tableName, String entryName) {

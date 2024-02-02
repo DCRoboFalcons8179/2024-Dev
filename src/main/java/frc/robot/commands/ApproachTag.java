@@ -5,22 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.filter.LinearFilter;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Swerve;
-import frc.robot.Constants;
+import frc.lib.math.Filter;
 import frc.robot.subsystems.Limelight;
 
 public class ApproachTag extends Command {
   /** Creates a new ApproachTag. */
   private Translation3d translationOffset;
   private Translation2d finalTranslationOffset;
-  private Rotation3d rotationOffset;
   private Swerve s_Swerve;
   private Limelight limelight;
   private double rot; // [-60, 60] else it loses the tag
@@ -102,55 +98,54 @@ public class ApproachTag extends Command {
   public void execute() {
 
     translationOffset = limelight.offsetFromTag();
-    rotationOffset = limelight.rotationFromTag();
 
     //Vector2, to desired position
     finalTranslationOffset = (new Translation2d(translationOffset.getZ() + OFFSET_Z, -translationOffset.getX() + OFFSET_X));
     
-    Translation2d dir = finalTranslationOffset.div(finalTranslationOffset.getNorm());
-
-//    double magIn = magFilter.calculate(finalTranslationOffset.getNorm());
-//    double rotIn = rotFilter.calculate(limelight.getRobotRY() + OFFSET_RY);
+    Translation2d dir = Filter.unit(finalTranslationOffset);
 
     if (limelight.getTagId() == -1) { //counts how many times it does not see the camera
       cyclesWithoutTag++;
-
-      //TODO: prevent mag from continuing to divide when it does not see a tag.
     } else { // will continue moving in the direction it was even if it does not see a tag, prevents tipping
       mag = magFilter.calculate(finalTranslationOffset.getNorm());
+      mag /= MAX_MAG;
       rot = rotFilter.calculate(limelight.getRobotRY() + OFFSET_RY);
+      rot /= MAX_ROT;
       cyclesWithoutTag = 0;
-    }
 
+      //mapping values
+
+      mag = Filter.powerCurve(Filter.cutoffFilter(mag, 1, TRANSLATION_DEADBAND), 1.5);
+
+      rot = Filter.powerCurve(Filter.deadband(Filter.cutoffFilter(rot), ROTATION_DEADBAND), 3);
+
+      /*
+      if (mag < TRANSLATION_DEADBAND) { //checking deadband first allows for deadband to be more than max limit, prevents unwanted behavior (never moving)
+        mag = 0;
+      } else if (mag > 1) {
+        mag = 1;
+      } else {
+        mag = Math.pow(mag, 1.5); //power can be any number > 1
+      }
+
+      if (Math.abs(rot) < ROTATION_DEADBAND) {
+        rot = 0;
+      } else if (rot > 1) {
+        rot = 1;
+      } else if (rot < -1) {
+        rot = -1;
+      } else {
+        rot = Math.pow(rot, 3); //power has to be an odd integer
+      }
+      */
+    }
 
     SmartDashboard.putNumber("mag", mag);
     SmartDashboard.putNumber("rot", rot);
 
-
-
-    //mapping numbers
-    mag /= MAX_MAG;
-    if (mag < TRANSLATION_DEADBAND) { //checking deadband first allows for deadband to be more than max limit, prevents unwanted behavior (never moving)
-      mag = 0;
-    } else if (mag > 1) {
-      mag = 1;
-    } else {
-      mag = Math.pow(mag, 1.5); //power can be any number > 1
-    }
-
-    rot /= MAX_ROT;
-    if (Math.abs(rot) < ROTATION_DEADBAND) {
-      rot = 0;
-    } else if (rot > 1) {
-      rot = 1;
-    } else if (rot < -1) {
-      rot = -1;
-    } else {
-      rot = Math.pow(rot, 3); //power has to be an odd integer
-    }
-
     //drive mapped values
     s_Swerve.drive(dir.times(mag).times(MAX_TRANSLATION_SPEED),  -rot * (MAX_ROTATION_SPEED), false);
+    
     SmartDashboard.putNumber("dir x", dir.getX());
     SmartDashboard.putNumber("dir y", dir.getY());
 
@@ -158,7 +153,9 @@ public class ApproachTag extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println("ApproachTag ran out of camera cycles");
+  }
 
   // Returns true when the command should end.
   @Override

@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -21,36 +19,9 @@ public class Limelight extends SubsystemBase {
   /** Creates a new Limelight. */
   
   NetworkTable limelightTable;
-  
-  public class RelativeRobotPose {
-
-    double[] pose = new double[6];
-    //indexes for pose array
-    private final int xi = 0;
-    private final int yi = 1;
-    private final int zi = 2;
-    private final int ri = 3;
-    private final int pi = 4;
-    private final int yawi = 5;
-    private final int li = 6; //probably won't use but it's here
-
-    public RelativeRobotPose() {
-
-    }
-
-    public void update() {
-      pose = limelightTable.getEntry("botpose_targetspace").getDoubleArray(new double[6]);
-    }
-
-    
-
-  }
-
-  RelativeRobotPose pose;
-
 
   public Limelight() {
-    pose = new RelativeRobotPose();
+
   }
 
 
@@ -62,12 +33,10 @@ public class Limelight extends SubsystemBase {
    * change for consistency if you want
    */
   public double getRobotRZ() {
-    //return 0;
     return LimelightHelpers.getBotPose_TargetSpace("limelight")[5];
   }
 
   public double getRobotRY() {
-    //return 0;
     return LimelightHelpers.getBotPose_TargetSpace("limelight")[4];
   }
 
@@ -95,8 +64,6 @@ public class Limelight extends SubsystemBase {
   private void refreshValues() {
 
     limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-
-    pose.update();
 
   }
 
