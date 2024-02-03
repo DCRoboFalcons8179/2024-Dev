@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -29,6 +30,11 @@ public class RobotContainer {
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
 
+    /* Subsystems */
+    private final Swerve s_Swerve = new Swerve();
+    private final Limelight limelight = new Limelight();
+    public final Shooter shooter = new Shooter();
+
     /* Driver Buttons */
     private final JoystickButton testPath = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
@@ -40,10 +46,7 @@ public class RobotContainer {
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povDown = new POVButton(driver, 180);
 
-    /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
-    private final Limelight limelight = new Limelight();
-    public final Shooter shooter = new Shooter();
+    private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
 
     
 
@@ -90,9 +93,13 @@ public class RobotContainer {
         // TODO Auto-generated method stub
         povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
-        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0));
+        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0, false));
         bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
         bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+
+        /*bButton.onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0.5)));
+        bButton.onFalse(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));
+        bButton.and(intakeLimitSwitch).onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));*/
     }
 
     private void configureLogger() {

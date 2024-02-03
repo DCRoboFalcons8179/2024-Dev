@@ -163,8 +163,40 @@ public final class Constants {
         public static final double frontPostMaxLength = Units.inchesToMeters(30d);
         public static final double frontPostMinLength = Units.inchesToMeters(21d);
 
+        public static final double frontPostRange = frontPostMaxLength - frontPostMinLength;
+        public static final double backPostRange = backPostMaxLength - backPostMinLength;
+
         public static final double distanceBetweenPostTops = Units.inchesToMeters(9.3942d);
 
+        public static final double distanceBetweenPostParts = Units.inchesToMeters(1);
+
         public static final double maxDTheta = Units.degreesToRadians(120);
+
+        public static final double frontPostGearRatio = 1; // input : output
+        public static final double backPostGearRatio = 1;
+        public static final double angleGearRatio = 1;
+
+        public static final double a_kP = 0;
+        public static final double a_kI = 0;
+        public static final double a_kD = 0;
+        public static final double a_kF = 0;
+
+        public static final double l_kP = 0;
+        public static final double l_kI = 0;
+        public static final double l_kD = 0;
+        public static final double l_kF = 0;
+
+
+
+    }
+
+    public static final class ShooterConstants {
+        public static final double shooterGearRatio = 1;
+        public static final double beaterBarGearRatio = 1;
+
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        public static final double kF = 0;
     }
 }

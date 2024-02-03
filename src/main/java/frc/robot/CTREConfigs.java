@@ -10,6 +10,7 @@ public final class CTREConfigs {
 
     public TalonFXConfiguration ATAT_postFXConfiguration = new TalonFXConfiguration();
     public TalonFXConfiguration ATAT_angleFXConfiguration = new TalonFXConfiguration();
+    public TalonFXConfiguration Shooter_shooterFXConfiguration = new TalonFXConfiguration();
 
     public CTREConfigs(){
         /** Swerve CANCoder Configuration */
@@ -61,5 +62,30 @@ public final class CTREConfigs {
 
         swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
         swerveDriveFXConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = Constants.Swerve.closedLoopRamp;
+
+
+
+
+
+
+        ATAT_angleFXConfiguration.Slot0.kP = Constants.ATATConstants.a_kP;
+        ATAT_angleFXConfiguration.Slot0.kI = Constants.ATATConstants.a_kI;
+        ATAT_angleFXConfiguration.Slot0.kD = Constants.ATATConstants.a_kD;
+        ATAT_angleFXConfiguration.Slot0.kV = Constants.ATATConstants.a_kF;
+
+        ATAT_postFXConfiguration.Slot0.kP = Constants.ATATConstants.l_kP;
+        ATAT_postFXConfiguration.Slot0.kI = Constants.ATATConstants.l_kI;
+        ATAT_postFXConfiguration.Slot0.kD = Constants.ATATConstants.l_kD;
+        ATAT_postFXConfiguration.Slot0.kV = Constants.ATATConstants.l_kF;
+
+        Shooter_shooterFXConfiguration.Slot0.kP = Constants.ShooterConstants.kP;
+        Shooter_shooterFXConfiguration.Slot0.kI = Constants.ShooterConstants.kI;
+        Shooter_shooterFXConfiguration.Slot0.kD = Constants.ShooterConstants.kD;
+        Shooter_shooterFXConfiguration.Slot0.kV = Constants.ShooterConstants.kF;
+
+
+
+
+
     }
 }

@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Swerve;
@@ -19,7 +20,7 @@ public class ApproachTag extends Command {
   private Translation2d finalTranslationOffset;
   private Swerve s_Swerve;
   private Limelight limelight;
-  private double rot; // [-60, 60] else it loses the tag
+  private double rot; // [-60, 60] else it loses the tag **degrees
   private double mag; // [0, inf] if infinite resolution
   LinearFilter magFilter;
   LinearFilter rotFilter;
@@ -34,6 +35,7 @@ public class ApproachTag extends Command {
   private final double OFFSET_X; //offset from tag, negative = left
   private final double OFFSET_Z; //offset from tag, negative = into tag
   private final double OFFSET_RY;
+  private final boolean SWING_WIDE;
 
 
   /**
@@ -61,7 +63,7 @@ public class ApproachTag extends Command {
    * 
    * <p>Swings wide if it is in robot-centric (due to desired vector being offset by the angle the robot is facing to the tag). Not yet ready to support field centric.
    */
-  public ApproachTag(Swerve s_Swerve, Limelight limelight, double MAX_MAG, double MAX_ROT, double MAX_TRANSLATION_SPEED, double MAX_ROTATION_SPEED, double TRANSLATION_DEADBAND, double ROTATION_DEADBAND, int MAX_CYCLES_WITHOUT_TAG, Translation2d OFFSET_FROM_TAG, double ROTATION_FROM_TAG) {
+  public ApproachTag(Swerve s_Swerve, Limelight limelight, double MAX_MAG, double MAX_ROT, double MAX_TRANSLATION_SPEED, double MAX_ROTATION_SPEED, double TRANSLATION_DEADBAND, double ROTATION_DEADBAND, int MAX_CYCLES_WITHOUT_TAG, Translation2d OFFSET_FROM_TAG, double ROTATION_FROM_TAG, boolean SWING_WIDE) {
     // Use addRequirements() here to declare subsystem dependencies.
     
     addRequirements(s_Swerve);
@@ -79,6 +81,7 @@ public class ApproachTag extends Command {
     this.OFFSET_X               = OFFSET_FROM_TAG.getX();               //values immediately pulled from Translation2d to prevent continuous calls
     this.OFFSET_Z               = OFFSET_FROM_TAG.getY();               //^^^
     this.OFFSET_RY              = ROTATION_FROM_TAG;
+    this.SWING_WIDE             = SWING_WIDE;
 
   }
 
@@ -115,6 +118,14 @@ public class ApproachTag extends Command {
 
       //mapping values
 
+      double rot_rad = Units.degreesToRadians(rot);
+      if (!SWING_WIDE) {
+        dir = new Translation2d(
+          dir.getX() * Math.cos(-rot_rad) + dir.getY() * Math.sin(-rot_rad),
+          dir.getY() * Math.cos(-rot_rad) - dir.getX() * Math.sin(-rot_rad)
+        );
+      }
+
       mag = Filter.powerCurve(Filter.cutoffFilter(mag, 1, TRANSLATION_DEADBAND), 1.5);
 
       rot = Filter.powerCurve(Filter.deadband(Filter.cutoffFilter(rot), ROTATION_DEADBAND), 3);
@@ -139,6 +150,9 @@ public class ApproachTag extends Command {
       }
       */
     }
+    
+
+    
 
     SmartDashboard.putNumber("mag", mag);
     SmartDashboard.putNumber("rot", rot);

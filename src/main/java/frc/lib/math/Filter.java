@@ -64,11 +64,7 @@ public class Filter {
             return ret * negative_sign;
         }
 
-
-        String printStatement = "You divided by zero. \nSHAME!\nSHAME!\nSHAME!";
-        
-
-        System.out.println(printStatement);
+        System.out.println("You divided by zero. \nSHAME!\nSHAME!\nSHAME!");
 
         return 0;
     }

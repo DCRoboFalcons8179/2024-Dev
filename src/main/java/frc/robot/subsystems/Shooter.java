@@ -7,14 +7,21 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.math.Filter;
+import frc.robot.Robot;
 
 public class Shooter extends SubsystemBase {
 
   private TalonFX mBeaterBar;
   private TalonFX mShooter;
   private TalonFX mRightShooter;
+  private boolean inShooter = false;
+  private DigitalInput limitSwitch = new DigitalInput(10);
+
+
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -36,15 +43,7 @@ public class Shooter extends SubsystemBase {
   private double shooterSetSpeed;
   public void setShooterSpeed(double speed) {
 
-    //speed = speed; //for changing ratios later
-
-    if (speed < -1) {
-      shooterSetSpeed = -1;
-    } else if (speed > 1) {
-      shooterSetSpeed = 1;
-    } else {
-      shooterSetSpeed = speed;
-    }
+    shooterSetSpeed = Filter.cutoffFilter(speed);
 
   }
 
@@ -75,5 +74,8 @@ public class Shooter extends SubsystemBase {
     mShooter.set(shooterSetSpeed);
   }
 
-
+  //TODO: make this read the limit switch state
+  public boolean getIntakeLimitSwitchState() {
+    return limitSwitch.get();
+  }
 }
