@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.io.FileWriter;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -24,6 +26,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick dualshock = new Joystick(1);
 
     /* Drive Controls */
     private final int testPathIndex = XboxController.Axis.kLeftX.value;
@@ -47,6 +50,10 @@ public class RobotContainer {
     private final POVButton povUp = new POVButton(driver, 0);
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povDown = new POVButton(driver, 180);
+
+    // DualShock POVs because I (Mason) don't have an Xbox controller at home
+    private final POVButton dualShockPovUp = new POVButton(dualshock, 0);
+    private final POVButton dualShockPovDown = new POVButton(dualshock, 180);
 
     private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
 
@@ -75,7 +82,7 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
         buttonCommands();
-        SmartDashboard.putNumber("test2", cameras.cameraController()-10);
+        // SmartDashboard.putNumber("test2", cameras.cameraController()-10);
     }
 
     /**
@@ -92,6 +99,8 @@ public class RobotContainer {
         
     }
 
+
+
     private void buttonCommands() {
         // TODO Auto-generated method stub
         povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
@@ -99,6 +108,7 @@ public class RobotContainer {
         approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0, false));
         bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
         bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+        dualShockPovUp.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft()));
 
         /*bButton.onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0.5)));
         bButton.onFalse(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));
