@@ -54,6 +54,8 @@ public class RobotContainer {
     // DualShock POVs because I (Mason) don't have an Xbox controller at home
     private final POVButton dualShockPovUp = new POVButton(dualshock, 0);
     private final POVButton dualShockPovDown = new POVButton(dualshock, 180);
+    private final POVButton dualShockPovLeft = new POVButton(dualshock, 270);
+    private final POVButton dualShockPovRight = new POVButton(dualshock, 90);
 
     private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
 
@@ -108,6 +110,8 @@ public class RobotContainer {
         bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
         dualShockPovUp.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("left")));
         dualShockPovDown.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("right")));
+        dualShockPovLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));
+        dualShockPovRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));
 
         /*bButton.onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0.5)));
         bButton.onFalse(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));

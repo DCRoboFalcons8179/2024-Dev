@@ -17,4 +17,19 @@ public class Cameras {
         }
 
     }
+
+    public void cameraControllerRight(String direction) {
+
+        double rightCam = SmartDashboard.getNumber("Right Camera Value", 0);
+
+        switch (direction) {
+            case "left":
+                SmartDashboard.putNumber("Right Camera Value", rightCam += 1);
+                break;
+            case "right":
+                SmartDashboard.putNumber("Right Camera Value", rightCam -= 1);
+                break;
+        }
+
+    }
 }
