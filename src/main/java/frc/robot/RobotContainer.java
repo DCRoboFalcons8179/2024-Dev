@@ -93,9 +93,14 @@ public class RobotContainer {
         // TODO Auto-generated method stub
         povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
-        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0, false));
-        bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
-        bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20,
+        4.5, 1,
+        0.3, 6, 10,
+        new Translation2d(0, 2), 0, false));
+        bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 
+        4.5, 1, 
+        0.3, 6, 10, 
+        new Translation2d(0, 2), 0, true));
 
         /*bButton.onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0.5)));
         bButton.onFalse(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));
