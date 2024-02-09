@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Swerve;
 import frc.lib.math.Filter;
 import frc.robot.subsystems.Limelight;
@@ -24,6 +25,8 @@ public class ApproachTag extends Command {
   private double mag; // [0, inf] if infinite resolution
   LinearFilter magFilter;
   LinearFilter rotFilter;
+  LinearFilter xFilter;
+  LinearFilter zFilter;
 
   private final double MAX_MAG; //[0, inf]
   private final double MAX_ROT; //[0, inf]
@@ -92,6 +95,8 @@ public class ApproachTag extends Command {
   public void initialize() {
     magFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
     rotFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
+    xFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
+    zFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -101,12 +106,11 @@ public class ApproachTag extends Command {
   public void execute() {
 
     
-    if (limelight.getTagId() == -1 || limelight.offsetFromTag().getZ() > 0) { //counts how many times it does not see the camera
+    if (limelight.getTagId() == -1 || limelight.offsetFromTag().getZ() > 0) { //counts how many times it does not see the camera (or the position flips)
       cyclesWithoutTag++;
     } else { // will continue moving in the direction it was even if it does not see a tag, prevents tipping
-
-
-        
+      cyclesWithoutTag = 0;
+      
       translationOffset = limelight.offsetFromTag();
 
       //Vector2, to desired position
@@ -114,7 +118,7 @@ public class ApproachTag extends Command {
       
       Translation2d dir = Filter.unit(finalTranslationOffset);
       
-      mag = magFilter.calculate(finalTranslationOffset.getNorm());
+      mag = finalTranslationOffset.getNorm(); //magFilter.calculate()
       mag /= MAX_MAG;
       rot = rotFilter.calculate(limelight.getRobotRY() + OFFSET_RY);
       double rot_rad = Units.degreesToRadians(rot);
@@ -125,12 +129,9 @@ public class ApproachTag extends Command {
         );
       }
       rot /= MAX_ROT;
-      cyclesWithoutTag = 0;
 
       //mapping values
       
-
-
       mag = Filter.powerCurve(Filter.cutoffFilter(mag, 1, TRANSLATION_DEADBAND), 1.5);
 
       rot = Filter.powerCurve(Filter.deadband(Filter.cutoffFilter(rot), ROTATION_DEADBAND), 3);
@@ -140,9 +141,6 @@ public class ApproachTag extends Command {
       SmartDashboard.putNumber("dir x", dir.getX());
       SmartDashboard.putNumber("dir y", dir.getY());
     }
-    
-
-    
 
     SmartDashboard.putNumber("mag", mag);
     SmartDashboard.putNumber("rot", rot);
@@ -156,14 +154,16 @@ public class ApproachTag extends Command {
   @Override
   public void end(boolean interrupted) {
     System.out.println("ApproachTag ran out of camera cycles");
-    magFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
-    rotFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
+    magFilter.reset();
+    rotFilter.reset();
+    xFilter.reset();
+    zFilter.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     // returns true when the camera does not see a tag for MAX_CYCLES_WITHOUT_TAG cycles
-    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG;
+    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || mag == 0 && rot == 0;
   }
 }

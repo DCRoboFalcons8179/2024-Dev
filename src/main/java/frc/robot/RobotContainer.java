@@ -23,6 +23,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick board = new Joystick(1);
 
     /* Drive Controls */
     private final int testPathIndex = XboxController.Axis.kLeftX.value;
@@ -42,6 +43,17 @@ public class RobotContainer {
     private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
     private final JoystickButton approachTag = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton hangButton = new JoystickButton(board, 11);
+    private final JoystickButton fireButton = new JoystickButton(board, 10);
+    private final JoystickButton beaterBarFButton = new JoystickButton(board, 3);
+    private final JoystickButton beaterBarBButton = new JoystickButton(board, 4);
+    private final JoystickButton lowSetPoint = new JoystickButton(board, 5);
+    private final JoystickButton mediumSetPoint = new JoystickButton(board, 0);
+    private final JoystickButton highSetPoint = new JoystickButton(board, 1);
+    private final JoystickButton ampSetPoint = new JoystickButton(board, 2);
+    private final JoystickButton carrySetPoint = new JoystickButton(board, 8);
+    private final JoystickButton pickupSetPoint = new JoystickButton(board, 9);
+    private final JoystickButton liftSetPoint = new JoystickButton(board, 7);
     private final POVButton povUp = new POVButton(driver, 0);
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povDown = new POVButton(driver, 180);
@@ -93,14 +105,24 @@ public class RobotContainer {
         // TODO Auto-generated method stub
         povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
-        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20,
-        4.5, 1,
-        0.3, 6, 10,
+        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
+        1, 1,
+        0.15, 6, 10,
         new Translation2d(0, 2), 0, false));
-        bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 
-        4.5, 1, 
-        0.3, 6, 10, 
+        bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
+        1, 1, 
+        0.15, 6, 10, 
         new Translation2d(0, 2), 0, true));
+
+        fireButton.onTrue(new RequestShooterSpeed(0.5, shooter));
+        fireButton.onFalse(new RequestShooterSpeed(0, shooter));
+        beaterBarFButton.onTrue(new RequestBeaterBarSpeed(0.5, shooter));
+        beaterBarFButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
+        beaterBarBButton.onTrue(new RequestBeaterBarSpeed(-0.5, shooter));
+        beaterBarBButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
+
+
+
 
         /*bButton.onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0.5)));
         bButton.onFalse(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));
