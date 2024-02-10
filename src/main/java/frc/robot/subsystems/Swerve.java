@@ -56,7 +56,16 @@ public class Swerve extends SubsystemBase {
         Timer.delay(1.0);
         resetModulesToAbsolute();
 
+        // Timer.delay(1.0);
+        // zeroHeading();
+        // zeroGyro();
+
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
+
+        for(SwerveModule mod : mSwerveMods){
+            mod.printStats();
+        }
+
     }
 
     // Helper variables for drive command

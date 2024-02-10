@@ -34,7 +34,7 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final Limelight limelight = new Limelight();
-    public final Shooter shooter = new Shooter();
+    // public final Shooter shooter = new Shooter();
 
     /* Driver Buttons */
     private final JoystickButton testPath = new JoystickButton(driver, XboxController.Button.kX.value);
@@ -58,7 +58,7 @@ public class RobotContainer {
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povDown = new POVButton(driver, 180);
 
-    private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
+    // private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
 
     
 
@@ -80,7 +80,7 @@ public class RobotContainer {
             )
         );
 
-        shooter.setDefaultCommand(new ShooterDefault(shooter));
+        // shooter.setDefaultCommand(new ShooterDefault(shooter));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -114,12 +114,12 @@ public class RobotContainer {
         0.15, 6, 10, 
         new Translation2d(0, 2), 0, true));
 
-        fireButton.onTrue(new RequestShooterSpeed(0.5, shooter));
-        fireButton.onFalse(new RequestShooterSpeed(0, shooter));
-        beaterBarFButton.onTrue(new RequestBeaterBarSpeed(0.5, shooter));
-        beaterBarFButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
-        beaterBarBButton.onTrue(new RequestBeaterBarSpeed(-0.5, shooter));
-        beaterBarBButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
+        // fireButton.onTrue(new RequestShooterSpeed(0.5, shooter));
+        // fireButton.onFalse(new RequestShooterSpeed(0, shooter));
+        // beaterBarFButton.onTrue(new RequestBeaterBarSpeed(0.5, shooter));
+        // beaterBarFButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
+        // beaterBarBButton.onTrue(new RequestBeaterBarSpeed(-0.5, shooter));
+        // beaterBarBButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
 
 
 
