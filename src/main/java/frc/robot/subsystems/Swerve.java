@@ -73,7 +73,6 @@ public class Swerve extends SubsystemBase {
     private double translationY = 0;
     private double rotationCommand = 0; 
 
-
     public void drive(Translation2d translation, double rotation, boolean isOpenLoop) {
         
         // Gets the values of x y and rotation and assigns them to their repestive variables
@@ -196,6 +195,10 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putBoolean("Field Centric", fieldCentricBoolean);
 
         SmartDashboard.putNumber("Position", mSwerveMods[0].getPosition().distanceMeters);
+
+        SmartDashboard.putNumber("Mod 0 spark state angle", mSwerveMods[0].getState().angle.getRotations());
+        SmartDashboard.putNumber("Mod 0 spark angle", mSwerveMods[0].getPosition().angle.getRotations());
+
     }
 
 
@@ -203,5 +206,6 @@ public class Swerve extends SubsystemBase {
     public void toggleFieldCentric() {
         
        fieldCentricBoolean = ! fieldCentricBoolean;
+
     }
 }

@@ -75,7 +75,7 @@ public class RobotContainer {
             new TeleopSwerve(
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
+                () -> driver.getRawAxis(strafeAxis), 
                 () -> driver.getRawAxis(rotationAxis)
             )
         );
@@ -109,10 +109,11 @@ public class RobotContainer {
         1, 1,
         0.15, 6, 10,
         new Translation2d(0, 2), 0, false));
-        bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
+        /*bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
         1, 1, 
         0.15, 6, 10, 
-        new Translation2d(0, 2), 0, true));
+        new Translation2d(0, 2), 0, true));*/
+        bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
 
         // fireButton.onTrue(new RequestShooterSpeed(0.5, shooter));
         // fireButton.onFalse(new RequestShooterSpeed(0, shooter));
