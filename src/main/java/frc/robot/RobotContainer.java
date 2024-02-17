@@ -32,7 +32,6 @@ public class RobotContainer {
     private final Joystick dualshock = new Joystick(1);
 
     /* Drive Controls */
-    private final int testPathIndex = XboxController.Axis.kLeftX.value;
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
@@ -44,7 +43,7 @@ public class RobotContainer {
     private final Cameras cameras = new Cameras();
 
     /* Driver Buttons */
-    private final JoystickButton testPath = new JoystickButton(driver, XboxController.Button.kX.value);
+    private final JoystickButton testButton = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
@@ -78,13 +77,11 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> driver.getRawAxis(rotationAxis)));
-
-        shooter.setDefaultCommand(new ShooterDefault(shooter));
+        
 
         // Configure the button bindings
         configureButtonBindings();
         buttonCommands();
-        // SmartDashboard.putNumber("test2", cameras.cameraController()-10);
     }
 
     /**
@@ -114,8 +111,8 @@ public class RobotContainer {
         povUp.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("left")));
         povDown.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("right")));
         povLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));
-        povRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));
-        // dualShockPovLeft.onTrue(new InstantCommand(() ->
+        povRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));        // dualShockPovLeft.onTrue(new InstantCommand(() ->
+        testButton.onTrue(new InstantCommand(() -> cameras.cameraCalc()));
         // cameras.cameraControllerRight("left")));
         // dualShockPovRight.onTrue(new InstantCommand(() ->
         // cameras.cameraControllerRight("right")));

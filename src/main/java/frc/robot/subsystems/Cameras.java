@@ -3,6 +3,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Cameras {
+
+    public void cameraCalc() {
+        double controllerSlope = SmartDashboard.getNumber("Commanded Velocity Y", 0) * 100 / SmartDashboard.getNumber("Commanded Velocity Y", 0) * 100;
+
+        double controllerAngle = Math.toDegrees(Math.atan(SmartDashboard.getNumber("Commanded Velocity Y", 0) * 100 / SmartDashboard.getNumber("Commanded Velocity Y", 0) * 100));
+
+        SmartDashboard.putNumber("Controller Angel", controllerAngle);
+    }
+
     public void cameraControllerLeft(String direction) {
 
         double leftCam = SmartDashboard.getNumber("Left Cam Value", 0);
