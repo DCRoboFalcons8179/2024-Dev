@@ -462,8 +462,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left Camera Value",
-              "_title": "Left Camera Value",
+              "_source0": "network_table:///SmartDashboard/Right Cam Value",
+              "_title": "Right Cam Value",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -475,8 +475,34 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Right Camera Value",
-              "_title": "Right Camera Value",
+              "_source0": "network_table:///SmartDashboard/Left Cam Value",
+              "_title": "Left Cam Value",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Controller Angle Y",
+              "_title": "Controller Angle Y",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Controller Angle X",
+              "_title": "Controller Angle X",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -488,8 +514,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Right Cam Value",
-              "_title": "Right Cam Value",
+              "_source0": "network_table:///SmartDashboard/Controller Angle Radians",
+              "_title": "Controller Angle Radians",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -501,8 +527,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left Cam Value",
-              "_title": "Left Cam Value",
+              "_source0": "network_table:///SmartDashboard/Controller Angle Degrees",
+              "_title": "Controller Angle Degrees",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -548,7 +574,7 @@
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
-              "Controls/Rotation": "HALF",
+              "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": 30,
               "imageWidth": 160,
@@ -601,14 +627,66 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "10,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Controller Angle Degrees",
+              "_title": "SmartDashboard/Controller Angle Degrees",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Controller Angle Radians",
+              "_title": "SmartDashboard/Controller Angle Radians",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Controller Angle X",
+              "_title": "SmartDashboard/Controller Angle X",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Controller Angle Y",
+              "_title": "SmartDashboard/Controller Angle Y",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": -8.0,
-    "y": -8.0,
+    "x": 2.0,
+    "y": 1072.0,
     "width": 1936.0,
     "height": 1066.0
   }

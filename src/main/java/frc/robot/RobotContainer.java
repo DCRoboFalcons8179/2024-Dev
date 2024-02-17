@@ -78,6 +78,7 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> driver.getRawAxis(rotationAxis)));
         
+        cameras.setDefaultCommand(new CameraPublisher(cameras, () -> -driver.getRawAxis(translationAxis), () -> driver.getRawAxis(strafeAxis)));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -111,8 +112,10 @@ public class RobotContainer {
         povUp.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("left")));
         povDown.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("right")));
         povLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));
-        povRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));        // dualShockPovLeft.onTrue(new InstantCommand(() ->
-        testButton.onTrue(new InstantCommand(() -> cameras.cameraCalc()));
+        povRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left"))); // dualShockPovLeft.onTrue(new
+                                                                                          // InstantCommand(() ->
+        // testButton.onTrue(new InstantCommand(() ->
+        // cameras.cameraCalc(driver.getRawAxis(translationAxis))));
         // cameras.cameraControllerRight("left")));
         // dualShockPovRight.onTrue(new InstantCommand(() ->
         // cameras.cameraControllerRight("right")));
