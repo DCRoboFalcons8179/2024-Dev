@@ -70,8 +70,9 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> driver.getRawAxis(rotationAxis)));
-        
-        cameras.setDefaultCommand(new CameraPublisher(cameras, () -> -driver.getRawAxis(translationAxis), () -> driver.getRawAxis(strafeAxis)));
+
+        cameras.setDefaultCommand(new CameraPublisher(cameras, () -> -driver.getRawAxis(translationAxis),
+                () -> driver.getRawAxis(strafeAxis)));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -89,7 +90,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         /* Driver Buttons */
-        // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
 
     }
 
@@ -102,6 +102,8 @@ public class RobotContainer {
                 new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
         bButton.onFalse(
                 new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+
         // testButton.onTrue(new InstantCommand(() ->
         // cameras.cameraCalc(driver.getRawAxis(translationAxis))));
         // cameras.cameraControllerRight("left")));
