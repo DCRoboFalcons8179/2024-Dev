@@ -29,7 +29,6 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
-    private final Joystick dualshock = new Joystick(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -53,12 +52,6 @@ public class RobotContainer {
     private final POVButton povDown = new POVButton(driver, 180);
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povRight = new POVButton(driver, 90);
-
-    // DualShock POVs because I (Mason) don't have an Xbox controller at home
-    private final POVButton dualShockPovUp = new POVButton(dualshock, 0);
-    private final POVButton dualShockPovDown = new POVButton(dualshock, 180);
-    private final POVButton dualShockPovLeft = new POVButton(dualshock, 270);
-    private final POVButton dualShockPovRight = new POVButton(dualshock, 90);
 
     private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
 
@@ -109,11 +102,6 @@ public class RobotContainer {
                 new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
         bButton.onFalse(
                 new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
-        povUp.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("left")));
-        povDown.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("right")));
-        povLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));
-        povRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left"))); // dualShockPovLeft.onTrue(new
-                                                                                          // InstantCommand(() ->
         // testButton.onTrue(new InstantCommand(() ->
         // cameras.cameraCalc(driver.getRawAxis(translationAxis))));
         // cameras.cameraControllerRight("left")));
