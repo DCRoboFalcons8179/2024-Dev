@@ -86,6 +86,7 @@ public class SwerveModule {
         mAngleMotor.getEncoder(Type.kHallSensor, 1);
         mAngleMotor.getEncoder().setPositionConversionFactor(1);
         //mAngleMotor.getEncoder().setPositionConversionFactor(Constants.Swerve.angleGearRatio);
+        //angleOffset.plus(new Rotation2d(mAngleMotor.getEncoder().getPosition() / Constants.Swerve.angleGearRatio * 2 * Math.PI));
         mAngleMotor.getPIDController().setReference(angleOffset.getRotations(), ControlType.kSmartMotion);
         mAngleMotor.burnFlash();
 
