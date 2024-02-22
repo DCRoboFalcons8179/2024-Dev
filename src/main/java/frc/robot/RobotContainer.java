@@ -172,6 +172,17 @@ public class RobotContainer {
 
         // dualShockPovLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));
         // dualShockPovRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));
+        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
+        1, 1,
+        0.15, 6, 10,
+        new Translation2d(0, 2), 0, false));
+        bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
+        1, 1, 
+        0.15, 6, 10, 
+        new Translation2d(0, 2), 0, true));
+
+
+
 
         /*bButton.onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0.5)));
         bButton.onFalse(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));
