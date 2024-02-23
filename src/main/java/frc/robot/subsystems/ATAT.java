@@ -92,6 +92,7 @@ public class ATAT extends SubsystemBase {
     mAngleMotor.setControl(anglePosition.withPosition(rot));
   }
 
+  //degrees for printing reasons
   public double getAngle() {
     return mAngleMotor.getPosition().getValueAsDouble() * 360;
   }
