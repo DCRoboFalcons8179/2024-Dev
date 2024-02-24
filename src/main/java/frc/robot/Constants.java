@@ -1,6 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
@@ -19,25 +18,25 @@ public final class Constants {
     public static final class Swerve {
         public static final int pigeonID = 1;
 
-        //public static final COTSTalonFXSwerveConstants chosenModule = COTSTalonFXSwerveConstants.CHUCK.Falcon500();
-        public static final COTSTalonFXSwerveConstants chosenModule = COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(6.75);
-            
+        public static final COTSTalonFXSwerveConstants chosenModule = 
+        COTSTalonFXSwerveConstants.CHUCK.Falcon500();
+
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(23.5); 
-        public static final double wheelBase = Units.inchesToMeters(26);
+        public static final double trackWidth = Units.inchesToMeters(23); 
+        public static final double wheelBase = Units.inchesToMeters(22.6875);
         public static final double wheelCircumference = Units.inchesToMeters(4.0 * Math.PI);
 
         /* Swerve Kinematics 
          * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
          public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
-            new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
             new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-            new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0),
-            new Translation2d(-wheelBase / 2.0, trackWidth / 2.0));
+            new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+            new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+            new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
         /* Module Gear Ratios */
-        public static final double driveGearRatio = 6.75;
-        public static final double angleGearRatio = 21.42857;
+        public static final double driveGearRatio = 7.13;
+        public static final double angleGearRatio = 15.43;
 
         /* Motor Inverts */
         public static final InvertedValue angleMotorInvert = chosenModule.angleMotorInvert;
@@ -60,12 +59,12 @@ public final class Constants {
         /* These values are used by the drive falcon to ramp in open loop and closed loop driving.
          * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc */
         public static final double openLoopRamp = 0.25;
-        public static final double closedLoopRamp = 0.25;
+        public static final double closedLoopRamp = 0.0;
 
         /* Angle Motor PID Values */
-        public static final double angleKP = 0.1;
-        public static final double angleKI = 0.0;
-        public static final double angleKD = 0.0003;
+        public static final double angleKP = chosenModule.angleKP;
+        public static final double angleKI = chosenModule.angleKI;
+        public static final double angleKD = chosenModule.angleKD;
 
         // /* Drive Motor PID Values */
         // public static final double driveKP = 0.025; //TODO: This must be tuned to specific robot
@@ -86,9 +85,9 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 1.5; //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 1.0; //TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 3.0; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 1.75; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -96,59 +95,56 @@ public final class Constants {
 
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
+        /* Back Right for drivers */
         public static final class Mod0 {
-            public static final int driveMotorID = 7;
-            public static final int angleMotorID = 12;
-            public static final int canCoderID = 15;
-            public static final CANcoder canCoder = new CANcoder(canCoderID);
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(82.4 - Rotation2d.fromRotations(canCoder.getAbsolutePosition().getValueAsDouble()).getDegrees());
-            //- Rotation2d.fromRotations(canCoder.getAbsolutePosition().getValueAsDouble()).getDegrees()
+            public static final int driveMotorID = 10;
+            public static final int angleMotorID = 11;
+            public static final int canCoderID = 12;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(25.840);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
 
         /* Front Right Module - Module 1 */
+        /* (Back Left for us) */
         public static final class Mod1 {
             public static final int driveMotorID = 9;
-            public static final int angleMotorID = 13;
-            public static final int canCoderID = 14;
-            public static final CANcoder canCoder = new CANcoder(canCoderID);
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(129.99 - Rotation2d.fromRotations(canCoder.getAbsolutePosition().getValueAsDouble()).getDegrees());
+            public static final int angleMotorID = 8;
+            public static final int canCoderID = 7;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(29.795);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
         
         /* Back Left Module - Module 2 */
+        /* (Front Right Module for us)*/
         public static final class Mod2 {
-            public static final int driveMotorID = 6;
-            public static final int angleMotorID = 10;
-            public static final int canCoderID = 16;
-            public static final CANcoder canCoder = new CANcoder(canCoderID);
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(25.2 - Rotation2d.fromRotations(canCoder.getAbsolutePosition().getValueAsDouble()).getDegrees());
+            public static final int driveMotorID = 19;
+            public static final int angleMotorID = 18;
+            public static final int canCoderID = 17;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(64.688);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
 
         /* Back Right Module - Module 3 */
+        /* (front left for us) */
         public static final class Mod3 {
-            public static final int driveMotorID = 8;
-            public static final int angleMotorID = 11;
-            public static final int canCoderID = 17;
-            public static final CANcoder canCoder = new CANcoder(canCoderID);
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(70.75 - Rotation2d.fromRotations(canCoder.getAbsolutePosition().getValueAsDouble()).getDegrees());
+            public static final int driveMotorID = 20;
+            public static final int angleMotorID = 21;
+            public static final int canCoderID = 2;
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(289.072);
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
 
-        public static final Translation2d getDesiredPoseFromTagID(int id) {
-            switch (id){
+        public static final Translation2d getTranslationFromID(int id) {
+            switch(id){
                 case 7:
                 return new Translation2d(0, 2);
-                //add more ids here
                 default:
-                return getDesiredPoseFromTagID(7);
+                return getTranslationFromID(7);
             }
-
         }
     }
 
@@ -200,6 +196,12 @@ public final class Constants {
         public static final double l_kF = 0;
 
 
+        // setpoints
+        public static final ATATPose carry = new ATATPose(0, 0, 0);
+
+        public static final ATATPose shootClose = new ATATPose(0, 0, 0);
+        public static final ATATPose shootMedium = new ATATPose(0, 0, 0);
+        public static final ATATPose shootFar = new ATATPose(0, 0, 0);
 
     }
 
@@ -220,5 +222,6 @@ public final class Constants {
         public static final double kD = 0;
         public static final double kF = 0;
         //beater bar does not have pid, not important
+
     }
 }
