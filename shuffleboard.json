@@ -623,6 +623,45 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Heading",
+              "_title": "Heading",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Controller Zone",
+              "_title": "Controller Zone",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot Zone",
+              "_title": "Robot Zone",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -783,6 +822,32 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "7,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Controller Zone",
+              "_title": "/SmartDashboard/Controller Zone",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot Zone",
+              "_title": "SmartDashboard/Robot Zone",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -790,8 +855,8 @@
   ],
   "windowGeometry": {
     "x": 2.0,
-    "y": 1072.0,
+    "y": 1080.0,
     "width": 1936.0,
-    "height": 1066.0
+    "height": 1057.0
   }
 }

@@ -39,6 +39,7 @@ public class Swerve extends SubsystemBase {
             System.out.println("NavX not plugged in");
             System.out.println("--------------");
         }
+        gyro.enableBoardlevelYawReset(true);
         zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
@@ -92,6 +93,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroGyro() {
+       
        gyro.zeroYaw();
     }
 

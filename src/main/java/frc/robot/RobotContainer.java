@@ -72,7 +72,7 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> driver.getRawAxis(rotationAxis)));
 
-        cameras.setDefaultCommand(new CameraPublisher(cameras, () -> -driver.getRawAxis(translationAxis),
+        cameras.setDefaultCommand(new CameraPublisher(cameras, s_Swerve, () -> -driver.getRawAxis(translationAxis),
                 () -> driver.getRawAxis(strafeAxis)));
 
         // Configure the button bindings
