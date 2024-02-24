@@ -39,7 +39,6 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final Limelight limelight = new Limelight();
-    // public final Shooter shooter = new Shooter();
     public final Shooter shooter = new Shooter();
     private final Cameras cameras = new Cameras();
     private final ATAT atat = new ATAT();
@@ -73,7 +72,6 @@ public class RobotContainer {
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povDown = new POVButton(driver, 180);
 
-    // private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
     // DualShock POVs because I (Mason) don't have an Xbox controller at home
     private final POVButton dualShockPovUp = new POVButton(dualshock, 0);
     private final POVButton dualShockPovDown = new POVButton(dualshock, 180);
@@ -97,12 +95,12 @@ public class RobotContainer {
             new TeleopSwerve(
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
-                () -> driver.getRawAxis(strafeAxis), 
+                () -> -driver.getRawAxis(strafeAxis), 
                 () -> driver.getRawAxis(rotationAxis)
             )
         );
 
-        // shooter.setDefaultCommand(new ShooterDefault(shooter));
+        shooter.setDefaultCommand(new ShooterDefault(shooter));
 
         // Configure the button bindings
         configureButtonBindings();
@@ -148,15 +146,15 @@ public class RobotContainer {
         hang.onFalse(new RequestATATPose(atat, 0, 0, 0));
 
         // Set Point Buttons
-        closeSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
         closeSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
-        mediumSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
         mediumSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
-        farSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
         farSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
         ampSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
         ampSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
-        carrySetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
         carrySetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
         pickUpSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
         pickUpSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
@@ -178,18 +176,10 @@ public class RobotContainer {
         1, 1,
         0.15, 6, 10,
         new Translation2d(0, 2), 0, false));
-        /*bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
+        bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
         1, 1, 
         0.15, 6, 10, 
-        new Translation2d(0, 2), 0, true));*/
-        bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
-
-        // fireButton.onTrue(new RequestShooterSpeed(0.5, shooter));
-        // fireButton.onFalse(new RequestShooterSpeed(0, shooter));
-        // beaterBarFButton.onTrue(new RequestBeaterBarSpeed(0.5, shooter));
-        // beaterBarFButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
-        // beaterBarBButton.onTrue(new RequestBeaterBarSpeed(-0.5, shooter));
-        // beaterBarBButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
+        new Translation2d(0, 2), 0, true));
 
 
 

@@ -93,7 +93,7 @@ public class ApproachTag extends Command {
     this(swerve, limelight, 0.8, 20,
     1, 1,
     0.15, 6, 10,
-    Constants.Swerve.getDesiredPoseFromTagID(id), 0, SWING_WIDE);
+    Constants.Swerve.getTranslationFromID(id), 0, SWING_WIDE);
   }
 
   // Called when the command is initially scheduled.
