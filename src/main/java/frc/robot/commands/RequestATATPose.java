@@ -7,12 +7,13 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.ATATPose;
 import frc.robot.subsystems.ATAT;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class RequestATATPose extends Command {
+public class RequestATATPose extends Command {  
   private boolean instant = true;
   private ATAT atat;
   private DoubleSupplier distF;
@@ -25,7 +26,7 @@ public class RequestATATPose extends Command {
     this.angle = ()-> angle;
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
+  
   public RequestATATPose(ATAT atat, double distF, double distB, double angle, boolean instant) {
     this(atat, distF, distB, angle);
     this.instant = instant;
@@ -38,6 +39,10 @@ public class RequestATATPose extends Command {
     this.distB = distB;
     this.angle = angle;
     // Use addRequirements() here to declare subsystem dependencies.
+  }
+
+  public RequestATATPose(ATAT atat, ATATPose pose) {
+    this(atat, pose.getDistF(), pose.getDistB(), pose.getAngle());
   }
 
   public RequestATATPose(ATAT atat, DoubleSupplier distF, DoubleSupplier distB, DoubleSupplier angle, boolean instant) {
