@@ -191,12 +191,22 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        public static final double shooterGearRatio = 1;
-        public static final double beaterBarGearRatio = 1;
 
-        public static final double kP = 0;
+        public static final int shooterLeadMotorID = 61;
+        public static final int shooterFollowMotorID = 60;
+        public static final int beaterBarMotorID = 62;
+
+        public static final double shooterGearRatio = 1; // input / output
+        public static final double beaterBarGearRatio = 1; // input / output
+
+        public static final double shooterMotorMaxRPS = 200d; //rotations per second
+        public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
+
+        public static final double kP = 0.2;
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double kF = 0;
+        //beater bar does not have pid, not important
+        
     }
 }
