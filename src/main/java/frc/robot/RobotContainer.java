@@ -39,13 +39,10 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final Limelight limelight = new Limelight();
-<<<<<<< HEAD
     // public final Shooter shooter = new Shooter();
-=======
     public final Shooter shooter = new Shooter();
     private final Cameras cameras = new Cameras();
     private final ATAT atat = new ATAT();
->>>>>>> main
 
     /* Driver Buttons */
     private final JoystickButton testPath = new JoystickButton(driver, XboxController.Button.kX.value);
@@ -76,9 +73,7 @@ public class RobotContainer {
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povDown = new POVButton(driver, 180);
 
-<<<<<<< HEAD
     // private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
-=======
     // DualShock POVs because I (Mason) don't have an Xbox controller at home
     private final POVButton dualShockPovUp = new POVButton(dualshock, 0);
     private final POVButton dualShockPovDown = new POVButton(dualshock, 180);
@@ -86,7 +81,6 @@ public class RobotContainer {
     private final POVButton dualShockPovRight = new POVButton(dualshock, 90);
 
     private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
->>>>>>> main
 
     
 
@@ -190,7 +184,6 @@ public class RobotContainer {
         new Translation2d(0, 2), 0, true));*/
         bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
 
-<<<<<<< HEAD
         // fireButton.onTrue(new RequestShooterSpeed(0.5, shooter));
         // fireButton.onFalse(new RequestShooterSpeed(0, shooter));
         // beaterBarFButton.onTrue(new RequestBeaterBarSpeed(0.5, shooter));
@@ -198,8 +191,6 @@ public class RobotContainer {
         // beaterBarBButton.onTrue(new RequestBeaterBarSpeed(-0.5, shooter));
         // beaterBarBButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
 
-=======
->>>>>>> main
 
 
 
