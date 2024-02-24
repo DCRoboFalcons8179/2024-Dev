@@ -92,7 +92,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroGyro() {
-        gyro.zeroYaw();
+       gyro.zeroYaw();
     }
 
     /* Used by SwerveControllerCommand in Auto */

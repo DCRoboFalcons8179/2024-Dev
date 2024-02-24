@@ -43,7 +43,8 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton testButton = new JoystickButton(driver, XboxController.Button.kX.value);
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+//     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
     private final JoystickButton approachTag = new JoystickButton(driver, XboxController.Button.kA.value);
@@ -102,7 +103,7 @@ public class RobotContainer {
                 new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
         bButton.onFalse(
                 new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         // testButton.onTrue(new InstantCommand(() ->
         // cameras.cameraCalc(driver.getRawAxis(translationAxis))));
