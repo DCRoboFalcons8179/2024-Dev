@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Swerve;
 import frc.lib.math.Filter;
+import frc.robot.Constants;
 import frc.robot.subsystems.Limelight;
 
 public class ApproachTag extends Command {
@@ -86,6 +87,13 @@ public class ApproachTag extends Command {
     this.OFFSET_RY              = ROTATION_FROM_TAG;
     this.SWING_WIDE             = SWING_WIDE;
 
+  }
+
+  public ApproachTag(Swerve swerve, Limelight limelight, int id, boolean SWING_WIDE) {
+    this(swerve, limelight, 0.8, 20,
+    1, 1,
+    0.15, 6, 10,
+    Constants.Swerve.getTranslationFromID(id), 0, SWING_WIDE);
   }
 
   // Called when the command is initially scheduled.
