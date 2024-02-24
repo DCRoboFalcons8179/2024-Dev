@@ -4,13 +4,17 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.compound.Diff_VelocityVoltage_Velocity;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.Filter;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class Shooter extends SubsystemBase {
@@ -20,6 +24,8 @@ public class Shooter extends SubsystemBase {
   private TalonFX mRightShooter;
   private boolean inShooter = false;
   private DigitalInput limitSwitch = new DigitalInput(10);
+
+  private VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0);
 
 
 
@@ -40,29 +46,20 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("mBeaterBar speed", mBeaterBar.getStatorCurrent().getValueAsDouble());
   }
 
-  private double shooterSetSpeed;
+  private double shooterSetSpeed; // rotations per second
   public void setShooterSpeed(double speed) {
-
-    shooterSetSpeed = Filter.cutoffFilter(speed);
-
+    shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS);
   }
 
   public double getShooterSpeed() {
     return shooterSetSpeed;
   }
 
-  private double beaterBarSetSpeed;
+  private double beaterBarSetSpeed; // [0, 1]
   public void setBeaterBarSpeed(double speed) {
 
-      //speed = speed; //for changing ratios later
+      beaterBarSetSpeed = Filter.cutoffFilter(speed);
 
-      if (speed < -1) {
-        beaterBarSetSpeed = -1;
-      } else if (speed > 1) {
-        beaterBarSetSpeed = 1;
-      } else {
-        beaterBarSetSpeed = speed;
-      }
   } 
 
   public double getBeaterBarSpeed() {
@@ -71,7 +68,12 @@ public class Shooter extends SubsystemBase {
 
   public void updateMotors() {
     mBeaterBar.set(beaterBarSetSpeed);
-    mShooter.set(shooterSetSpeed);
+
+    if (shooterSetSpeed == 0) {
+      mShooter.setControl(new CoastOut());
+    } else {
+      mShooter.setControl(shooterVelocityVoltage.withVelocity(shooterSetSpeed * Constants.ShooterConstants.shooterGearRatio));
+    }
   }
 
   //TODO: make this read the limit switch state
