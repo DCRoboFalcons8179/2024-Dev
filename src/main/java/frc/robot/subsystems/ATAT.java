@@ -76,13 +76,13 @@ public class ATAT extends SubsystemBase {
 
   public void setFrontPostPos(double dist /*meters*/) {
     dist = Filter.cutoffFilter(dist, 9);
-    double rot = dist * Constants.ATATConstants.frontPostGearRatio / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
+    double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI / Constants.ATATConstants.frontPostGearRatio;
     mFrontLinearMotor.setControl(frontPosition.withPosition(rot));
   }
 
   public void setBackPostPos(double dist /*meters*/) {
     dist = Filter.cutoffFilter(dist, 9);
-    double rot = dist * Constants.ATATConstants.backPostGearRatio / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
+    double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI /  Constants.ATATConstants.backPostGearRatio;
     mBackLinearMotor.setControl(backPosition.withPosition(rot));
   }
 
@@ -92,6 +92,7 @@ public class ATAT extends SubsystemBase {
     mAngleMotor.setControl(anglePosition.withPosition(rot));
   }
 
+  //degrees for printing reasons
   public double getAngle() {
     return mAngleMotor.getPosition().getValueAsDouble() * 360;
   }

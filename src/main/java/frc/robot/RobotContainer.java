@@ -1,9 +1,12 @@
 package frc.robot;
 
+import java.io.FileWriter;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -23,7 +26,9 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
-    private final Joystick board = new Joystick(1);
+    private final Joystick dualshock = new Joystick(1);
+    private final Joystick board = new Joystick(2);
+    private final Joystick board_ext = new Joystick(3);
 
     /* Drive Controls */
     private final int testPathIndex = XboxController.Axis.kLeftX.value;
@@ -34,7 +39,13 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final Limelight limelight = new Limelight();
+<<<<<<< HEAD
     // public final Shooter shooter = new Shooter();
+=======
+    public final Shooter shooter = new Shooter();
+    private final Cameras cameras = new Cameras();
+    private final ATAT atat = new ATAT();
+>>>>>>> main
 
     /* Driver Buttons */
     private final JoystickButton testPath = new JoystickButton(driver, XboxController.Button.kX.value);
@@ -43,22 +54,39 @@ public class RobotContainer {
     private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
     private final JoystickButton approachTag = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
-    private final JoystickButton hangButton = new JoystickButton(board, 11);
-    private final JoystickButton fireButton = new JoystickButton(board, 10);
-    private final JoystickButton beaterBarFButton = new JoystickButton(board, 3);
-    private final JoystickButton beaterBarBButton = new JoystickButton(board, 4);
-    private final JoystickButton lowSetPoint = new JoystickButton(board, 5);
-    private final JoystickButton mediumSetPoint = new JoystickButton(board, 0);
-    private final JoystickButton highSetPoint = new JoystickButton(board, 1);
-    private final JoystickButton ampSetPoint = new JoystickButton(board, 2);
-    private final JoystickButton carrySetPoint = new JoystickButton(board, 8);
-    private final JoystickButton pickupSetPoint = new JoystickButton(board, 9);
-    private final JoystickButton liftSetPoint = new JoystickButton(board, 7);
+    private final JoystickButton hangSetPoint = new JoystickButton(board, 11);
+    private final JoystickButton ampSetPoint = new JoystickButton(board, 7);
+    private final JoystickButton pickUpSetPoint = new JoystickButton(board, 9);
+    private final JoystickButton carrySetPoint = new JoystickButton(board, 5);
+    private final JoystickButton farSetPoint = new JoystickButton(board, 4);
+    private final JoystickButton mediumSetPoint = new JoystickButton(board, 3);
+    private final JoystickButton closeSetPoint = new JoystickButton(board, 1);
+    private final JoystickButton beaterBarF = new JoystickButton(board,8);
+    private final JoystickButton beaterBarB = new JoystickButton(board, 6);
+    private final JoystickButton hang = new JoystickButton(board, 10);
+    private final JoystickButton feed = new JoystickButton(board, 2);
+    private final JoystickButton shoot = new JoystickButton(board, 0);
+    private final JoystickButton frontPostManualUp = new JoystickButton(board_ext, 0);  
+    private final JoystickButton frontPostManualDown = new JoystickButton(board_ext, 1);                  
+    private final JoystickButton backPostManualUp = new JoystickButton(board_ext, 2);   
+    private final JoystickButton backPostManualDown = new JoystickButton(board_ext, 3); 
+    private final JoystickButton angleManualUp = new JoystickButton(board_ext, 4);      
+    private final JoystickButton angleManualDown = new JoystickButton(board_ext, 5);    
     private final POVButton povUp = new POVButton(driver, 0);
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povDown = new POVButton(driver, 180);
 
+<<<<<<< HEAD
     // private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
+=======
+    // DualShock POVs because I (Mason) don't have an Xbox controller at home
+    private final POVButton dualShockPovUp = new POVButton(dualshock, 0);
+    private final POVButton dualShockPovDown = new POVButton(dualshock, 180);
+    private final POVButton dualShockPovLeft = new POVButton(dualshock, 270);
+    private final POVButton dualShockPovRight = new POVButton(dualshock, 90);
+
+    private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
+>>>>>>> main
 
     
 
@@ -85,6 +113,7 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
         buttonCommands();
+        // SmartDashboard.putNumber("test2", cameras.cameraController()-10);
     }
 
     /**
@@ -105,6 +134,52 @@ public class RobotContainer {
         // TODO Auto-generated method stub
         povLeft.whileTrue(new TeleopSwerve(s_Swerve, () -> 0, () -> 1, () -> 0));
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
+        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0, false));
+        bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
+        bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+        povUp.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("left")));
+        povDown.onTrue(new InstantCommand(() -> cameras.cameraControllerLeft("right")));
+
+
+        // Non-Set Point Buttons
+        shoot.whileTrue(new RequestShooterSetPoint(shooter, 0));
+        shoot.onFalse(new RequestShooterSetPoint(shooter, 0));
+        beaterBarB.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0));
+        beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+        beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0));
+        beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+        feed.onTrue(new RequestBeaterBarSetSpeed(shooter, 0));
+        feed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+        hang.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        hang.onFalse(new RequestATATPose(atat, 0, 0, 0));
+
+        // Set Point Buttons
+        closeSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        closeSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        mediumSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        mediumSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        farSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        farSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        ampSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        ampSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        carrySetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        carrySetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        pickUpSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        pickUpSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        hangSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
+        hangSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+
+        //Manual Buttons 
+        frontPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() + 5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
+        backPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() + 5, ()-> atat.getDesiredAngle()));
+        angleManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() + 5));
+        frontPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() - 5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
+        backPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() - 5, ()-> atat.getDesiredAngle()));
+        angleManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() - 5));
+
+
+        // dualShockPovLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));
+        // dualShockPovRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));
         approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
         1, 1,
         0.15, 6, 10,
@@ -115,6 +190,7 @@ public class RobotContainer {
         new Translation2d(0, 2), 0, true));*/
         bButton.onTrue(new InstantCommand(() -> s_Swerve.resetModulesToAbsolute()));
 
+<<<<<<< HEAD
         // fireButton.onTrue(new RequestShooterSpeed(0.5, shooter));
         // fireButton.onFalse(new RequestShooterSpeed(0, shooter));
         // beaterBarFButton.onTrue(new RequestBeaterBarSpeed(0.5, shooter));
@@ -122,6 +198,8 @@ public class RobotContainer {
         // beaterBarBButton.onTrue(new RequestBeaterBarSpeed(-0.5, shooter));
         // beaterBarBButton.onFalse(new RequestBeaterBarSpeed(0, shooter));
 
+=======
+>>>>>>> main
 
 
 
