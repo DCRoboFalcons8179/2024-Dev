@@ -48,9 +48,7 @@ public class SwerveModule {
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         
-        
         this.moduleNumber = moduleNumber;
-        this.angleOffset = moduleConstants.angleOffset;
         
         /* Angle Encoder Config - CANcoder. Should only be used once. */
         angleEncoder = new CANcoder(moduleConstants.cancoderID);
@@ -88,6 +86,7 @@ public class SwerveModule {
         //mAngleMotor.getEncoder().setPositionConversionFactor(Constants.Swerve.angleGearRatio);
         //angleOffset.plus(new Rotation2d(mAngleMotor.getEncoder().getPosition() / Constants.Swerve.angleGearRatio * 2 * Math.PI));
         mAngleMotor.getPIDController().setReference(angleOffset.getRotations(), ControlType.kSmartMotion);
+        this.angleOffset = moduleConstants.angleOffset.minus(Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValueAsDouble())).minus(Rotation2d.fromRotations(mAngleMotor.getEncoder().getPosition()));
         mAngleMotor.burnFlash();
 
 
