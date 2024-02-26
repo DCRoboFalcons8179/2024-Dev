@@ -56,14 +56,22 @@ public class Swerve extends SubsystemBase {
         Timer.delay(1.0);
         resetModulesToAbsolute();
 
+        // Timer.delay(1.0);
+        // zeroHeading();
+        // zeroGyro();
+
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
+
+        for(SwerveModule mod : mSwerveMods){
+            mod.printStats();
+        }
+
     }
 
     // Helper variables for drive command
     private double translationX = 0;
     private double translationY = 0;
     private double rotationCommand = 0; 
-
 
     public void drive(Translation2d translation, double rotation, boolean isOpenLoop) {
         
@@ -187,6 +195,10 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putBoolean("Field Centric", fieldCentricBoolean);
 
         SmartDashboard.putNumber("Position", mSwerveMods[0].getPosition().distanceMeters);
+
+        SmartDashboard.putNumber("Mod 0 spark state angle", mSwerveMods[0].getState().angle.getRotations());
+        SmartDashboard.putNumber("Mod 0 spark angle", mSwerveMods[0].getPosition().angle.getRotations());
+
     }
 
 
@@ -194,5 +206,6 @@ public class Swerve extends SubsystemBase {
     public void toggleFieldCentric() {
         
        fieldCentricBoolean = ! fieldCentricBoolean;
+
     }
 }

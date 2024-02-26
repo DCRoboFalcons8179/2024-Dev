@@ -196,6 +196,12 @@ public final class Constants {
         public static final double l_kF = 0;
 
 
+        // setpoints
+        public static final ATATPose carry = new ATATPose(0, 0, 0);
+
+        public static final ATATPose shootClose = new ATATPose(0, 0, 0);
+        public static final ATATPose shootMedium = new ATATPose(0, 0, 0);
+        public static final ATATPose shootFar = new ATATPose(0, 0, 0);
 
     }
 
@@ -216,6 +222,5 @@ public final class Constants {
         public static final double kD = 0;
         public static final double kF = 0;
         //beater bar does not have pid, not important
-        
     }
 }

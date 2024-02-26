@@ -88,7 +88,7 @@ public class ATAT extends SubsystemBase {
 
   public void setAngle(double deg) {
     deg = Filter.cutoffFilter(deg, 120);
-    double rot = Units.degreesToRadians(deg) * Constants.ATATConstants.angleGearRatio / 2 / Math.PI;
+    double rot = Units.degreesToRadians(deg) * Constants.ATATConstants.angleGearRatio/ 2 / Math.PI ;
     mAngleMotor.setControl(anglePosition.withPosition(rot));
   }
 
