@@ -203,6 +203,12 @@ public final class Constants {
         public static final ATATPose shootMedium = new ATATPose(0, 0, 0);
         public static final ATATPose shootFar = new ATATPose(0, 0, 0);
 
+        public static final ATATPose ampSetPoint = new ATATPose(0, 0, 0);
+
+        public static final ATATPose pickUpSetPoint = new ATATPose(0, 0, 0);
+
+        public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
+
     }
 
     public static final class ShooterConstants {

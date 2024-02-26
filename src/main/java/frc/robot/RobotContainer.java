@@ -147,19 +147,12 @@ public class RobotContainer {
 
         // Set Point Buttons
         closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
-        closeSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
         mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
-        mediumSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
         farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
-        farSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
-        ampSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
-        ampSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        ampSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint));
         carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
-        carrySetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
-        pickUpSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
-        pickUpSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
-        hangSetPoint.onTrue(new RequestATATPose(atat, 0, 0, 0));
-        hangSetPoint.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
+        hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
         //Manual Buttons 
         frontPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() + 5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
