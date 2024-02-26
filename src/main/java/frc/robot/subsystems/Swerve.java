@@ -27,30 +27,31 @@ public class Swerve extends SubsystemBase {
     public boolean fieldCentricBoolean = false;
 
     public Swerve() {
-       
 
         try {
             System.out.println("--------------");
-            gyro = new AHRS(SPI.Port.kMXP); 
+            gyro = new AHRS(SPI.Port.kMXP);
 
             System.out.println("NavX plugged in");
             System.out.println("--------------");
 
-
-        } catch (RuntimeException ex ) {
+        } catch (RuntimeException ex) {
             System.out.println("NavX not plugged in");
             System.out.println("--------------");
         }
+        gyro.enableBoardlevelYawReset(true);
         zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
-            new SwerveModule(0, Constants.Swerve.Mod0.constants),
-            new SwerveModule(1, Constants.Swerve.Mod1.constants),
-            new SwerveModule(2, Constants.Swerve.Mod2.constants),
-            new SwerveModule(3, Constants.Swerve.Mod3.constants)
+                new SwerveModule(0, Constants.Swerve.Mod0.constants),
+                new SwerveModule(1, Constants.Swerve.Mod1.constants),
+                new SwerveModule(2, Constants.Swerve.Mod2.constants),
+                new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
-        /* By pausing init for a second before setting module offsets, we avoid a bug with inverting motors.
+        /*
+         * By pausing init for a second before setting module offsets, we avoid a bug
+         * with inverting motors.
          * See https://github.com/Team364/BaseFalconSwerve/issues/8 for more info.
          */
         Timer.delay(1.0);
@@ -71,66 +72,60 @@ public class Swerve extends SubsystemBase {
     // Helper variables for drive command
     private double translationX = 0;
     private double translationY = 0;
-    private double rotationCommand = 0; 
+    private double rotationCommand = 0;
 
     public void drive(Translation2d translation, double rotation, boolean isOpenLoop) {
-        
-        // Gets the values of x y and rotation and assigns them to their repestive variables
+
+        // Gets the values of x y and rotation and assigns them to their repestive
+        // variables
         translationX = translation.getX();
-        
+
         translationY = translation.getY();
 
         rotationCommand = rotation;
 
-        
-        
-        SwerveModuleState[] swerveModuleStates =
-            Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                 fieldCentricBoolean ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                                    translation.getX(), 
-                                    translation.getY(), 
-                                    rotation, 
-                                    getGyroYaw()
-                                )
-                                : new ChassisSpeeds(
-                                    translation.getX(), 
-                                    translation.getY(), 
-                                    rotation)
-                                );
+                        translation.getX(),
+                        translation.getY(),
+                        rotation,
+                        getGyroYaw())
+                        : new ChassisSpeeds(
+                                translation.getX(),
+                                translation.getY(),
+                                rotation));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
-        for(SwerveModule mod : mSwerveMods){
+        for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
-    }    
-
-
-
-    public void zeroGyro(){
-        gyro.zeroYaw();
     }
 
+    public void zeroGyro() {
+       
+       gyro.zeroYaw();
+    }
 
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
-        
-        for(SwerveModule mod : mSwerveMods){
+
+        for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
     }
 
-    public SwerveModuleState[] getModuleStates(){
+    public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
-        for(SwerveModule mod : mSwerveMods){
+        for (SwerveModule mod : mSwerveMods) {
             states[mod.moduleNumber] = mod.getState();
         }
         return states;
     }
 
-    public SwerveModulePosition[] getModulePositions(){
+    public SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
-        for(SwerveModule mod : mSwerveMods){
+        for (SwerveModule mod : mSwerveMods) {
             positions[mod.moduleNumber] = mod.getPosition();
         }
         return positions;
@@ -144,49 +139,50 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
     }
 
-    public Rotation2d getHeading(){
+    public Rotation2d getHeading() {
         return getPose().getRotation();
     }
 
-    public void setHeading(Rotation2d heading){
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d(getPose().getTranslation(), heading));
+    public void setHeading(Rotation2d heading) {
+        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
+                new Pose2d(getPose().getTranslation(), heading));
     }
 
-    public void zeroHeading(){
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d(getPose().getTranslation(), new Rotation2d()));
+    public void zeroHeading() {
+        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
+                new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
 
     public Rotation2d getGyroYaw() {
         return Rotation2d.fromDegrees(-gyro.getYaw());
     }
 
-    public void resetModulesToAbsolute(){
-        for(SwerveModule mod : mSwerveMods){
+    public void resetModulesToAbsolute() {
+        for (SwerveModule mod : mSwerveMods) {
             mod.resetToAbsolute();
         }
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
 
-        for(SwerveModule mod : mSwerveMods){
+        for (SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
         }
 
-        
         SmartDashboard.putNumber("Commanded Velocity Y", translationY);
 
         SmartDashboard.putNumber("Commanded Velocity X", translationX);
 
         SmartDashboard.putNumber("Commanded Velocity", (new Translation2d(translationX, translationY)).getNorm());
 
-        
         SmartDashboard.putNumber("Commanded Rotation", rotationCommand);
 
-        SmartDashboard.putNumber("Velocity X Error", Math.abs(translationX) - Math.abs(mSwerveMods[0].getState().speedMetersPerSecond));
+        SmartDashboard.putNumber("Velocity X Error",
+                Math.abs(translationX) - Math.abs(mSwerveMods[0].getState().speedMetersPerSecond));
 
         SmartDashboard.putNumber("Gyro Value", gyro.getAngle());
 
@@ -201,11 +197,8 @@ public class Swerve extends SubsystemBase {
 
     }
 
-
-
     public void toggleFieldCentric() {
-        
-       fieldCentricBoolean = ! fieldCentricBoolean;
 
+        fieldCentricBoolean = !fieldCentricBoolean;
     }
 }
