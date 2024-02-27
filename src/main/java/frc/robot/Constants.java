@@ -208,7 +208,7 @@ public final class Constants {
         public static final ATATPose pickUpSetPoint = new ATATPose(0, 0, 0);
 
         public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
-
+        public static final ATATPose hangPull = new ATATPose(0, 0, 0);
     }
 
     public static final class ShooterConstants {
@@ -227,6 +227,11 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
         public static final double kF = 0;
+
+        public static final double shooterSpeed = 0;
+        public static final double beaterBarFSpeed = 0;
+        public static final double beaterBarBSpeed = 0;
+        public static final double feedSpeed = 0;
         //beater bar does not have pid, not important
     }
 }

@@ -119,20 +119,20 @@ public class RobotContainer {
         // TODO Auto-generated method stub
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
         approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0, false));
-        bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
-        bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+        //bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
+        //bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
 
         // Non-Set Point Buttons
-        shoot.whileTrue(new RequestShooterSetPoint(shooter, 0));
+        shoot.whileTrue(new RequestShooterSetPoint(shooter, Constants.ShooterConstants.shooterSpeed));
         shoot.onFalse(new RequestShooterSetPoint(shooter, 0));
-        beaterBarB.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0));
+        beaterBarB.whileTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
         beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
-        beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0));
+        beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed));
         beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
-        feed.onTrue(new RequestBeaterBarSetSpeed(shooter, 0));
+        feed.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.feedSpeed));
         feed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
-        hang.onTrue(new RequestATATPose(atat, 0, 0, 0));
-        hang.onFalse(new RequestATATPose(atat, 0, 0, 0));
+        hang.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangPull));
+        hang.onFalse(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
         // Set Point Buttons
         closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
@@ -144,12 +144,12 @@ public class RobotContainer {
         hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
         //Manual Buttons 
-        frontPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() + 5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
-        backPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() + 5, ()-> atat.getDesiredAngle()));
-        angleManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() + 5));
-        frontPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() - 5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
-        backPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() - 5, ()-> atat.getDesiredAngle()));
-        angleManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() - 5));
+        frontPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() + .5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
+        backPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() + .5, ()-> atat.getDesiredAngle()));
+        angleManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() + 2));
+        frontPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() - .5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
+        backPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() - .5, ()-> atat.getDesiredAngle()));
+        angleManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() - 2));
 
 
         // dualShockPovLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));
