@@ -33,6 +33,8 @@ public class SwerveModule {
     
     private CANcoder angleEncoder;
     private final RelativeEncoder m_turningEncoder;
+    private double offsetFromStartup;
+    private double offsetFromDesired;
 
     // private final SparkPIDController m_turningPIDController;
 
@@ -85,8 +87,13 @@ public class SwerveModule {
         mAngleMotor.getEncoder().setPositionConversionFactor(1);
         //mAngleMotor.getEncoder().setPositionConversionFactor(Constants.Swerve.angleGearRatio);
         //angleOffset.plus(new Rotation2d(mAngleMotor.getEncoder().getPosition() / Constants.Swerve.angleGearRatio * 2 * Math.PI));
-        mAngleMotor.getPIDController().setReference(angleOffset.getRotations(), ControlType.kSmartMotion);
-        this.angleOffset = moduleConstants.angleOffset.minus(Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValueAsDouble())).minus(Rotation2d.fromRotations(mAngleMotor.getEncoder().getPosition()));
+        //this.angleOffset = moduleConstants.angleOffset.minus(Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValueAsDouble()));
+        //this.angleOffset = moduleConstants.angleOffset;
+        this.offsetFromStartup = angleEncoder.getPositionSinceBoot().getValueAsDouble();
+        this.offsetFromDesired = angleEncoder.getPosition().getValueAsDouble() * 360 - moduleConstants.desiredCanCoderPos;
+        mAngleMotor.getEncoder().setPosition(Rotation2d.fromDegrees(offsetFromDesired).getRotations() * -Constants.Swerve.angleGearRatio);
+        //this.angleOffset = moduleConstants.angleOffset.times(-1);
+        this.angleOffset = Rotation2d.fromDegrees(0);
         mAngleMotor.burnFlash();
 
 
@@ -104,7 +111,7 @@ public class SwerveModule {
         //mAngleMotor.getPIDController().setReference(moduleNumber, null);
 
 
-        mAngleMotor.getPIDController().setReference((desiredState.angle.getRotations() - angleOffset.getRotations()) * Constants.Swerve.angleGearRatio, CANSparkMax.ControlType.kPosition);
+        mAngleMotor.getPIDController().setReference((desiredState.angle.getRotations()) * Constants.Swerve.angleGearRatio, CANSparkMax.ControlType.kPosition);
 
         setSpeed(desiredState, isOpenLoop);
     }
@@ -144,7 +151,8 @@ public class SwerveModule {
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
             Conversions.rotationsToMeters(mDriveMotor.getPosition().getValue(), Constants.Swerve.wheelCircumference), 
-            new Rotation2d (((mAngleMotor.getEncoder().getPosition()) / Constants.Swerve.angleGearRatio + angleOffset.getRotations())* 2 * Math.PI)
+            //new Rotation2d (((mAngleMotor.getEncoder().getPosition()) / Constants.Swerve.angleGearRatio + angleOffset.getRotations())* 2 * Math.PI)
+            new Rotation2d (((mAngleMotor.getEncoder().getPosition()) / Constants.Swerve.angleGearRatio) * 2 * Math.PI)
 
             // Rotation2d.fromRotations(mAngleMotor.getAbsoluteEncoder().getPosition())
         );
