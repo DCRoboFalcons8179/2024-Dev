@@ -68,8 +68,13 @@ public class RobotContainer {
     private final JoystickButton frontPostManualDown = new JoystickButton(board_ext, 1);                  
     private final JoystickButton backPostManualUp = new JoystickButton(board_ext, 2);   
     private final JoystickButton backPostManualDown = new JoystickButton(board_ext, 3); 
-    private final JoystickButton angleManualUp = new JoystickButton(board_ext, 4);      
-    private final JoystickButton angleManualDown = new JoystickButton(board_ext, 5);    
+    //private final JoystickButton angleManualUp = new JoystickButton(board_ext, 4);      
+    //private final JoystickButton angleManualDown = new JoystickButton(board_ext, 5);    
+
+    private final JoystickButton angleManualUp = new JoystickButton(driver, 1);    
+    private final JoystickButton angleManualDown = new JoystickButton(driver, 2);    
+  
+
     private final POVButton povUp = new POVButton(driver, 0);
     private final POVButton povDown = new POVButton(driver, 180);
     private final POVButton povLeft = new POVButton(driver, 270);

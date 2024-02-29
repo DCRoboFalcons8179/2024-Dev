@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.revrobotics.CANSparkMax;
+
 /** Add your docs here. */
 public final class RevConfigs {
 
@@ -11,4 +14,11 @@ public final class RevConfigs {
     public final double angle_kI = Constants.Swerve.angleKI;
     public final double angle_kD = Constants.Swerve.angleKD;
 
+
+    public static final void configureSparksPIDFFromTalonPIDV(CANSparkMax motor, TalonFXConfiguration talonConfig) {
+        motor.getPIDController().setP(talonConfig.Slot0.kP);
+        motor.getPIDController().setI(talonConfig.Slot0.kI);
+        motor.getPIDController().setD(talonConfig.Slot0.kD);
+        motor.getPIDController().setFF(talonConfig.Slot0.kV);
+    }
 }

@@ -13,16 +13,26 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.ControlType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkRelativeEncoder.Type;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.Filter;
+import frc.robot.CTREConfigs;
 import frc.robot.Constants;
+import frc.robot.RevConfigs;
 import frc.robot.Robot;
 
 public class ATAT extends SubsystemBase {
   /** Creates a new ATAT. */
-  private TalonFX mAngleMotor = new TalonFX(59);
+  private CANSparkMax mAngleMotor = new CANSparkMax(Constants.ATATConstants.leftAngleMotorID, MotorType.kBrushless);
+  private CANSparkMax mAngleMotorLeft = new CANSparkMax(Constants.ATATConstants.rightAngleMotorID, MotorType.kBrushed);
+  
   private TalonFX mFrontLinearMotor = new TalonFX(58);
   private TalonFX mBackLinearMotor = new TalonFX(57);
 
@@ -33,8 +43,15 @@ public class ATAT extends SubsystemBase {
   
   public ATAT() {
 
-    mAngleMotor.getConfigurator().apply(Robot.ctreConfigs.ATAT_postFXConfiguration);
-    mAngleMotor.setNeutralMode(NeutralModeValue.Brake);
+    RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotor, Robot.ctreConfigs.ATAT_angleFXConfiguration);
+    RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotorLeft, Robot.ctreConfigs.ATAT_angleFXConfiguration);
+
+    mAngleMotor.setIdleMode(IdleMode.kBrake);
+    mAngleMotorLeft.setIdleMode(IdleMode.kBrake);
+    mAngleMotor.getEncoder(Type.kHallSensor, 42);
+    mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
+    mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
+    mAngleMotorLeft.follow(mAngleMotor);
 
     mFrontLinearMotor.getConfigurator().apply(Robot.ctreConfigs.ATAT_postFXConfiguration);
     mFrontLinearMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -88,13 +105,13 @@ public class ATAT extends SubsystemBase {
 
   public void setAngle(double deg) {
     deg = Filter.cutoffFilter(deg, 120);
-    double rot = Units.degreesToRadians(deg) * Constants.ATATConstants.angleGearRatio/ 2 / Math.PI ;
-    mAngleMotor.setControl(anglePosition.withPosition(rot));
+    double rot = Units.degreesToRadians(deg) * Constants.ATATConstants.angleGearRatio / 2 / Math.PI ;
+    mAngleMotor.getPIDController().setReference(rot, ControlType.kPosition);
   }
 
   //degrees for printing reasons
   public double getAngle() {
-    return mAngleMotor.getPosition().getValueAsDouble() * 360;
+    return mAngleMotor.getEncoder().getPosition() * 360 / Constants.ATATConstants.angleGearRatio;
   }
 
   public double getFrontPostPos() {

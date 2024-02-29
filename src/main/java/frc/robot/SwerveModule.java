@@ -158,6 +158,10 @@ public class SwerveModule {
         );
     }
 
+    public double getAbsolueAngleEncoderPos() {
+        return mAngleMotor.getAbsoluteEncoder().getPosition();
+    }
+
     public void printStats() {
 
         System.out.println("---------------------");
