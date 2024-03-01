@@ -21,6 +21,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkRelativeEncoder.Type;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.Filter;
 import frc.robot.CTREConfigs;
@@ -31,7 +32,7 @@ import frc.robot.Robot;
 public class ATAT extends SubsystemBase {
   /** Creates a new ATAT. */
   private CANSparkMax mAngleMotor = new CANSparkMax(Constants.ATATConstants.leftAngleMotorID, MotorType.kBrushless);
-  private CANSparkMax mAngleMotorLeft = new CANSparkMax(Constants.ATATConstants.rightAngleMotorID, MotorType.kBrushed);
+  private CANSparkMax mAngleMotorRight = new CANSparkMax(Constants.ATATConstants.rightAngleMotorID, MotorType.kBrushed);
   
   private TalonFX mFrontLinearMotor = new TalonFX(58);
   private TalonFX mBackLinearMotor = new TalonFX(57);
@@ -44,14 +45,19 @@ public class ATAT extends SubsystemBase {
   public ATAT() {
 
     RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotor, Robot.ctreConfigs.ATAT_angleFXConfiguration);
-    RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotorLeft, Robot.ctreConfigs.ATAT_angleFXConfiguration);
+    RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotorRight, Robot.ctreConfigs.ATAT_angleFXConfiguration);
 
+    
     mAngleMotor.setIdleMode(IdleMode.kBrake);
-    mAngleMotorLeft.setIdleMode(IdleMode.kBrake);
+    mAngleMotorRight.setIdleMode(IdleMode.kBrake);
     mAngleMotor.getEncoder(Type.kHallSensor, 42);
+    mAngleMotor.setInverted(true);
     mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
     mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
-    mAngleMotorLeft.follow(mAngleMotor);
+    mAngleMotorRight.follow(mAngleMotor);
+    mAngleMotor.getEncoder().setPosition(0);
+    mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
+
 
     mFrontLinearMotor.getConfigurator().apply(Robot.ctreConfigs.ATAT_postFXConfiguration);
     mFrontLinearMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -64,6 +70,9 @@ public class ATAT extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("desiredAngle", getDesiredAngle());
+    SmartDashboard.putNumber("actual angle encoder value", getAngle());
+    SmartDashboard.putNumber("motor requested speed", mAngleMotor.get());
   }
   private double desiredFrontPostPos;
   public void setDesiredFrontPostPos(double dist) {
@@ -85,7 +94,7 @@ public class ATAT extends SubsystemBase {
 
   private double desiredAngle;
   public void setDesiredAngle(double deg) {
-    desiredAngle = deg;
+    desiredAngle = Filter.cutoffFilter(deg, 120);
   }
   public double getDesiredAngle() {
     return desiredAngle;

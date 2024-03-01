@@ -9,12 +9,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,7 +26,7 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
 
-    public boolean fieldCentricBoolean = false;
+    public boolean fieldCentricBoolean = true;
 
     public Swerve() {
 
@@ -67,6 +69,14 @@ public class Swerve extends SubsystemBase {
             mod.printStats();
         }
 
+        AutoBuilder.configureHolonomic(this::getPose, this::setPose, this::getChassisSpeeds, this::setModuleStates, Constants.Swerve.swervePathFollowerConfig, () -> {
+            var alliance = DriverStation.getAlliance();
+            if (alliance.isPresent()) {
+                return alliance.get() == DriverStation.Alliance.Red;
+            }
+            return false;
+        }, this);
+
     }
 
     // Helper variables for drive command
@@ -89,7 +99,7 @@ public class Swerve extends SubsystemBase {
                         translation.getX(),
                         translation.getY(),
                         rotation,
-                        getGyroYaw())
+                        getGyroYaw().times(-1))
                         : new ChassisSpeeds(
                                 translation.getX(),
                                 translation.getY(),
@@ -101,9 +111,19 @@ public class Swerve extends SubsystemBase {
         }
     }
 
+    public ChassisSpeeds getChassisSpeeds() {
+        return new ChassisSpeeds(gyro.getVelocityY(), gyro.getVelocityX(), Rotation2d.fromDegrees(gyro.getRawGyroZ()).getRadians());
+    }
+
     public void zeroGyro() {
        
        gyro.zeroYaw();
+
+    }
+
+    public void setModuleStates(ChassisSpeeds robotChassisSpeeds) {
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(robotChassisSpeeds);
+        setModuleStates(swerveModuleStates);
     }
 
     /* Used by SwerveControllerCommand in Auto */

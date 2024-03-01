@@ -2,7 +2,18 @@ package frc.robot;
 
 import java.io.FileWriter;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -46,33 +57,30 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton testButton = new JoystickButton(driver, XboxController.Button.kX.value);
-//     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    //private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
-    private final JoystickButton approachTag = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
-    private final JoystickButton hangSetPoint = new JoystickButton(board, 1);
-    private final JoystickButton ampSetPoint = new JoystickButton(board, 4);
-    private final JoystickButton pickUpSetPoint = new JoystickButton(board, 2);
-    private final JoystickButton carrySetPoint = new JoystickButton(board, 5);
-    private final JoystickButton farSetPoint = new JoystickButton(board, 9);
-    private final JoystickButton mediumSetPoint = new JoystickButton(board, 8);
-    private final JoystickButton closeSetPoint = new JoystickButton(board, 7);
-    private final JoystickButton beaterBarF = new JoystickButton(board,3);
-    private final JoystickButton beaterBarB = new JoystickButton(board, 6);
-    private final JoystickButton hang = new JoystickButton(board, 0);
-    private final JoystickButton feed = new JoystickButton(board, 11);
-    private final JoystickButton shoot = new JoystickButton(board, 10);
-    private final JoystickButton frontPostManualUp = new JoystickButton(board_ext, 11);  
-    private final JoystickButton frontPostManualDown = new JoystickButton(board_ext, 10);                  
-    private final JoystickButton backPostManualUp = new JoystickButton(board_ext, 9);   
-    private final JoystickButton backPostManualDown = new JoystickButton(board_ext, 8); 
-    //private final JoystickButton angleManualUp = new JoystickButton(board_ext, 7);      
-    //private final JoystickButton angleManualDown = new JoystickButton(board_ext, 6);    
-
-    private final JoystickButton angleManualUp = new JoystickButton(driver, 1);    
-    private final JoystickButton angleManualDown = new JoystickButton(driver, 2);    
+    //private final JoystickButton approachTag = new JoystickButton(driver, XboxController.Button.kA.value);
+    //private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton hangSetPoint = new JoystickButton(board, 2);
+    private final JoystickButton ampSetPoint = new JoystickButton(board, 5);
+    private final JoystickButton pickUpSetPoint = new JoystickButton(board, 3);
+    private final JoystickButton carrySetPoint = new JoystickButton(board, 6);
+    private final JoystickButton farSetPoint = new JoystickButton(board, 10);
+    private final JoystickButton mediumSetPoint = new JoystickButton(board, 9);
+    private final JoystickButton closeSetPoint = new JoystickButton(board, 8);
+    private final JoystickButton beaterBarF = new JoystickButton(board,4);
+    private final JoystickButton beaterBarB = new JoystickButton(board, 7);
+    private final JoystickButton hang = new JoystickButton(board, 1);
+    private final JoystickButton feed = new JoystickButton(board, 12);
+    private final JoystickButton shoot = new JoystickButton(board, 11);
+    private final JoystickButton frontPostManualUp = new JoystickButton(board_ext, 12);  
+    private final JoystickButton frontPostManualDown = new JoystickButton(board_ext, 11);                  
+    private final JoystickButton backPostManualUp = new JoystickButton(board_ext, 10);   
+    private final JoystickButton backPostManualDown = new JoystickButton(board_ext, 9); 
+    private final JoystickButton angleManualUp = new JoystickButton(board_ext, 8);      
+    private final JoystickButton angleManualDown = new JoystickButton(board_ext, 7);    
   
 
     private final POVButton povUp = new POVButton(driver, 0);
@@ -94,9 +102,11 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
-                        () -> -driver.getRawAxis(translationAxis),
+                        () -> driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> driver.getRawAxis(rotationAxis)));
+
+        atat.setDefaultCommand(new SetATATStates(atat));
 
         cameras.setDefaultCommand(new CameraPublisher(cameras, s_Swerve, () -> -driver.getRawAxis(translationAxis),
                 () -> driver.getRawAxis(strafeAxis)));
@@ -123,9 +133,10 @@ public class RobotContainer {
     private void buttonCommands() {
         // TODO Auto-generated method stub
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
-        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0, false));
+        //approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0, false));
         //bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
         //bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         // Non-Set Point Buttons
         shoot.whileTrue(new RequestShooterSetPoint(shooter, Constants.ShooterConstants.shooterSpeed));
@@ -159,18 +170,14 @@ public class RobotContainer {
 
         // dualShockPovLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));
         // dualShockPovRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));
-        approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
+        /*approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
         1, 1,
         0.15, 6, 10,
         new Translation2d(0, 2), 0, false));
-        bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
+        //bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
         1, 1, 
         0.15, 6, 10, 
-        new Translation2d(0, 2), 0, true));
-
-
-
-
+        new Translation2d(0, 2), 0, true));*/
         /*
          * bButton.onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0.5)));
          * bButton.onFalse(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));
@@ -190,6 +197,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
+        // return new exampleAuto(s_Swerve);
+        return AutoBuilder.followPath(PathPlannerPath.fromPathFile("spin"));
     }
+    
 }

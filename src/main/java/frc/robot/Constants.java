@@ -3,6 +3,9 @@ package frc.robot;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -66,7 +69,7 @@ public final class Constants {
 
         /* Angle Motor PID Values */
         public static final double angleKP = .18;
-        public static final double angleKI = 0.003;
+        public static final double angleKI = 0.001;
         public static final double angleKD = 0;
 
         // /* Drive Motor PID Values */
@@ -88,9 +91,9 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 1.75;//1 //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 2.2;//1 //TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 1.75; //TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 4; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -145,6 +148,8 @@ public final class Constants {
                 return getTranslationFromID(7);
             }
         }
+
+        public static HolonomicPathFollowerConfig swervePathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(driveKP, driveKI, driveKD), new PIDConstants(angleKP, angleKI, angleKD), maxSpeed, new Translation2d(wheelBase / 2, trackWidth / 2).getNorm(), new ReplanningConfig(true, false));
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
@@ -187,10 +192,10 @@ public final class Constants {
         public static final double backPostGearRatio = 90;
         public static final double angleGearRatio = 185d/3;
 
-        public static final double a_kP = 0;
-        public static final double a_kI = 0;
-        public static final double a_kD = 0;
-        public static final double a_kF = 0;
+        public static final double a_kP = 0.08; //TODO: configure after weight is added onto ATAT
+        public static final double a_kI = 0.0000;
+        public static final double a_kD = 0.006;
+        public static final double a_kF = 0.00003;
 
         public static final double l_kP = 0;
         public static final double l_kI = 0;
@@ -201,8 +206,8 @@ public final class Constants {
         // setpoints
         public static final ATATPose carry = new ATATPose(0, 0, 0);
 
-        public static final ATATPose shootClose = new ATATPose(0, 0, 0);
-        public static final ATATPose shootMedium = new ATATPose(0, 0, 0);
+        public static final ATATPose shootClose = new ATATPose(0, 0, 28);
+        public static final ATATPose shootMedium = new ATATPose(0, 0, 80);
         public static final ATATPose shootFar = new ATATPose(0, 0, 0);
 
         public static final ATATPose ampSetPoint = new ATATPose(0, 0, 0);
