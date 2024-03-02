@@ -149,7 +149,11 @@ public final class Constants {
             }
         }
 
-        public static HolonomicPathFollowerConfig swervePathFollowerConfig = new HolonomicPathFollowerConfig(new PIDConstants(driveKP, driveKI, driveKD), new PIDConstants(angleKP, angleKI, angleKD), maxSpeed, new Translation2d(wheelBase / 2, trackWidth / 2).getNorm(), new ReplanningConfig(true, false));
+        public static HolonomicPathFollowerConfig swervePathFollowerConfig = 
+            new HolonomicPathFollowerConfig(new PIDConstants(driveKP, driveKI, driveKD), 
+            new PIDConstants(angleKP, angleKI, angleKD), 
+            maxSpeed, new Translation2d(wheelBase / 2, trackWidth / 2).getNorm(), 
+            new ReplanningConfig(true, false));
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
@@ -170,21 +174,17 @@ public final class Constants {
 
     public static final class ATATConstants {
         //linear motor maximums are estimates, please measure!
-        public static final double backPostMaxLength = Units.inchesToMeters(23.6757d);
-        public static final double backPostMinLength = Units.inchesToMeters(15.6757d);
-
-        public static final double frontPostMaxLength = Units.inchesToMeters(30d);
-        public static final double frontPostMinLength = Units.inchesToMeters(21d);
 
         public static final int rightAngleMotorID = 7;
         public static final int leftAngleMotorID = 12;
 
-        public static final double frontPostRange = frontPostMaxLength - frontPostMinLength;
-        public static final double backPostRange = backPostMaxLength - backPostMinLength;
+        public static final int frontPostSRXID = 6;
+        public static final int backPostSRXID  = 8675309; //TODO: fix this
 
-        public static final double distanceBetweenPostTops = Units.inchesToMeters(9.3942d);
+        public static final int frontPostMaxExtension = 14;
+        public static final int backPostMaxExtension = 13; //TODO: fix this
 
-        public static final double distanceBetweenPostParts = Units.inchesToMeters(1);
+        public static final double distanceBetweenPostParts = (1.25);
 
         public static final double maxDTheta = Units.degreesToRadians(120);
 
@@ -197,17 +197,18 @@ public final class Constants {
         public static final double a_kD = 0.006;
         public static final double a_kF = 0.00003;
 
-        public static final double l_kP = 0;
-        public static final double l_kI = 0;
-        public static final double l_kD = 0;
-        public static final double l_kF = 0;
+        public static final double l_kP = 0.12;
+        public static final double l_kI = 0.0;
+        public static final double l_kD = 0.0;
+        public static final double l_kF = 0.0;
 
+        public static final int ThroughBoreTickPerRot = 8192;
 
         // setpoints
         public static final ATATPose carry = new ATATPose(0, 0, 0);
 
-        public static final ATATPose shootClose = new ATATPose(0, 0, 28);
-        public static final ATATPose shootMedium = new ATATPose(0, 0, 80);
+        public static final ATATPose shootClose = new ATATPose(4, 4, 0);
+        public static final ATATPose shootMedium = new ATATPose(8, 8, 0);
         public static final ATATPose shootFar = new ATATPose(0, 0, 0);
 
         public static final ATATPose ampSetPoint = new ATATPose(0, 0, 0);

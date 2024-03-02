@@ -69,13 +69,20 @@ public class Swerve extends SubsystemBase {
             mod.printStats();
         }
 
-        AutoBuilder.configureHolonomic(this::getPose, this::setPose, this::getChassisSpeeds, this::setModuleStates, Constants.Swerve.swervePathFollowerConfig, () -> {
+        AutoBuilder.configureHolonomic(
+            this::getPose,
+            this::setPose,
+            this::getChassisSpeeds,
+            this::setModuleStates,
+            Constants.Swerve.swervePathFollowerConfig, 
+            () -> {
             var alliance = DriverStation.getAlliance();
             if (alliance.isPresent()) {
                 return alliance.get() == DriverStation.Alliance.Red;
             }
             return false;
-        }, this);
+        }, 
+        this);
 
     }
 

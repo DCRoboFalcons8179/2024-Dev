@@ -160,11 +160,11 @@ public class RobotContainer {
         hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
         //Manual Buttons 
-        frontPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() + .5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
-        backPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() + .5, ()-> atat.getDesiredAngle()));
+        frontPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() + .25, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
+        backPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() + .25, ()-> atat.getDesiredAngle()));
         angleManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() + 2));
-        frontPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() - .5, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
-        backPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() - .5, ()-> atat.getDesiredAngle()));
+        frontPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() - .25, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
+        backPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() - .25, ()-> atat.getDesiredAngle()));
         angleManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() - 2));
 
 
@@ -198,7 +198,8 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         // return new exampleAuto(s_Swerve);
-        return AutoBuilder.followPath(PathPlannerPath.fromPathFile("spin"));
+        //return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
+        return AutoBuilder.buildAuto("New Auto");
     }
     
 }

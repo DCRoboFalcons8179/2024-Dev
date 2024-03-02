@@ -7,25 +7,25 @@ package frc.robot;
 /** Add your docs here. */
 public class ATATPose {
 
-    public double distF;
-    public double distB;
-    public double angle;
+    public double distDriver;
+    public double distFollower;
+    public double atatAngle;
 
-    public ATATPose(double distF, double distB, double angle) {
-        this.distF = distF;
-        this.distB = distB;
-        this.angle = angle;
+    public ATATPose(double distDriver, double distFollower, double atatAngle) {
+        this.distDriver = distDriver;
+        this.distFollower = distFollower;
+        this.atatAngle = atatAngle;
     }
 
     public double getDistF() {
-        return distF;
+        return distDriver;
     }
 
     public double getDistB() {
-        return distB;
+        return distFollower;
     }
 
     public double getAngle() {
-        return angle;
+        return atatAngle;
     }
 }
