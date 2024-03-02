@@ -35,6 +35,7 @@ public class SwerveModule {
     private final RelativeEncoder m_turningEncoder;
     private double offsetFromStartup;
     private double offsetFromDesired;
+    private SwerveModuleConstants moduleConstants;
 
     // private final SparkPIDController m_turningPIDController;
 
@@ -51,6 +52,7 @@ public class SwerveModule {
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         
         this.moduleNumber = moduleNumber;
+        this.moduleConstants = moduleConstants;
         
         /* Angle Encoder Config - CANcoder. Should only be used once. */
         angleEncoder = new CANcoder(moduleConstants.cancoderID);
@@ -142,7 +144,7 @@ public class SwerveModule {
     public SwerveModuleState getState(){
         return new SwerveModuleState(
             Conversions.RPSToMPS(mDriveMotor.getVelocity().getValue(), Constants.Swerve.wheelCircumference), 
-            getCANcoder()
+            getCANcoder().minus(Rotation2d.fromDegrees(moduleConstants.desiredCanCoderPos))
             //            Rotation2d.fromRotations(mAngleMotor.getAbsoluteEncoder().getPosition())
 
             );

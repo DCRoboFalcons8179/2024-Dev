@@ -119,7 +119,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public ChassisSpeeds getChassisSpeeds() {
-        return new ChassisSpeeds(gyro.getVelocityY(), gyro.getVelocityX(), Rotation2d.fromDegrees(gyro.getRawGyroZ()).getRadians());
+        return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
     }
 
     public void zeroGyro() {

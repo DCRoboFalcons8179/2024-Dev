@@ -22,6 +22,6 @@ public class RequestBeaterBarSetSpeed extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  shooter.setBeaterBarSpeed(speed);
+    shooter.setBeaterBarSpeed(speed);
   }
 }

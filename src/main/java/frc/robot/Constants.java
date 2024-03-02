@@ -152,8 +152,9 @@ public final class Constants {
         public static HolonomicPathFollowerConfig swervePathFollowerConfig = 
             new HolonomicPathFollowerConfig(new PIDConstants(driveKP, driveKI, driveKD), 
             new PIDConstants(angleKP, angleKI, angleKD), 
-            maxSpeed, new Translation2d(wheelBase / 2, trackWidth / 2).getNorm(), 
-            new ReplanningConfig(true, false));
+            maxSpeed, 
+            new Translation2d(wheelBase / 2, trackWidth / 2).getNorm(), 
+            new ReplanningConfig(true, true));
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
@@ -201,6 +202,8 @@ public final class Constants {
         public static final double l_kI = 0.0;
         public static final double l_kD = 0.0;
         public static final double l_kF = 0.0;
+        public static final double minAngle = -80.67968;
+        public static final double maxAngle = 10d;
 
         public static final int ThroughBoreTickPerRot = 8192;
 
@@ -221,20 +224,20 @@ public final class Constants {
 
     public static final class ShooterConstants {
 
-        public static final int shooterLeadMotorID = 61;
-        public static final int shooterFollowMotorID = 60;
-        public static final int beaterBarMotorID = 62;
+        public static final int shooterLeadMotorID = 35;
+        public static final int shooterFollowMotorID = 34;
+        public static final int beaterBarMotorID = 36;
 
         public static final double shooterGearRatio = 1; // input / output
         public static final double beaterBarGearRatio = 1; // input / output
 
-        public static final double shooterMotorMaxRPS = 200d; //rotations per second
+        public static final double shooterMotorMaxRPS = 100d; //rotations per second
         public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
 
-        public static final double kP = 0.2;
-        public static final double kI = 0;
+        public static final double kP = 0.035;
+        public static final double kI = 0.0003;
         public static final double kD = 0;
-        public static final double kF = 0;
+        public static final double kF = 0.015;
 
         public static final double shooterSpeed = 0;
         public static final double beaterBarFSpeed = 0;

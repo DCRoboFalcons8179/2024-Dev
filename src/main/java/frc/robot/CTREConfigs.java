@@ -1,10 +1,13 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.DifferentialSensorSourceValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
 public final class CTREConfigs {
     public TalonFXConfiguration swerveAngleFXConfig = new TalonFXConfiguration();
@@ -90,5 +93,12 @@ public final class CTREConfigs {
 
 
 
+    }
+
+    public static void configureSRXPIDFfromTalonFXPIDV(TalonSRX srx, TalonFXConfiguration config) {
+        srx.config_kP(0, config.Slot0.kP);
+        srx.config_kI(0, config.Slot0.kI);
+        srx.config_kD(0, config.Slot0.kD);
+        srx.config_kF(0, config.Slot0.kV);
     }
 }

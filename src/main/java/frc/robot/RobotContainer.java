@@ -81,6 +81,8 @@ public class RobotContainer {
     private final JoystickButton backPostManualDown = new JoystickButton(board_ext, 9); 
     private final JoystickButton angleManualUp = new JoystickButton(board_ext, 8);      
     private final JoystickButton angleManualDown = new JoystickButton(board_ext, 7);    
+    private final Trigger leftTriggerPressed = new Trigger(() -> driver.getRawAxis(2) > 0.1);
+    private final Trigger rightTriggerPressed = new Trigger(() -> driver.getRawAxis(3) > 0.1);
   
 
     private final POVButton povUp = new POVButton(driver, 0);
@@ -107,6 +109,8 @@ public class RobotContainer {
                         () -> driver.getRawAxis(rotationAxis)));
 
         atat.setDefaultCommand(new SetATATStates(atat));
+
+        shooter.setDefaultCommand(new SetShooterStates(shooter));
 
         cameras.setDefaultCommand(new CameraPublisher(cameras, s_Swerve, () -> -driver.getRawAxis(translationAxis),
                 () -> driver.getRawAxis(strafeAxis)));
@@ -167,6 +171,12 @@ public class RobotContainer {
         backPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() - .25, ()-> atat.getDesiredAngle()));
         angleManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() - 2));
 
+        //leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, () -> driver.getRawAxis(2) * Constants.ShooterConstants.shooterWheelMaxRPS));
+        leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, 100));
+        leftTriggerPressed.onFalse(new RequestShooterSetPoint(shooter, 0));
+
+        rightTriggerPressed.onTrue(new RequestBeaterBarSetSpeed(shooter, 1));
+        rightTriggerPressed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
 
         // dualShockPovLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));
         // dualShockPovRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));

@@ -4,6 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -14,52 +21,62 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.Filter;
+import frc.robot.CTREConfigs;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class Shooter extends SubsystemBase {
 
-  private TalonFX mBeaterBar;
-  private TalonFX mShooter;
-  private TalonFX mRightShooter;
   private boolean inShooter = false;
   private DigitalInput limitSwitch = new DigitalInput(10);
-
-  private VelocityVoltage shooterVelocityVoltage = new VelocityVoltage(0);
-
-
+  
+  private TalonSRX shooterSRX;
+  private TalonSRX shooterFollowerSRX;
+  private VictorSPX beaterBarSPX;
 
   /** Creates a new Shooter. */
   public Shooter() {
-    mBeaterBar = new TalonFX(62); //TODO: set these to actual motor numbers
-    mShooter = new TalonFX(61);
-    mRightShooter = new TalonFX(60);
+    shooterSRX = new TalonSRX(Constants.ShooterConstants.shooterLeadMotorID);
+    shooterFollowerSRX = new TalonSRX(Constants.ShooterConstants.shooterFollowMotorID);
+    beaterBarSPX = new VictorSPX(Constants.ShooterConstants.beaterBarMotorID);
 
-    mRightShooter.setControl(new Follower(mShooter.getDeviceID(), true));
+    CTREConfigs.configureSRXPIDFfromTalonFXPIDV(shooterSRX, Robot.ctreConfigs.Shooter_shooterFXConfiguration);
+    CTREConfigs.configureSRXPIDFfromTalonFXPIDV(shooterFollowerSRX, Robot.ctreConfigs.Shooter_shooterFXConfiguration);
+    shooterSRX.setSensorPhase(true);
+
+    shooterSRX.setNeutralMode(NeutralMode.Coast);
+    beaterBarSPX.setNeutralMode(NeutralMode.Brake);
+    
+    shooterSRX.setInverted(InvertType.InvertMotorOutput);
+    shooterFollowerSRX.follow(shooterSRX);
+    shooterFollowerSRX.setInverted(InvertType.OpposeMaster);
+
+    beaterBarSPX.setInverted(InvertType.InvertMotorOutput);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter Speed", getShooterSpeed());
-    SmartDashboard.putNumber("mRightShooter speed", mRightShooter.getStatorCurrent().getValueAsDouble());
-    SmartDashboard.putNumber("mBeaterBar speed", mBeaterBar.getStatorCurrent().getValueAsDouble());
+    SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
   }
 
   private double shooterSetSpeed; // rotations per second
   public void setShooterSpeed(double speed) {
-    shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS);
+    shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS, -Constants.ShooterConstants.shooterWheelMaxRPS);
   }
 
   public double getShooterSpeed() {
+    return -shooterSRX.getSelectedSensorVelocity() * 1.0d / Constants.ATATConstants.ThroughBoreTickPerRot * 10;
+  }
+
+  public double getShooterSetSpeed() {
     return shooterSetSpeed;
   }
 
-  private double beaterBarSetSpeed; // [0, 1]
+  private double beaterBarSetSpeed; // [-1, 1]
   public void setBeaterBarSpeed(double speed) {
-
       beaterBarSetSpeed = Filter.cutoffFilter(speed);
-
   } 
 
   public double getBeaterBarSpeed() {
@@ -67,12 +84,13 @@ public class Shooter extends SubsystemBase {
   }
 
   public void updateMotors() {
-    mBeaterBar.set(beaterBarSetSpeed);
+    beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
 
-    if (shooterSetSpeed == 0) {
-      mShooter.setControl(new CoastOut());
+    System.out.println(shooterSetSpeed);
+    if (shooterSetSpeed <= 10) {
+      shooterSRX.set(ControlMode.PercentOutput, 0);
     } else {
-      mShooter.setControl(shooterVelocityVoltage.withVelocity(shooterSetSpeed * Constants.ShooterConstants.shooterGearRatio));
+      shooterSRX.set(ControlMode.Velocity, -shooterSetSpeed * Constants.ATATConstants.ThroughBoreTickPerRot / 10, DemandType.ArbitraryFeedForward, 0.01);
     }
   }
 

@@ -58,22 +58,17 @@ public class ATAT extends SubsystemBase {
     mAngleMotor.setInverted(true);
     //mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
     //mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
-    mAngleMotorRight.follow(mAngleMotor);
-    mAngleMotor.getEncoder().setPosition(0);
-    mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
+
     angleEncoder = mAngleMotor.getAlternateEncoder(com.revrobotics.SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
     mAngleMotor.getPIDController().setFeedbackDevice(angleEncoder);
-
-    mFrontLinearSRX.config_kP(0, Robot.ctreConfigs.ATAT_postFXConfiguration.Slot0.kP);
-    mFrontLinearSRX.config_kI(0, Robot.ctreConfigs.ATAT_postFXConfiguration.Slot0.kI);
-    mFrontLinearSRX.config_kD(0, Robot.ctreConfigs.ATAT_postFXConfiguration.Slot0.kD);
-    mFrontLinearSRX.config_kF(0, Robot.ctreConfigs.ATAT_postFXConfiguration.Slot0.kV);
+    //mAngleMotor.getEncoder().setPosition(0);
+    mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
+    mAngleMotorRight.follow(mAngleMotor);
+    
+    CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mFrontLinearSRX, Robot.ctreConfigs.ATAT_postFXConfiguration);
     mFrontLinearSRX.setInverted(InvertType.InvertMotorOutput);
 
-    mBackLinearSRX.config_kP(0, Robot.ctreConfigs.ATAT_postFXConfiguration.Slot0.kP);
-    mBackLinearSRX.config_kI(0, Robot.ctreConfigs.ATAT_postFXConfiguration.Slot0.kI);
-    mBackLinearSRX.config_kD(0, Robot.ctreConfigs.ATAT_postFXConfiguration.Slot0.kD);
-    mBackLinearSRX.config_kF(0, Robot.ctreConfigs.ATAT_postFXConfiguration.Slot0.kV);
+    CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mBackLinearSRX, Robot.ctreConfigs.ATAT_postFXConfiguration);
     // mBackLinearSRX.setInverted(//TODO: do this);
 
 
@@ -115,8 +110,9 @@ public class ATAT extends SubsystemBase {
 
   private double desiredAngle;
   public void setDesiredAngle(double deg) {
-    desiredAngle = Filter.cutoffFilter(deg, 120);
+    desiredAngle = Filter.cutoffFilter(Constants.ATATConstants.minAngle, deg, Constants.ATATConstants.maxAngle);
   }
+
   public double getDesiredAngle() {
     return desiredAngle;
   }
@@ -128,14 +124,14 @@ public class ATAT extends SubsystemBase {
   }
 
   public void setBackPostPos(double dist /*meters*/) {
-    dist = Filter.cutoffFilter(dist, 5);
+    dist = Filter.cutoffFilter(dist, Constants.ATATConstants.backPostMaxExtension);
     double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
     mBackLinearSRX.set(ControlMode.Position, rot * Constants.ATATConstants.ThroughBoreTickPerRot, DemandType.ArbitraryFeedForward, 0.008);
   }
 
   public void setAngle(double deg) {
-    deg = Filter.cutoffFilter(deg, 120);
-    double rot = Units.degreesToRadians(deg) / 2 / Math.PI ;
+    deg = -Filter.cutoffFilter(Constants.ATATConstants.minAngle, deg, Constants.ATATConstants.maxAngle);
+    double rot = Units.degreesToRadians(deg) / 2 / Math.PI;
     mAngleMotor.getPIDController().setReference(rot, ControlType.kPosition);
   }
 
@@ -143,7 +139,7 @@ public class ATAT extends SubsystemBase {
   public double getAngle() {
     //return mAngleMotor.getEncoder().getPosition() * 360 / Constants.ATATConstants.angleGearRatio;
     // return mAngleMotor.getAlternateEncoder(42).getPosition();
-    return angleEncoder.getPosition();
+    return angleEncoder.getPosition() * 360;
   }
 
   public double getFrontPostPos() {
