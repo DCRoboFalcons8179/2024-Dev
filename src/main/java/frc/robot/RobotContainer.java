@@ -145,9 +145,9 @@ public class RobotContainer {
         // Non-Set Point Buttons
         shoot.whileTrue(new RequestShooterSetPoint(shooter, Constants.ShooterConstants.shooterSpeed));
         shoot.onFalse(new RequestShooterSetPoint(shooter, 0));
-        beaterBarB.whileTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
+        beaterBarB.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
         beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
-        beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed));
+        beaterBarF.and(() -> !shooter.hasRing()).onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed).repeatedly().until(() -> shooter.hasRing() || !beaterBarF.getAsBoolean()).andThen(new RequestShooterSetPoint(shooter, 0)));
         beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
         feed.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.feedSpeed));
         feed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));

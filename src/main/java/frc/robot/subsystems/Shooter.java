@@ -28,7 +28,7 @@ import frc.robot.Robot;
 public class Shooter extends SubsystemBase {
 
   private boolean inShooter = false;
-  private DigitalInput limitSwitch = new DigitalInput(10);
+  private DigitalInput limitSwitch = new DigitalInput(0);
   
   private TalonSRX shooterSRX;
   private TalonSRX shooterFollowerSRX;
@@ -59,6 +59,7 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter Speed", getShooterSpeed());
     SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
+    //System.out.println(hasRing());
   }
 
   private double shooterSetSpeed; // rotations per second
@@ -86,7 +87,6 @@ public class Shooter extends SubsystemBase {
   public void updateMotors() {
     beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
 
-    System.out.println(shooterSetSpeed);
     if (shooterSetSpeed <= 10) {
       shooterSRX.set(ControlMode.PercentOutput, 0);
     } else {
@@ -97,5 +97,9 @@ public class Shooter extends SubsystemBase {
   //TODO: make this read the limit switch state
   public boolean getIntakeLimitSwitchState() {
     return limitSwitch.get();
+  }
+
+  public boolean hasRing() {
+    return !limitSwitch.get();
   }
 }
