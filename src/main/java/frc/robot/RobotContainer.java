@@ -209,7 +209,7 @@ public class RobotContainer {
         // An ExampleCommand will run in autonomous
         // return new exampleAuto(s_Swerve);
         //return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
-        return AutoBuilder.buildAuto("New Auto");
+        return AutoBuilder.buildAuto("Test");
     }
     
 }
