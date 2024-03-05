@@ -22,6 +22,8 @@ import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.EncoderType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkBase.SoftLimitDirection;
@@ -29,6 +31,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkRelativeEncoder.Type;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.Filter;
@@ -53,19 +56,21 @@ public class ATAT extends SubsystemBase {
 
     mAngleMotor.setIdleMode(IdleMode.kBrake);
     mAngleMotorRight.setIdleMode(IdleMode.kBrake);
-   // mAngleMotorRight.setInverted(false);
-   //mAngleMotorRight.follow(mAngleMotor, true); 
-
+    //mAngleMotorRight.setInverted(false);
+    //mAngleMotorRight.follow(mAngleMotor, true); 
     
     
     //mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
     //mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
-
+    
     angleEncoder = mAngleMotor.getAlternateEncoder(com.revrobotics.SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
+
+    angleEncoder.setInverted(false);
     mAngleMotor.getPIDController().setFeedbackDevice(angleEncoder);
     //mAngleMotor.getEncoder().setPosition(0);
     mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
     //mAngleMotorRight.follow(mAngleMotor,false);
+    mAngleMotor.setInverted(false);
   
 
     CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mFrontLinearSRX, Robot.ctreConfigs.ATAT_postFXConfiguration);
@@ -94,7 +99,9 @@ public class ATAT extends SubsystemBase {
     SmartDashboard.putNumber("frontPostPos", getFrontPostPos());
     SmartDashboard.putNumber("desiredBackPostPos", getDesiredBackPostPos());
     SmartDashboard.putNumber("backPostPos", getBackPostPos());
+    SmartDashboard.putNumber("Angle Motor Integrated Encoder", mAngleMotor.getEncoder().getPosition());
   }
+
   private double desiredFrontPostPos;
   public void setDesiredFrontPostPos(double dist) {
     desiredFrontPostPos = Filter.cutoffFilter(dist, Constants.ATATConstants.frontPostMaxExtension);
@@ -115,7 +122,7 @@ public class ATAT extends SubsystemBase {
 
   private double desiredAngle;
   public void setDesiredAngle(double deg) {
-    desiredAngle = Filter.cutoffFilter(deg,80,-15);//Constants.ATATConstants.maxAngle);
+    desiredAngle = Filter.cutoffFilter(deg, Constants.ATATConstants.maxAngle, Constants.ATATConstants.minAngle);//Constants.ATATConstants.maxAngle);
   }
 
   public double getDesiredAngle() {
@@ -135,8 +142,8 @@ public class ATAT extends SubsystemBase {
   }
 
   public void setAngle(double deg) {
-    deg = Filter.cutoffFilter(deg,80,-15);
-    double rot = deg/ 360;
+    deg = Filter.cutoffFilter(deg, Constants.ATATConstants.maxAngle, Constants.ATATConstants.minAngle);
+    double rot = deg / 360;
     mAngleMotor.getPIDController().setReference(rot, ControlType.kPosition);
   }
 
@@ -144,6 +151,7 @@ public class ATAT extends SubsystemBase {
   public double getAngle() {
 
     return angleEncoder.getPosition() * 360;
+
   }
 
   public double getFrontPostPos() {

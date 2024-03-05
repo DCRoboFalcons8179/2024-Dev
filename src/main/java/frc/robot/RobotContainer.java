@@ -166,10 +166,10 @@ public class RobotContainer {
         //Manual Buttons 
         frontPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() + .25, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
         backPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() + .25, ()-> atat.getDesiredAngle()));
-        angleManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() + 2));
+        angleManualUp.debounce(0.04).onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() + 2));
         frontPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() - .25, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
         backPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() - .25, ()-> atat.getDesiredAngle()));
-        angleManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() - 2));
+        angleManualDown.debounce(0.04).onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle() - 2));
 
         //leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, () -> driver.getRawAxis(2) * Constants.ShooterConstants.shooterWheelMaxRPS));
         leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, 100));

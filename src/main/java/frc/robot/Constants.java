@@ -193,16 +193,17 @@ public final class Constants {
         public static final double backPostGearRatio = 90;
         public static final double angleGearRatio = 185d/3;
 
-        public static final double a_kP = .3; //TODO: configure after weight is added onto ATAT
-        public static final double a_kI = 0.001;
+        public static final double a_kP = 3.6 * 0.8; //TODO: configure after weight is added onto ATAT
+        public static final double a_kI = 0.0;
         public static final double a_kD = 0.006;
-        public static final double a_kF = 0.00003;
+        public static final double a_kF = 0.0;
 
         public static final double l_kP = 0.4;
         public static final double l_kI = 0.0001;
         public static final double l_kD = 0.0;
         public static final double l_kF = 0.0;
-        public static final double minAngle = 0;
+        
+        public static final double minAngle = -10;
         public static final double maxAngle = 80;
 
         public static final int ThroughBoreTickPerRot = 8192;
@@ -211,7 +212,8 @@ public final class Constants {
         public static final ATATPose carry = new ATATPose(0, 0, 0);
 
         public static final ATATPose shootClose = new ATATPose(4, 4, 15);
-        public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
+        // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
+        public static final ATATPose shootMedium = new ATATPose(0, 0, 45);
         public static final ATATPose shootFar = new ATATPose(0, 0, 0);
 
         public static final ATATPose ampSetPoint = new ATATPose(0, 0, 0);

@@ -9,11 +9,11 @@ import frc.robot.subsystems.ATAT;
 
 public class SetATATStates extends Command {
   /** Creates a new SetATATStates. */
-  ATAT atat;
+  private ATAT atat;
   public SetATATStates(ATAT atat) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(atat);
     this.atat = atat;
+    addRequirements(atat);
   }
 
   // Called when the command is initially scheduled.

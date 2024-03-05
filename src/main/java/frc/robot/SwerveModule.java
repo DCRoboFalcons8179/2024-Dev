@@ -84,7 +84,7 @@ public class SwerveModule {
 
         mAngleMotor.getPIDController().setPositionPIDWrappingMaxInput( Constants.Swerve.angleGearRatio / 2);
         mAngleMotor.getPIDController().setPositionPIDWrappingMinInput(-Constants.Swerve.angleGearRatio / 2);
-
+        
         mAngleMotor.getEncoder(Type.kHallSensor, 1);
         mAngleMotor.getEncoder().setPositionConversionFactor(1);
         //mAngleMotor.getEncoder().setPositionConversionFactor(Constants.Swerve.angleGearRatio);

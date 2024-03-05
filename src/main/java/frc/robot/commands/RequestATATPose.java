@@ -30,7 +30,7 @@ public class RequestATATPose extends Command {
   public RequestATATPose(ATAT atat, double distF, double distB, double angle, boolean instant) {
     this(atat, distF, distB, angle);
     this.instant = instant;
-    addRequirements(atat);
+    if (!instant) addRequirements(atat);
   }
 
   public RequestATATPose(ATAT atat, DoubleSupplier distF, DoubleSupplier distB, DoubleSupplier angle) {
@@ -48,7 +48,8 @@ public class RequestATATPose extends Command {
   public RequestATATPose(ATAT atat, DoubleSupplier distF, DoubleSupplier distB, DoubleSupplier angle, boolean instant) {
     this(atat, distF, distB, angle);
     this.instant = instant;
-    addRequirements(atat);
+    if (!instant) addRequirements(atat);
+
   }
 
   // Called when the command is initially scheduled.
@@ -61,7 +62,7 @@ public class RequestATATPose extends Command {
 
   @Override
   public void execute() {
-    initialize();
+    System.out.println("instant");
   }
 
   @Override
@@ -70,8 +71,10 @@ public class RequestATATPose extends Command {
   @Override
   public boolean isFinished() {
     if (instant) {
+      System.out.println("instant");
       return true;
     }
+
     return Math.abs(atat.getFrontPostPos() - distF.getAsDouble()) < 0.02 &&
            Math.abs(atat.getBackPostPos() - distF.getAsDouble()) < 0.02 &&
            Math.abs(atat.getAngle() - angle.getAsDouble()) < 0.02;
