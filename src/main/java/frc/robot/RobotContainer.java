@@ -58,11 +58,14 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton testButton = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    //private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    // private final JoystickButton zeroGyro = new JoystickButton(driver,
+    // XboxController.Button.kRightBumper.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
-    //private final JoystickButton approachTag = new JoystickButton(driver, XboxController.Button.kA.value);
-    //private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
+    // private final JoystickButton approachTag = new JoystickButton(driver,
+    // XboxController.Button.kA.value);
+    // private final JoystickButton bButton = new JoystickButton(driver,
+    // XboxController.Button.kB.value);
     private final JoystickButton hangSetPoint = new JoystickButton(board, 2);
     private final JoystickButton ampSetPoint = new JoystickButton(board, 5);
     private final JoystickButton pickUpSetPoint = new JoystickButton(board, 3);
@@ -70,20 +73,19 @@ public class RobotContainer {
     private final JoystickButton farSetPoint = new JoystickButton(board, 10);
     private final JoystickButton mediumSetPoint = new JoystickButton(board, 9);
     private final JoystickButton closeSetPoint = new JoystickButton(board, 8);
-    private final JoystickButton beaterBarF = new JoystickButton(board,4);
+    private final JoystickButton beaterBarF = new JoystickButton(board, 4);
     private final JoystickButton beaterBarB = new JoystickButton(board, 7);
     private final JoystickButton hang = new JoystickButton(board, 1);
     private final JoystickButton feed = new JoystickButton(board, 12);
     private final JoystickButton shoot = new JoystickButton(board, 11);
-    private final JoystickButton frontPostManualUp = new JoystickButton(board_ext, 12);  
-    private final JoystickButton frontPostManualDown = new JoystickButton(board_ext, 11);                  
-    private final JoystickButton backPostManualUp = new JoystickButton(board_ext, 10);   
-    private final JoystickButton backPostManualDown = new JoystickButton(board_ext, 9); 
-    private final JoystickButton angleManualUp = new JoystickButton(board_ext, 8);      
-    private final JoystickButton angleManualDown = new JoystickButton(board_ext, 7);    
+    private final JoystickButton frontPostManualUp = new JoystickButton(board_ext, 12);
+    private final JoystickButton frontPostManualDown = new JoystickButton(board_ext, 11);
+    private final JoystickButton backPostManualUp = new JoystickButton(board_ext, 10);
+    private final JoystickButton backPostManualDown = new JoystickButton(board_ext, 9);
+    private final JoystickButton angleManualUp = new JoystickButton(board_ext, 8);
+    private final JoystickButton angleManualDown = new JoystickButton(board_ext, 7);
     private final Trigger leftTriggerPressed = new Trigger(() -> driver.getRawAxis(2) > 0.1);
     private final Trigger rightTriggerPressed = new Trigger(() -> driver.getRawAxis(3) > 0.1);
-  
 
     private final POVButton povUp = new POVButton(driver, 0);
     private final POVButton povDown = new POVButton(driver, 180);
@@ -101,6 +103,8 @@ public class RobotContainer {
         // Controller Filtering and Modification
         // robotCentric.debounce(0.04).onTrue(new toggleFieldCentric(s_Swerve));
 
+        // Calls the swerve command and sends the joystick input to the swerve drive
+        // commands
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -108,10 +112,13 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> driver.getRawAxis(rotationAxis)));
 
+        // Moves atat
         atat.setDefaultCommand(new SetATATStates(atat));
 
+        // Shooter control
         shooter.setDefaultCommand(new SetShooterStates(shooter));
 
+        // Sets the camera zones
         cameras.setDefaultCommand(new CameraPublisher(cameras, s_Swerve, () -> -driver.getRawAxis(translationAxis),
                 () -> driver.getRawAxis(strafeAxis)));
 
@@ -137,9 +144,12 @@ public class RobotContainer {
     private void buttonCommands() {
         // TODO Auto-generated method stub
         robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
-        //approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2, 0.15, 6, 10, new Translation2d(0, 2), 0, false));
-        //bButton.onTrue(new InstantCommand(() -> shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
-        //bButton.onFalse(new InstantCommand(() -> shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+        // approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2,
+        // 0.15, 6, 10, new Translation2d(0, 2), 0, false));
+        // bButton.onTrue(new InstantCommand(() ->
+        // shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
+        // bButton.onFalse(new InstantCommand(() ->
+        // shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         // Non-Set Point Buttons
@@ -147,7 +157,10 @@ public class RobotContainer {
         shoot.onFalse(new RequestShooterSetPoint(shooter, 0));
         beaterBarB.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
         beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
-        beaterBarF.and(() -> !shooter.hasRing()).onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed).repeatedly().until(() -> shooter.hasRing() || !beaterBarF.getAsBoolean()).andThen(new RequestShooterSetPoint(shooter, 0)));
+        beaterBarF.and(() -> !shooter.hasRing())
+                .onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed).repeatedly()
+                        .until(() -> shooter.hasRing() || !beaterBarF.getAsBoolean())
+                        .andThen(new RequestShooterSetPoint(shooter, 0)));
         beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
         feed.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.feedSpeed));
         feed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
@@ -163,31 +176,42 @@ public class RobotContainer {
         pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
         hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
-        //Manual Buttons 
-        frontPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() + .25, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
-        backPostManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() + .25, ()-> atat.getDesiredAngle()));
-        angleManualUp.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() + 2));
-        frontPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos() - .25, ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle()));
-        backPostManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos() - .25, ()-> atat.getDesiredAngle()));
-        angleManualDown.onTrue(new RequestATATPose(atat, ()-> atat.getDesiredFrontPostPos(), ()-> atat.getDesiredBackPostPos(), ()-> atat.getDesiredAngle() - 2));
+        // Manual Buttons
+        frontPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() + .25,
+                () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle()));
+        backPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
+                () -> atat.getDesiredBackPostPos() + .25, () -> atat.getDesiredAngle()));
+        angleManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
+                () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle() + 2));
+        frontPostManualDown.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() - .25,
+                () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle()));
+        backPostManualDown.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
+                () -> atat.getDesiredBackPostPos() - .25, () -> atat.getDesiredAngle()));
+        angleManualDown.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
+                () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle() - 2));
 
-        //leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, () -> driver.getRawAxis(2) * Constants.ShooterConstants.shooterWheelMaxRPS));
+        // leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, () ->
+        // driver.getRawAxis(2) * Constants.ShooterConstants.shooterWheelMaxRPS));
         leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, 100));
         leftTriggerPressed.onFalse(new RequestShooterSetPoint(shooter, 0));
 
         rightTriggerPressed.onTrue(new RequestBeaterBarSetSpeed(shooter, 1));
         rightTriggerPressed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
 
-        // dualShockPovLeft.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("left")));
-        // dualShockPovRight.onTrue(new InstantCommand(() -> cameras.cameraControllerRight("right")));
-        /*approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
-        1, 1,
-        0.15, 6, 10,
-        new Translation2d(0, 2), 0, false));
-        //bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20, 
-        1, 1, 
-        0.15, 6, 10, 
-        new Translation2d(0, 2), 0, true));*/
+        // dualShockPovLeft.onTrue(new InstantCommand(() ->
+        // cameras.cameraControllerRight("left")));
+        // dualShockPovRight.onTrue(new InstantCommand(() ->
+        // cameras.cameraControllerRight("right")));
+        /*
+         * approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
+         * 1, 1,
+         * 0.15, 6, 10,
+         * new Translation2d(0, 2), 0, false));
+         * //bButton.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
+         * 1, 1,
+         * 0.15, 6, 10,
+         * new Translation2d(0, 2), 0, true));
+         */
         /*
          * bButton.onTrue(new InstantCommand(() -> shooter.setBeaterBarSpeed(0.5)));
          * bButton.onFalse(new InstantCommand(() -> shooter.setBeaterBarSpeed(0)));
@@ -208,8 +232,17 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         // return new exampleAuto(s_Swerve);
-        //return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
-        return AutoBuilder.buildAuto("Test");
+        // return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
+
+        // Load the path you want to follow using its name in the GUI
+        PathPlannerPath path = PathPlannerPath.fromPathFile("StraightPath");
+
+        // Create a path following command using AutoBuilder. This will also trigger
+        // event markers.
+        return AutoBuilder.followPath(path);
+
+        // return AutoBuilder.buildAuto("StraightPath");
+        // return AutoBuilder.buildAuto("Test");
     }
-    
+
 }

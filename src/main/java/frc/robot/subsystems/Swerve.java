@@ -77,7 +77,7 @@ public class Swerve extends SubsystemBase {
         //     this::setPose,
         //     this::getChassisSpeeds,
         //     this::setModuleStates,
-        //     Constants.Swerve.swervePathFollowerConfig, 
+        //     Constants.Swerve.swervePathFollowerConfig,
         //     () -> {
         //     var alliance = DriverStation.getAlliance();
         //     if (alliance.isPresent()) {
@@ -94,10 +94,10 @@ public class Swerve extends SubsystemBase {
             this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             this::setModuleStates, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                    4.5, // Max module speed, in m/s
-                    0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                    new PIDConstants(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD), // Translation PID constants
+                    new PIDConstants(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD), // Rotation PID constants
+                    Constants.Swerve.maxSpeed, // Max module speed, in m/s
+                    Constants.Swerve.wheelBase, // Drive base radius in meters. Distance from robot center to furthest module.
                     new ReplanningConfig() // Default path replanning config. See the API for the options here
             ),
             () -> {
@@ -105,10 +105,10 @@ public class Swerve extends SubsystemBase {
               // This will flip the path being followed to the red side of the field.
               // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
+            //   var alliance = DriverStation.getAlliance();
+            //   if (alliance.isPresent()) {
+            //     return alliance.get() == DriverStation.Alliance.Red;
+            //   }
               return false;
             },
             this // Reference to this subsystem to set requirements
