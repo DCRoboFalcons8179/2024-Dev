@@ -182,10 +182,10 @@ public final class Constants {
         public static final int frontPostSRXID = 26;
         public static final int backPostSRXID  = 33; //TODO: fix this
 
-        public static final int frontPostMaxExtension = 4;
-        public static final int backPostMaxExtension = 6; //TODO: fix this
+        public static final double frontPostMaxExtension = 6.4;
+        public static final double backPostMaxExtension = 6; //TODO: fix this
 
-        public static final double distanceBetweenPostParts = (1.25);
+        public static final double distanceBetweenPostParts = (1.123);
 
         public static final double maxDTheta = Units.degreesToRadians(120);
 
@@ -199,7 +199,7 @@ public final class Constants {
         public static final double a_kF = 0.0;
 
         public static final double l_kP = 0.4;
-        public static final double l_kI = 0.0001;
+        public static final double l_kI = 0.0;
         public static final double l_kD = 0.0;
         public static final double l_kF = 0.0;
         
@@ -213,7 +213,7 @@ public final class Constants {
 
         public static final ATATPose shootClose = new ATATPose(4, 4, 15);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
-        public static final ATATPose shootMedium = new ATATPose(0, 0, 45);
+        public static final ATATPose shootMedium = new ATATPose(4, 0, 45);
         public static final ATATPose shootFar = new ATATPose(0, 0, 0);
 
         public static final ATATPose ampSetPoint = new ATATPose(0, 0, 0);
