@@ -242,7 +242,7 @@ public class RobotContainer {
         // return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
 
         // Load the path you want to follow using its name in the GUI
-        PathPlannerPath path = PathPlannerPath.fromPathFile("StraightPath");
+        PathPlannerPath path = PathPlannerPath.fromPathFile("straight");
 
         // Create a path following command using AutoBuilder. This will also trigger
         // event markers.
