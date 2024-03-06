@@ -193,9 +193,9 @@ public final class Constants {
         public static final double backPostGearRatio = 90;
         public static final double angleGearRatio = 185d/3;
 
-        public static final double a_kP = 3.6 * 0.8; //TODO: configure after weight is added onto ATAT
+        public static final double a_kP = 3.6 * 1; //TODO: configure after weight is added onto ATAT
         public static final double a_kI = 0.0;
-        public static final double a_kD = 0.006;
+        public static final double a_kD = 0.01;
         public static final double a_kF = 0.0;
 
         public static final double l_kP = 0.4;
@@ -206,19 +206,23 @@ public final class Constants {
         public static final double minAngle = -10;
         public static final double maxAngle = 80;
 
+        public static final double lowAngleBackPostMinLength = 4;
+
         public static final int ThroughBoreTickPerRot = 8192;
 
         // setpoints
         public static final ATATPose carry = new ATATPose(0, 0, 0);
 
-        public static final ATATPose shootClose = new ATATPose(4, 4, 15);
+        public static final ATATPose shootClose = new ATATPose(0, 6, 0);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
-        public static final ATATPose shootMedium = new ATATPose(4, 0, 45);
-        public static final ATATPose shootFar = new ATATPose(0, 0, 0);
+        public static final ATATPose shootMedium = new ATATPose(1, 2, 20);
+        public static final ATATPose shootFar = new ATATPose(0, 4.5, 0);
 
-        public static final ATATPose ampSetPoint = new ATATPose(0, 0, 0);
+        public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
+        //public static final ATATPose ampSetPoint2 = new ATATPose(6.4, 2.25, 20);
 
         public static final ATATPose pickUpSetPoint = new ATATPose(0, 0, 0);
+        //public static final ATATPose pickUpHumanPlayer = new ATATPose(6.4, 0, 16);
 
         public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
         public static final ATATPose hangPull = new ATATPose(0, 0, 0);
@@ -243,8 +247,8 @@ public final class Constants {
 
         public static final double shooterSpeed = 0;
         public static final double beaterBarFSpeed = 1;
-        public static final double beaterBarBSpeed = -1;
+        public static final double beaterBarBSpeed = -0.7;
         public static final double feedSpeed = 0;
-        //beater bar does not have pid, not important
+        //beater bar does not have pid, no pidf no matter what
     }
 }

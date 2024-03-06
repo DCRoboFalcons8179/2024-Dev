@@ -44,12 +44,15 @@ public class Shooter extends SubsystemBase {
     CTREConfigs.configureSRXPIDFfromTalonFXPIDV(shooterFollowerSRX, Robot.ctreConfigs.Shooter_shooterFXConfiguration);
     shooterSRX.setSensorPhase(true);
 
+    shooterSRX.configVoltageCompSaturation(12.15);
+    shooterFollowerSRX.configVoltageCompSaturation(12.15);
+
     shooterSRX.setNeutralMode(NeutralMode.Coast);
     beaterBarSPX.setNeutralMode(NeutralMode.Brake);
     
-    shooterSRX.setInverted(InvertType.InvertMotorOutput);
+    shooterSRX.setInverted(InvertType.None);
     shooterFollowerSRX.follow(shooterSRX);
-    shooterFollowerSRX.setInverted(InvertType.OpposeMaster);
+    shooterFollowerSRX.setInverted(InvertType.FollowMaster);
 
     beaterBarSPX.setInverted(InvertType.InvertMotorOutput);
   }
@@ -58,6 +61,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shooter Speed", getShooterSpeed());
+    SmartDashboard.putNumber("Lead Stator Current", getLeadStatorCurrent());
     SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
     //System.out.println(hasRing());
   }
@@ -69,6 +73,10 @@ public class Shooter extends SubsystemBase {
 
   public double getShooterSpeed() {
     return -shooterSRX.getSelectedSensorVelocity() * 1.0d / Constants.ATATConstants.ThroughBoreTickPerRot * 10;
+  }
+
+  public double getLeadStatorCurrent() {
+    return shooterSRX.getStatorCurrent();
   }
 
   public double getShooterSetSpeed() {
@@ -90,13 +98,9 @@ public class Shooter extends SubsystemBase {
     if (shooterSetSpeed <= 10) {
       shooterSRX.set(ControlMode.PercentOutput, 0);
     } else {
-      shooterSRX.set(ControlMode.Velocity, -shooterSetSpeed * Constants.ATATConstants.ThroughBoreTickPerRot / 10, DemandType.ArbitraryFeedForward, 0.01);
+      //shooterSRX.set(ControlMode.Velocity, shooterSetSpeed * Constants.ATATConstants.ThroughBoreTickPerRot / 10, DemandType.ArbitraryFeedForward, 0.01);
+      shooterSRX.set(ControlMode.PercentOutput, shooterSetSpeed / Constants.ShooterConstants.shooterWheelMaxRPS, DemandType.ArbitraryFeedForward, 0.008);
     }
-  }
-
-  //TODO: make this read the limit switch state
-  public boolean getIntakeLimitSwitchState() {
-    return limitSwitch.get();
   }
 
   public boolean hasRing() {

@@ -78,7 +78,8 @@ public class ATAT extends SubsystemBase {
     mFrontLinearSRX.setSensorPhase(true);
 
     CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mBackLinearSRX, Robot.ctreConfigs.ATAT_postFXConfiguration);
-    mBackLinearSRX.setInverted(false);
+    mBackLinearSRX.setSensorPhase(true);
+    mBackLinearSRX.setInverted(true);
 
 
     

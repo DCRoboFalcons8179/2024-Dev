@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.ATAT;
 
 public class SetATATStates extends Command {
@@ -24,7 +25,13 @@ public class SetATATStates extends Command {
   @Override
   public void execute() {
     atat.setFrontPostPos(atat.getDesiredFrontPostPos());
-    atat.setBackPostPos(atat.getDesiredBackPostPos());
+
+    if (atat.getAngle() > 50 && atat.getDesiredBackPostPos() < Constants.ATATConstants.lowAngleBackPostMinLength) {
+      atat.setBackPostPos(Constants.ATATConstants.lowAngleBackPostMinLength);
+    } else {
+      atat.setBackPostPos(atat.getDesiredBackPostPos());
+    }
+    
     atat.setAngle(atat.getDesiredAngle());
   }
 

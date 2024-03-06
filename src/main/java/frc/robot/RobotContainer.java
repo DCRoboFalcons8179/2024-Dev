@@ -92,8 +92,6 @@ public class RobotContainer {
     private final POVButton povLeft = new POVButton(driver, 270);
     private final POVButton povRight = new POVButton(driver, 90);
 
-    private final Trigger intakeLimitSwitch = new Trigger(() -> shooter.getIntakeLimitSwitchState());
-
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -157,11 +155,8 @@ public class RobotContainer {
         shoot.onFalse(new RequestShooterSetPoint(shooter, 0));
         beaterBarB.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
         beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
-        beaterBarF.and(() -> !shooter.hasRing())
-                .onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed).repeatedly()
-                        .until(() -> shooter.hasRing() || !beaterBarF.getAsBoolean())
-                        .andThen(new RequestShooterSetPoint(shooter, 0)));
-        beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+        rightTriggerPressed.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed));
+        rightTriggerPressed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
         feed.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.feedSpeed));
         feed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
         hang.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangPull));
@@ -195,8 +190,8 @@ public class RobotContainer {
         leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, 100));
         leftTriggerPressed.onFalse(new RequestShooterSetPoint(shooter, 0));
 
-        rightTriggerPressed.onTrue(new RequestBeaterBarSetSpeed(shooter, 1));
-        rightTriggerPressed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+        beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0.6, true).andThen(new RequestBeaterBarSetSpeed(shooter, 0)));
+        beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
 
         // dualShockPovLeft.onTrue(new InstantCommand(() ->
         // cameras.cameraControllerRight("left")));
