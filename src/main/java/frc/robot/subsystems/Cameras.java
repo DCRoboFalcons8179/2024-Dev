@@ -20,6 +20,12 @@ public class Cameras extends SubsystemBase {
         camsKilled = true;
     }
 
+    public void cameraToggler() {
+        camsKilled = !camsKilled;
+
+        if (camsKilled) SmartDashboard.putNumber("Robot Zone", 50);
+    }
+
     public void cameraSetter(double angle, Swerve swerve) {
         if(camsKilled) return;
 

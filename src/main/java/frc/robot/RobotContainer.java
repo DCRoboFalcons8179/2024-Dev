@@ -86,8 +86,8 @@ public class RobotContainer {
     private final JoystickButton angleManualDown = new JoystickButton(board_ext, 7);
     private final Trigger leftTriggerPressed = new Trigger(() -> driver.getRawAxis(2) > 0.1);
     private final Trigger rightTriggerPressed = new Trigger(() -> driver.getRawAxis(3) > 0.1);
-    private final JoystickButton camKiller = new JoystickButton(board_ext, 13);
-    private final JoystickButton camSaver = new JoystickButton(board_ext, 14);
+    private final JoystickButton camToggler = new JoystickButton(board_ext, 13);
+//     private final JoystickButton camSaver = new JoystickButton(board_ext, 14);
 
     private final POVButton povUp = new POVButton(driver, 0);
     private final POVButton povDown = new POVButton(driver, 180);
@@ -200,9 +200,10 @@ public class RobotContainer {
         rightTriggerPressed.onTrue(new RequestBeaterBarSetSpeed(shooter, 1));
         rightTriggerPressed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
 
-        // Cam killer and saver
-        camKiller.onTrue(new InstantCommand(() -> cameras.cameraKiller()));
-        camSaver.onTrue(new InstantCommand(() -> cameras.cameraSaver()));
+        // // Cam killer and saver
+        // camKiller.onTrue(new InstantCommand(() -> cameras.cameraKiller()));
+        // camSaver.onTrue(new InstantCommand(() -> cameras.cameraSaver()));
+        camToggler.onTrue(new InstantCommand(() -> cameras.cameraToggler()));
 
         // dualShockPovLeft.onTrue(new InstantCommand(() ->
         // cameras.cameraControllerRight("left")));
