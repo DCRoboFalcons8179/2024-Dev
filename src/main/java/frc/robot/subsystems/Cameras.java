@@ -9,8 +9,25 @@ public class Cameras extends SubsystemBase {
     final double FRONT_CAM = 2;
     final double BACK_RIGHT_CAM = 0;
     final double BACK_LEFT_CAM = 4;
+    boolean camsKilled = false;
+
+    public void cameraKiller() {
+        SmartDashboard.putNumber("Robot Zone", 50);
+        camsKilled = false;
+    }
+
+    public void cameraSaver() {
+        camsKilled = true;
+    }
+
+    public void cameraToggler() {
+        camsKilled = !camsKilled;
+
+        if (camsKilled) SmartDashboard.putNumber("Robot Zone", 50);
+    }
 
     public void cameraSetter(double angle, Swerve swerve) {
+        if(camsKilled) return;
 
         // Joystick is 90 degrees turned clockwise idk why -Mason
 

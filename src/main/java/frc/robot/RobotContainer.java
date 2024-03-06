@@ -86,6 +86,8 @@ public class RobotContainer {
     private final JoystickButton angleManualDown = new JoystickButton(board_ext, 7);
     private final Trigger leftTriggerPressed = new Trigger(() -> driver.getRawAxis(2) > 0.1);
     private final Trigger rightTriggerPressed = new Trigger(() -> driver.getRawAxis(3) > 0.1);
+    private final JoystickButton camToggler = new JoystickButton(board_ext, 13);
+//     private final JoystickButton camSaver = new JoystickButton(board_ext, 14);
 
     private final POVButton povUp = new POVButton(driver, 0);
     private final POVButton povDown = new POVButton(driver, 180);
@@ -193,6 +195,11 @@ public class RobotContainer {
         beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0.6, true).andThen(new RequestBeaterBarSetSpeed(shooter, 0)));
         beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
 
+        // // Cam killer and saver
+        // camKiller.onTrue(new InstantCommand(() -> cameras.cameraKiller()));
+        // camSaver.onTrue(new InstantCommand(() -> cameras.cameraSaver()));
+        camToggler.onTrue(new InstantCommand(() -> cameras.cameraToggler()));
+
         // dualShockPovLeft.onTrue(new InstantCommand(() ->
         // cameras.cameraControllerRight("left")));
         // dualShockPovRight.onTrue(new InstantCommand(() ->
@@ -230,7 +237,7 @@ public class RobotContainer {
         // return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
 
         // Load the path you want to follow using its name in the GUI
-        PathPlannerPath path = PathPlannerPath.fromPathFile("StraightPath");
+        PathPlannerPath path = PathPlannerPath.fromPathFile("straight");
 
         // Create a path following command using AutoBuilder. This will also trigger
         // event markers.
