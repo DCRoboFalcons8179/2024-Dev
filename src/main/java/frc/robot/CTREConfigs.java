@@ -14,7 +14,8 @@ public final class CTREConfigs {
     public TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
     public CANcoderConfiguration swerveCANcoderConfig = new CANcoderConfiguration();
 
-    public TalonFXConfiguration ATAT_postFXConfiguration = new TalonFXConfiguration();
+    public TalonFXConfiguration ATAT_frontPostFXConfiguration = new TalonFXConfiguration();
+    public TalonFXConfiguration ATAT_backPostFXConfiguration = new TalonFXConfiguration();
     public TalonFXConfiguration ATAT_angleFXConfiguration = new TalonFXConfiguration();
     public TalonFXConfiguration Shooter_shooterFXConfiguration = new TalonFXConfiguration();
 
@@ -79,10 +80,15 @@ public final class CTREConfigs {
         ATAT_angleFXConfiguration.Slot0.kD = Constants.ATATConstants.a_kD;
         ATAT_angleFXConfiguration.Slot0.kV = Constants.ATATConstants.a_kF;
 
-        ATAT_postFXConfiguration.Slot0.kP = Constants.ATATConstants.l_kP;
-        ATAT_postFXConfiguration.Slot0.kI = Constants.ATATConstants.l_kI;
-        ATAT_postFXConfiguration.Slot0.kD = Constants.ATATConstants.l_kD;
-        ATAT_postFXConfiguration.Slot0.kV = Constants.ATATConstants.l_kF;
+        ATAT_frontPostFXConfiguration.Slot0.kP = Constants.ATATConstants.l_kP;
+        ATAT_frontPostFXConfiguration.Slot0.kI = Constants.ATATConstants.l_kI;
+        ATAT_frontPostFXConfiguration.Slot0.kD = Constants.ATATConstants.l_kD;
+        ATAT_frontPostFXConfiguration.Slot0.kV = Constants.ATATConstants.l_kF;
+
+        ATAT_backPostFXConfiguration.Slot0.kP = Constants.ATATConstants.f_kP;
+        ATAT_backPostFXConfiguration.Slot0.kI = Constants.ATATConstants.f_kI;
+        ATAT_backPostFXConfiguration.Slot0.kD = Constants.ATATConstants.f_kD;
+        ATAT_backPostFXConfiguration.Slot0.kV = Constants.ATATConstants.f_kF;
 
         Shooter_shooterFXConfiguration.Slot0.kP = Constants.ShooterConstants.kP;
         Shooter_shooterFXConfiguration.Slot0.kI = Constants.ShooterConstants.kI;

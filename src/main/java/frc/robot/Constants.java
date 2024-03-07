@@ -193,7 +193,7 @@ public final class Constants {
         public static final double backPostGearRatio = 90;
         public static final double angleGearRatio = 185d/3;
 
-        public static final double a_kP = 3.6 * 1; //TODO: configure after weight is added onto ATAT
+        public static final double a_kP = 3.6 * 0.85; //TODO: configure after weight is added onto ATAT
         public static final double a_kI = 0.0;
         public static final double a_kD = 0.01;
         public static final double a_kF = 0.0;
@@ -202,9 +202,14 @@ public final class Constants {
         public static final double l_kI = 0.0;
         public static final double l_kD = 0.0;
         public static final double l_kF = 0.0;
+
+        public static final double f_kP = 0.6;
+        public static final double f_kI = l_kI;
+        public static final double f_kD = l_kD;
+        public static final double f_kF = l_kF;
         
-        public static final double minAngle = -10;
-        public static final double maxAngle = 80;
+        public static final double minAngle = -4;
+        public static final double maxAngle = 90;
 
         public static final double lowAngleBackPostMinLength = 4;
 
@@ -221,8 +226,8 @@ public final class Constants {
         public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
         //public static final ATATPose ampSetPoint2 = new ATATPose(6.4, 2.25, 20);
 
-        public static final ATATPose pickUpSetPoint = new ATATPose(0, 0, 0);
-        //public static final ATATPose pickUpHumanPlayer = new ATATPose(6.4, 0, 16);
+        public static final ATATPose pickUpSetPoint = new ATATPose(0, 4, 88);
+        public static final ATATPose pickUpHumanPlayer = new ATATPose(6.4, 0, 16);
 
         public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
         public static final ATATPose hangPull = new ATATPose(0, 0, 0);

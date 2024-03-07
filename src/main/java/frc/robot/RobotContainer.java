@@ -69,6 +69,7 @@ public class RobotContainer {
     private final JoystickButton hangSetPoint = new JoystickButton(board, 2);
     private final JoystickButton ampSetPoint = new JoystickButton(board, 5);
     private final JoystickButton pickUpSetPoint = new JoystickButton(board, 3);
+    private final JoystickButton humanPickUpSetPoint = new JoystickButton(board_ext, 6);
     private final JoystickButton carrySetPoint = new JoystickButton(board, 6);
     private final JoystickButton farSetPoint = new JoystickButton(board, 10);
     private final JoystickButton mediumSetPoint = new JoystickButton(board, 9);
@@ -171,6 +172,7 @@ public class RobotContainer {
         ampSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint));
         carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
         pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
+        humanPickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpHumanPlayer));
         hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
         // Manual Buttons
@@ -237,14 +239,15 @@ public class RobotContainer {
         // return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
 
         // Load the path you want to follow using its name in the GUI
-        PathPlannerPath path = PathPlannerPath.fromPathFile("straight");
+        //PathPlannerPath path = PathPlannerPath.fromPathFile("straight");
 
         // Create a path following command using AutoBuilder. This will also trigger
         // event markers.
-        return AutoBuilder.followPath(path);
+        //return AutoBuilder.followPath(path);
 
         // return AutoBuilder.buildAuto("StraightPath");
         // return AutoBuilder.buildAuto("Test");
+        return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0)).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
     }
 
 }
