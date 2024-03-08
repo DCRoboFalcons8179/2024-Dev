@@ -119,10 +119,10 @@ public class RobotContainer {
                 // Shooter control
                 shooter.setDefaultCommand(new SetShooterStates(shooter));
 
-                // Sets the camera zones
-                cameras.setDefaultCommand(
-                                new CameraPublisher(cameras, s_Swerve, () -> -driver.getRawAxis(translationAxis),
-                                                () -> driver.getRawAxis(strafeAxis)));
+                // Sets the camera zones unused currently
+                // cameras.setDefaultCommand(
+                //                 new CameraPublisher(cameras, s_Swerve, () -> -driver.getRawAxis(translationAxis),
+                //                                 () -> driver.getRawAxis(strafeAxis)));
 
                 // Configure the button bindings
                 configureButtonBindings();
@@ -166,6 +166,8 @@ public class RobotContainer {
                 feed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 hang.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangPull));
                 hang.onFalse(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
+                povUp.onTrue(new InstantCommand(() -> cameras.topCam()));
+                povDown.onTrue(new InstantCommand(() -> cameras.bottomCam()));
 
         // Set Point Buttons
         closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
@@ -242,7 +244,7 @@ public class RobotContainer {
                 // return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
 
         // Load the path you want to follow using its name in the GUI
-        //PathPlannerPath path = PathPlannerPath.fromPathFile("straight");
+        //PathPlannerPath path = PathPlannerPat`h.fromPathFile("straight");
 
         // Create a path following command using AutoBuilder. This will also trigger
         // event markers.
@@ -253,8 +255,14 @@ public class RobotContainer {
 
 
 
-        return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0)).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
+        // return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0)).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
         //return new WaitCommand(0.5).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
+        if (board_ext.getRawAxis(1)> 0.5) {
+                 return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0)).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
+        } else {
+                return new WaitCommand(0.5).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
+        }
+
     }
 
 }
