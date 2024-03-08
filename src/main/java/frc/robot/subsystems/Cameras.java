@@ -13,11 +13,11 @@ public class Cameras extends SubsystemBase {
 
     public void cameraKiller() {
         SmartDashboard.putNumber("Robot Zone", 50);
-        camsKilled = false;
+        camsKilled = true;
     }
 
     public void cameraSaver() {
-        camsKilled = true;
+        camsKilled = false;
     }
 
     public void cameraToggler() {
