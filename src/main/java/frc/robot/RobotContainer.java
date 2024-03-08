@@ -40,8 +40,8 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
         /* Controllers */
         private final Joystick driver = new Joystick(0);
-        private final Joystick board = new Joystick(2);
-        private final Joystick board_ext = new Joystick(3);
+        private final Joystick board = new Joystick(1);
+        private final Joystick board_ext = new Joystick(2);
 
         /* Drive Controls */
         private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -250,7 +250,11 @@ public class RobotContainer {
 
         // return AutoBuilder.buildAuto("StraightPath");
         // return AutoBuilder.buildAuto("Test");
+
+
+
         return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0)).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
+        //return new WaitCommand(0.5).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
     }
 
 }
