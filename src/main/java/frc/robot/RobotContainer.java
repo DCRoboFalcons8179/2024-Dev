@@ -205,7 +205,7 @@ public class RobotContainer {
                 // // Cam killer and saver
                 // camKiller.onTrue(new InstantCommand(() -> cameras.cameraKiller()));
                 // camSaver.onTrue(new InstantCommand(() -> cameras.cameraSaver()));
-                camToggler.onTrue(new InstantCommand(() -> cameras.cameraToggler()));
+                // camToggler.onTrue(new InstantCommand(() -> cameras.cameraToggler()));
 
                 // dualShockPovLeft.onTrue(new InstantCommand(() ->
                 // cameras.cameraControllerRight("left")));
@@ -254,9 +254,10 @@ public class RobotContainer {
         // return AutoBuilder.buildAuto("Test");
 
         if (board_ext.getRawAxis(1)< -0.5) {
-                 return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0)).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
+                return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0));
+                //return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0)).andThen(new TeleopSwerve(s_Swerve, () -> -0.8 * 2.2 / Constants.Swerve.maxSpeed, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
         } else {
-                return new WaitCommand(0.5).andThen(new TeleopSwerve(s_Swerve, () -> -0.8, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
+                return new WaitCommand(0.5).andThen(new TeleopSwerve(s_Swerve, () -> -0.8 * 2.2/Constants.Swerve.maxSpeed, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
         }
 
     }

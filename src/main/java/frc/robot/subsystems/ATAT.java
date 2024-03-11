@@ -69,8 +69,9 @@ public class ATAT extends SubsystemBase {
     mAngleMotor.getPIDController().setFeedbackDevice(angleEncoder);
     //mAngleMotor.getEncoder().setPosition(0);
     mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
-    //mAngleMotorRight.follow(mAngleMotor,false);
     mAngleMotor.setInverted(false);
+    mAngleMotorRight.follow(mAngleMotor,true);
+
   
 
     CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mFrontLinearSRX, Robot.ctreConfigs.ATAT_frontPostFXConfiguration);
@@ -102,6 +103,7 @@ public class ATAT extends SubsystemBase {
     SmartDashboard.putNumber("desiredBackPostPos", getDesiredBackPostPos());
     SmartDashboard.putNumber("backPostPos", getBackPostPos());
     SmartDashboard.putNumber("Angle Motor Integrated Encoder", mAngleMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("Right Motor output", mAngleMotorRight.getAppliedOutput());
   }
 
   private double desiredFrontPostPos;

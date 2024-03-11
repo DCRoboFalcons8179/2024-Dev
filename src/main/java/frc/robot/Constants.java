@@ -58,8 +58,8 @@ public final class Constants {
         public static final boolean angleEnableCurrentLimit = true;
 
         public static final int driveCurrentLimit = 35;
-        public static final int driveCurrentThreshold = 60;
-        public static final double driveCurrentThresholdTime = 0.1;
+        public static final int driveCurrentThreshold = 40;
+        public static final double driveCurrentThresholdTime = 0.0;
         public static final boolean driveEnableCurrentLimit = true;
 
         /* These values are used by the drive falcon to ramp in open loop and closed loop driving.
@@ -91,7 +91,7 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 2.2;//1 //TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 2.2*1.5;//1 //TODO: This must be tuned to specific robot
         /** Radians per Second */
         public static final double maxAngularVelocity = 4; //TODO: This must be tuned to specific robot
 
@@ -183,7 +183,7 @@ public final class Constants {
         public static final int backPostSRXID  = 33; //TODO: fix this
 
         public static final double frontPostMaxExtension = 6.4;
-        public static final double backPostMaxExtension = 6; //TODO: fix this
+        public static final double backPostMaxExtension = 7; //TODO: fix this
 
         public static final double distanceBetweenPostParts = (1.123);
 
@@ -203,7 +203,7 @@ public final class Constants {
         public static final double l_kD = 0.0;
         public static final double l_kF = 0.0;
 
-        public static final double f_kP = 0.6;
+        public static final double f_kP = 0.4;
         public static final double f_kI = l_kI;
         public static final double f_kD = l_kD;
         public static final double f_kF = l_kF;
@@ -218,7 +218,7 @@ public final class Constants {
         // setpoints
         public static final ATATPose carry = new ATATPose(0, 0, 0);
 
-        public static final ATATPose shootClose = new ATATPose(0, 6, 0);
+        public static final ATATPose shootClose = new ATATPose(0, 6.25, 0);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
         public static final ATATPose shootMedium = new ATATPose(1, 2, 20);
         public static final ATATPose shootFar = new ATATPose(0, 4.5, 0);

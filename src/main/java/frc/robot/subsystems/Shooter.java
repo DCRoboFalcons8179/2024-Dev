@@ -63,6 +63,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Speed", getShooterSpeed());
     SmartDashboard.putNumber("Lead Stator Current", getLeadStatorCurrent());
     SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
+    SmartDashboard.putBoolean("Has Ring", hasRing());
     //System.out.println(hasRing());
   }
 
@@ -98,7 +99,7 @@ public class Shooter extends SubsystemBase {
     if (shooterSetSpeed <= 10) {
       shooterSRX.set(ControlMode.PercentOutput, 0);
     } else {
-      //shooterSRX.set(ControlMode.Velocity, shooterSetSpeed * Constants.ATATConstants.ThroughBoreTickPerRot / 10, DemandType.ArbitraryFeedForward, 0.01);
+      //shooterSRX.set(ControlMode.Velocity, shooterSetSpeed * Constants.ATATConstants.ThroughBoreTickPerRot / 10, DemandType.ArbitraryFeedForward, 0.01);  
       shooterSRX.set(ControlMode.PercentOutput, shooterSetSpeed / Constants.ShooterConstants.shooterWheelMaxRPS, DemandType.ArbitraryFeedForward, 0.008);
     }
   }
