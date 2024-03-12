@@ -27,7 +27,7 @@ public class Shooter extends SubsystemBase {
   private TalonSRX shooterFollowerSRX;
   private VictorSPX beaterBarSPX;
 
-  private final double MAX_SPEED = 70000;
+  private final double MAX_SPEED = Constants.ShooterConstants.shooterSpeed;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -71,7 +71,7 @@ public class Shooter extends SubsystemBase {
     beaterBarSPX.setInverted(InvertType.InvertMotorOutput);
 
 
-    
+
   }
 
   @Override
@@ -114,9 +114,13 @@ public class Shooter extends SubsystemBase {
   }
 
 
+  public void startFeedForward() {
+    beaterBarSetSpeed = 1.0;
+    beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
+  }
 
   public void shoot() {
-    setShootSpeed(MAX_SPEED);
+    setShootSpeed(MAX_SPEED * 0.90);
   }
 
 
@@ -151,13 +155,15 @@ public class Shooter extends SubsystemBase {
     // Important note - this function does not account for overshoot. Make sure to turn the motors 
     // on for 0.20 sec before asking if the motors are at the setpoint
     if 
-      (Math.abs(shooterFollowerSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 1000 
-      && Math.abs(shooterFollowerSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 1000)
-
-      {return true;}
+      (Math.abs(shooterSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 2000 
+      && Math.abs(shooterFollowerSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 2000)
+      {
+        return true;
+      }
 
     return false;
   }
+
 
   public void updateMotors() {
     // Don't use this function. Have your commands call and change motors when you need them to change. 

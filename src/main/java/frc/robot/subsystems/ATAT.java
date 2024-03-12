@@ -7,11 +7,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,48 +35,109 @@ public class ATAT extends SubsystemBase {
   
   public ATAT() {
 
+    // I made this because I was sick of scrolling down for the functions. -Tim
+    bigAnnoyingMotorSetupBlock();
 
-    RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotor, Robot.ctreConfigs.ATAT_angleFXConfiguration);
-    RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotorRight, Robot.ctreConfigs.ATAT_angleFXConfiguration);
+  }
 
-    mAngleMotor.restoreFactoryDefaults();
-    mAngleMotorRight.restoreFactoryDefaults();
 
-    mAngleMotor.setIdleMode(IdleMode.kBrake);
-    mAngleMotorRight.setIdleMode(IdleMode.kBrake);
-    //mAngleMotorRight.setInverted(false);
-    //mAngleMotorRight.follow(mAngleMotor, true); 
+  // Front setpoint
+  private double desiredFrontPostPos;
+
+  public void setDesiredFrontPostPos(double dist) {
+    desiredFrontPostPos = Filter.cutoffFilter(dist, Constants.ATATConstants.frontPostMaxExtension);
+  }
+
+  public double getDesiredFrontPostPos() {
+    return desiredFrontPostPos;
+  }
+  public void setFrontPostPos(double dist /*meters*/) {
+    dist = Filter.cutoffFilter(dist, Constants.ATATConstants.frontPostMaxExtension);
+    double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
+    mFrontLinearSRX.set(ControlMode.Position, rot * Constants.ATATConstants.ThroughBoreTickPerRot);
+  }
+
+  // Back Setpoint
+  private double desiredBackPostPos;
+
+  public void setDesiredBackPostPos(double dist) {
+    desiredBackPostPos = Filter.cutoffFilter(dist, Constants.ATATConstants.backPostMaxExtension);
+  }
+
+  public double getDesiredBackPostPos() {
+    return desiredBackPostPos;
+  }
+
+  public void setBackPostPos(double dist /*meters*/) {
+    dist = Filter.cutoffFilter(dist, Constants.ATATConstants.backPostMaxExtension);
+    double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
+    mBackLinearSRX.set(ControlMode.Position, rot * Constants.ATATConstants.ThroughBoreTickPerRot);
+  }
+
+
+  // Angle Setpoint
+  private double desiredAngle;
+  public void setDesiredAngle(double deg) {
+    desiredAngle = Filter.cutoffFilter(deg, Constants.ATATConstants.maxAngle, Constants.ATATConstants.minAngle);//Constants.ATATConstants.maxAngle);
+  }
+
+  public double getDesiredAngle() {
+    return desiredAngle;
+  }
+
+  public void setAngle(double deg) {
+    deg = Filter.cutoffFilter(deg, Constants.ATATConstants.maxAngle, Constants.ATATConstants.minAngle);
+    double rot = deg / 360;
+    mAngleMotor.getPIDController().setReference(rot, ControlType.kPosition);
+  }
+
+  // Manual Pull Up
+  public void pullUp() {
+
+    // Pull up needs to not use the control loop. Just use the raw power
+    mBackLinearSRX.set(ControlMode.PercentOutput, -0.9);
+    mFrontLinearSRX.set(ControlMode.PercentOutput, -0.9);
+
+    // TBD on if we need this
+    // mAngleMotor.set(0);
+  }
+
+  public void releasePullUp() {
+
+    // release needs to not use the control loop. Just use the raw power
+
+    mBackLinearSRX.set(ControlMode.PercentOutput, 0.2);
+    mFrontLinearSRX.set(ControlMode.PercentOutput, 0.2);
+
+  }
+
+  public void makeThisTheSetpoint() {
+    // Call this to make the current position the new setpoint for the control loops
+    // do NOT continually call this.
     
+    desiredFrontPostPos = getFrontPostPos();
+    desiredBackPostPos = getBackPostPos();
+    desiredAngle = getAngle();
+
+    setAngle(desiredAngle);
+    setFrontPostPos(desiredFrontPostPos);
+    setBackPostPos(desiredBackPostPos);
+
+  }
+
+  //degrees for printing reasons
+  public double getAngle() {
+
+    return angleEncoder.getPosition() * 360;
     
-    //mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
-    //mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
-    
-    angleEncoder = mAngleMotor.getAlternateEncoder(com.revrobotics.SparkMaxAlternateEncoder.Type.kQuadrature , 8192);
+  }
 
-    angleEncoder.setInverted(false);
-    mAngleMotor.getPIDController().setFeedbackDevice(angleEncoder);
-    mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
-    mAngleMotor.setInverted(false);
-    mAngleMotorRight.follow(mAngleMotor,true);
+  public double getFrontPostPos() {
+    return -mFrontLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
+  }
 
-  
-
-    CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mFrontLinearSRX, Robot.ctreConfigs.ATAT_frontPostFXConfiguration);
-    mFrontLinearSRX.setInverted(InvertType.None);
-    mFrontLinearSRX.setSensorPhase(false);
-
-    CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mBackLinearSRX, Robot.ctreConfigs.ATAT_backPostFXConfiguration);
-    mBackLinearSRX.setSensorPhase(true);
-    mBackLinearSRX.setInverted(true);
-
-
-    
-    // mFrontLinearMotor.getConfigurator().apply(Robot.ctreConfigs.ATAT_postFXConfiguration);
-    // mFrontLinearMotor.setNeutralMode(NeutralModeValue.Brake);
-    
-    // mBackLinearMotor.getConfigurator().apply(Robot.ctreConfigs.ATAT_postFXConfiguration);
-    // mBackLinearMotor.setNeutralMode(NeutralModeValue.Brake);
-
+  public double getBackPostPos() {
+    return -mBackLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
   }
 
   @Override
@@ -91,64 +154,100 @@ public class ATAT extends SubsystemBase {
     SmartDashboard.putNumber("Right Motor output", mAngleMotorRight.getAppliedOutput());
   }
 
-  private double desiredFrontPostPos;
-  public void setDesiredFrontPostPos(double dist) {
-    desiredFrontPostPos = Filter.cutoffFilter(dist, Constants.ATATConstants.frontPostMaxExtension);
-  }
 
-  public double getDesiredFrontPostPos() {
-    return desiredFrontPostPos;
-  }
+  private void bigAnnoyingMotorSetupBlock() {
 
-  private double desiredBackPostPos;
-  public void setDesiredBackPostPos(double dist) {
-    desiredBackPostPos = Filter.cutoffFilter(dist, Constants.ATATConstants.backPostMaxExtension);
-  }
+    // Set up Angle motors
+    mAngleMotor.restoreFactoryDefaults();
+    mAngleMotorRight.restoreFactoryDefaults();
 
-  public double getDesiredBackPostPos() {
-    return desiredBackPostPos;
-  }
+    RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotor, Robot.ctreConfigs.ATAT_angleFXConfiguration);
+    RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotorRight, Robot.ctreConfigs.ATAT_angleFXConfiguration);
 
-  private double desiredAngle;
-  public void setDesiredAngle(double deg) {
-    desiredAngle = Filter.cutoffFilter(deg, Constants.ATATConstants.maxAngle, Constants.ATATConstants.minAngle);//Constants.ATATConstants.maxAngle);
-  }
+    mAngleMotor.setIdleMode(IdleMode.kBrake);
+    mAngleMotorRight.setIdleMode(IdleMode.kBrake);
 
-  public double getDesiredAngle() {
-    return desiredAngle;
-  }
+    // Set up Current Limits for ALL NEOs
+    mAngleMotor.setSmartCurrentLimit(30, 30);
+    mAngleMotorRight.setSmartCurrentLimit(30, 30);
 
-  public void setFrontPostPos(double dist /*meters*/) {
-    dist = Filter.cutoffFilter(dist, Constants.ATATConstants.frontPostMaxExtension);
-    double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
-    mFrontLinearSRX.set(ControlMode.Position, rot * Constants.ATATConstants.ThroughBoreTickPerRot, DemandType.ArbitraryFeedForward, 0.008);
-  }
+    // From Tim - NEED THESE TODO. Otherwise you will destroy yourself on Hang command
 
-  public void setBackPostPos(double dist /*meters*/) {
-    dist = Filter.cutoffFilter(dist, Constants.ATATConstants.backPostMaxExtension);
-    double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
-    mBackLinearSRX.set(ControlMode.Position, rot * Constants.ATATConstants.ThroughBoreTickPerRot, DemandType.ArbitraryFeedForward, 0.008);
-  }
+    // mAngleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    // mAngleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    // mAngleMotorRight.enableSoftLimit(SoftLimitDirection.kForward, true);
+    // mAngleMotorRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-  public void setAngle(double deg) {
-    deg = Filter.cutoffFilter(deg, Constants.ATATConstants.maxAngle, Constants.ATATConstants.minAngle);
-    double rot = deg / 360;
-    mAngleMotor.getPIDController().setReference(rot, ControlType.kPosition);
-  }
+    // mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
+    // mAngleMotorRight.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
+    // mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
+    // mAngleMotorRight.setSoftLimit(SoftLimitDirection.kReverse, 0);
 
-  //degrees for printing reasons
-  public double getAngle() {
+    // Angle Remote encoder setup
+    angleEncoder = mAngleMotor.getAlternateEncoder(com.revrobotics.SparkMaxAlternateEncoder.Type.kQuadrature , 8192);
+    angleEncoder.setInverted(false);
 
-    return angleEncoder.getPosition() * 360;
+    // Angle motor control loop setups
+    mAngleMotor.getPIDController().setFeedbackDevice(angleEncoder);
+    mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
+    mAngleMotor.setInverted(false);
+    mAngleMotorRight.follow(mAngleMotor,true);
+
+    // Need to do this line to apply settings
+    mAngleMotor.burnFlash();
+    mAngleMotorRight.burnFlash();
+  
+    // Set up Front Motor Control
+    CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mFrontLinearSRX, Robot.ctreConfigs.ATAT_frontPostFXConfiguration);
     
-  }
+    mFrontLinearSRX.setNeutralMode(NeutralMode.Brake);
+    
+    mFrontLinearSRX.setInverted(InvertType.None);
+    mFrontLinearSRX.setSensorPhase(false);
 
-  public double getFrontPostPos() {
-    return -mFrontLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
-  }
+    // From Tim - Use these functions to set up "minimum output value"
+    // And Max usable value to get over static friction
+    mFrontLinearSRX.configNominalOutputForward(0.01);
+    mFrontLinearSRX.configNominalOutputReverse(-0.01);
 
-  public double getBackPostPos() {
-    return -mBackLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
+    mFrontLinearSRX.configPeakOutputForward(1.0);
+    mFrontLinearSRX.configPeakOutputReverse(-1.0);
+
+    // TODO: GET SOFTWARE LIMITS
+    // mFrontLinearSRX.configForwardSoftLimitEnable(true);
+    // mFrontLinearSRX.configReverseSoftLimitEnable(true);
+    // mFrontLinearSRX.configReverseSoftLimitThreshold(0);
+    // mFrontLinearSRX.configForwardSoftLimitThreshold(0);
+
+
+
+    // Set up rear encoder control
+    CTREConfigs.configureSRXPIDFfromTalonFXPIDV(mBackLinearSRX, Robot.ctreConfigs.ATAT_backPostFXConfiguration);
+    
+
+
+    mBackLinearSRX.setNeutralMode(NeutralMode.Brake);
+
+    
+    mBackLinearSRX.setSensorPhase(true);
+    mBackLinearSRX.setInverted(true);
+
+    // From Tim - Use these functions to set up "minimum output value"
+    // And Max usable value to get over static friction
+    mBackLinearSRX.configNominalOutputForward(0.01);
+    mBackLinearSRX.configNominalOutputReverse(-0.01);
+
+    mBackLinearSRX.configPeakOutputForward(1.0);
+    mBackLinearSRX.configPeakOutputReverse(-1.0);
+
+    // TODO: GET SOFTWARE LIMITS
+    // mBackLinearSRX.configForwardSoftLimitEnable(true);
+    // mBackLinearSRX.configReverseSoftLimitEnable(true);
+    // mBackLinearSRX.configReverseSoftLimitThreshold(0);
+    // mBackLinearSRX.configForwardSoftLimitThreshold(0);
+
+
+
   }
 
 
