@@ -7,10 +7,8 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.proto.System;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.COTSTalonFXSwerveConstants;
@@ -245,10 +243,10 @@ public final class Constants {
         public static final double shooterMotorMaxRPS = 100d; //rotations per second
         public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
 
-        public static final double kP = 0.035;
-        public static final double kI = 0.0003;
+        public static final double kP = 0.012;
+        public static final double kI = 0.00008;
         public static final double kD = 0;
-        public static final double kF = 0.015;
+        public static final double kF = 0;
 
         public static final double shooterSpeed = 0;
         public static final double beaterBarFSpeed = 1;

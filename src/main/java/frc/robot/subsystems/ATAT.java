@@ -8,30 +8,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.MusicTone;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ControlModeValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.EncoderType;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkRelativeEncoder.Type;
-
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.math.Filter;
@@ -51,8 +32,13 @@ public class ATAT extends SubsystemBase {
 
   
   public ATAT() {
+
+
     RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotor, Robot.ctreConfigs.ATAT_angleFXConfiguration);
     RevConfigs.configureSparksPIDFFromTalonPIDV(mAngleMotorRight, Robot.ctreConfigs.ATAT_angleFXConfiguration);
+
+    mAngleMotor.restoreFactoryDefaults();
+    mAngleMotorRight.restoreFactoryDefaults();
 
     mAngleMotor.setIdleMode(IdleMode.kBrake);
     mAngleMotorRight.setIdleMode(IdleMode.kBrake);
@@ -63,11 +49,10 @@ public class ATAT extends SubsystemBase {
     //mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
     //mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
     
-    angleEncoder = mAngleMotor.getAlternateEncoder(com.revrobotics.SparkMaxAlternateEncoder.Type.kQuadrature, 8192);
+    angleEncoder = mAngleMotor.getAlternateEncoder(com.revrobotics.SparkMaxAlternateEncoder.Type.kQuadrature , 8192);
 
     angleEncoder.setInverted(false);
     mAngleMotor.getPIDController().setFeedbackDevice(angleEncoder);
-    //mAngleMotor.getEncoder().setPosition(0);
     mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
     mAngleMotor.setInverted(false);
     mAngleMotorRight.follow(mAngleMotor,true);

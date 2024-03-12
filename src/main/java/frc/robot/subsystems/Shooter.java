@@ -8,15 +8,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix6.controls.CoastOut;
-import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.compound.Diff_VelocityVoltage_Velocity;
-import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,27 +27,51 @@ public class Shooter extends SubsystemBase {
   private TalonSRX shooterFollowerSRX;
   private VictorSPX beaterBarSPX;
 
+  private final double MAX_SPEED = 70000;
+
   /** Creates a new Shooter. */
   public Shooter() {
     shooterSRX = new TalonSRX(Constants.ShooterConstants.shooterLeadMotorID);
     shooterFollowerSRX = new TalonSRX(Constants.ShooterConstants.shooterFollowMotorID);
     beaterBarSPX = new VictorSPX(Constants.ShooterConstants.beaterBarMotorID);
 
+    shooterSRX.configFactoryDefault();
+    shooterFollowerSRX.configFactoryDefault();
+
     CTREConfigs.configureSRXPIDFfromTalonFXPIDV(shooterSRX, Robot.ctreConfigs.Shooter_shooterFXConfiguration);
     CTREConfigs.configureSRXPIDFfromTalonFXPIDV(shooterFollowerSRX, Robot.ctreConfigs.Shooter_shooterFXConfiguration);
-    shooterSRX.setSensorPhase(true);
 
-    shooterSRX.configVoltageCompSaturation(12.15);
-    shooterFollowerSRX.configVoltageCompSaturation(12.15);
+
+    // Configrue shooter motors
+
+
+
+    shooterSRX.setInverted(true);
+    shooterFollowerSRX.setInverted(false);
+
+
+    shooterSRX.setSensorPhase(false);
+    shooterFollowerSRX.setSensorPhase(false);
+
+    // 12.0 is more realistic
+    shooterSRX.configVoltageCompSaturation(12.0);
+    shooterFollowerSRX.configVoltageCompSaturation(12.0);
 
     shooterSRX.setNeutralMode(NeutralMode.Coast);
+    shooterFollowerSRX.setNeutralMode(NeutralMode.Coast);
+
     beaterBarSPX.setNeutralMode(NeutralMode.Brake);
+  
     
-    shooterSRX.setInverted(InvertType.None);
-    shooterFollowerSRX.follow(shooterSRX);
-    shooterFollowerSRX.setInverted(InvertType.FollowMaster);
+
+    // Shooter does NOT follow.
+    // shooterFollowerSRX.follow(shooterSRX);
+    // shooterFollowerSRX.setInverted(InvertType.FollowMaster);
 
     beaterBarSPX.setInverted(InvertType.InvertMotorOutput);
+
+
+    
   }
 
   @Override
@@ -68,11 +85,14 @@ public class Shooter extends SubsystemBase {
   }
 
   private double shooterSetSpeed; // rotations per second
+  
   public void setShooterSpeed(double speed) {
+    /* Dont do this. See other functions. */
     shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS, -Constants.ShooterConstants.shooterWheelMaxRPS);
   }
 
   public double getShooterSpeed() {
+    /* Dont do this. See other functions. */
     return -shooterSRX.getSelectedSensorVelocity() * 1.0d / Constants.ATATConstants.ThroughBoreTickPerRot * 10;
   }
 
@@ -93,7 +113,55 @@ public class Shooter extends SubsystemBase {
     return beaterBarSetSpeed;
   }
 
+
+
+  public void shoot() {
+    setShootSpeed(MAX_SPEED);
+  }
+
+
+  public void setShootSpeed(double inSpeed) {
+    shooterSRX.set(ControlMode.Velocity, inSpeed);
+    shooterFollowerSRX.set(ControlMode.Velocity, inSpeed);
+
+    shooterSetSpeed = inSpeed;
+    
+  }
+
+
+  public void stopShooter() {
+    shooterSRX.set(ControlMode.PercentOutput, 0);
+    shooterFollowerSRX.set(ControlMode.PercentOutput, 0);
+
+    shooterSetSpeed = 0;
+  }
+
+  public void stopBeaterbar() {
+    beaterBarSetSpeed = 0;
+    beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
+
+  }
+
+  public void stop() {
+    stopShooter();
+    stopBeaterbar();
+  }
+
+  public boolean isAtSpeed() {
+    // Important note - this function does not account for overshoot. Make sure to turn the motors 
+    // on for 0.20 sec before asking if the motors are at the setpoint
+    if 
+      (Math.abs(shooterFollowerSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 1000 
+      && Math.abs(shooterFollowerSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 1000)
+
+      {return true;}
+
+    return false;
+  }
+
   public void updateMotors() {
+    // Don't use this function. Have your commands call and change motors when you need them to change. 
+
     beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
 
     if (shooterSetSpeed <= 10) {
@@ -103,6 +171,8 @@ public class Shooter extends SubsystemBase {
       shooterSRX.set(ControlMode.PercentOutput, shooterSetSpeed / Constants.ShooterConstants.shooterWheelMaxRPS, DemandType.ArbitraryFeedForward, 0.008);
     }
   }
+
+
 
   public boolean hasRing() {
     return !limitSwitch.get();

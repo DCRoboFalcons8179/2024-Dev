@@ -1,30 +1,14 @@
 package frc.robot;
 
-import java.io.FileWriter;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathCommand;
-import com.pathplanner.lib.commands.FollowPathHolonomic;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.commands.PathfindingCommand;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -169,15 +153,15 @@ public class RobotContainer {
                 povUp.onTrue(new InstantCommand(() -> cameras.topCam()));
                 povDown.onTrue(new InstantCommand(() -> cameras.bottomCam()));
 
-        // Set Point Buttons
-        closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
-        mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
-        farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
-        ampSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint));
-        carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
-        pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
-        humanPickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpHumanPlayer));
-        hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
+                // Set Point Buttons
+                closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
+                mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
+                farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
+                ampSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint));
+                carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
+                pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
+                humanPickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpHumanPlayer));
+                hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
                 // Manual Buttons
                 frontPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() + .25,
@@ -230,6 +214,15 @@ public class RobotContainer {
         }
 
         private void configureLogger() {
+
+        }
+
+
+        public Command getStopState() {
+                // This command runs when the system is disabled. It stops any and all motors.
+
+                Command stops = new InstantCommand(() -> shooter.stop());
+                return stops;
 
         }
 
