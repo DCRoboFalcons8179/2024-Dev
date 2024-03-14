@@ -15,6 +15,7 @@ public final class RevConfigs {
     public final double angle_kD = Constants.Swerve.angleKD;
 
 
+// Sets PID Stuff wahoo
     public static final void configureSparksPIDFFromTalonPIDV(CANSparkMax motor, TalonFXConfiguration talonConfig) {
         motor.getPIDController().setP(talonConfig.Slot0.kP);
         motor.getPIDController().setI(talonConfig.Slot0.kI);

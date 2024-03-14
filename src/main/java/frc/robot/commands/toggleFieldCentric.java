@@ -12,6 +12,10 @@ public class toggleFieldCentric extends Command {
 
   Swerve s_Swerve;
 
+  /**
+   * Toggles Field Centric.
+   * @param s_Swerve
+   */
   public toggleFieldCentric(Swerve s_Swerve) {
     // Use addRequirements() here to declare subsystem dependencies.
 

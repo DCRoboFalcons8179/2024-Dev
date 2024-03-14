@@ -14,12 +14,25 @@ public class RequestBeaterBarSetSpeed extends Command {
   private Shooter shooter;
   private double speed;
   private boolean waitForRing = false;
+
+  /**
+   * Requests a percent output on the beater bar.
+   * 
+   * @param shooter
+   * @param speed
+   */
   public RequestBeaterBarSetSpeed(Shooter shooter, double speed) {
     this.speed = speed;
     this.shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  /**
+   * Requests a percent output on the beater bar. Option to wait for the beater bar to pick up a ring.
+   * @param shooter
+   * @param speed
+   * @param waitForRing
+   */
   public RequestBeaterBarSetSpeed(Shooter shooter, double speed, boolean waitForRing) {
     this(shooter, speed);
     this.waitForRing = waitForRing;

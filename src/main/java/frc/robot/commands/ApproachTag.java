@@ -42,29 +42,29 @@ public class ApproachTag extends Command {
 
 
   /**
-   * <p>s_Swerve = Swerve object
+   * @param s_Swerve = Swerve object
    * 
-   * <p>limelight = limelight object
+   * @param limelight = limelight object
    *
-   * <p>MAX_MAGNITUDE = when the robot should start curving speed. D: double [0, inf]
+   * @param MAX_MAGNITUDE = when the robot should start curving speed. D: double [0, inf]
    * 
-   * <p>MAX_ROT = when the robot should start slowing down rotation. D: double [0, inf]
+   * @param MAX_ROT = when the robot should start slowing down rotation. D: double [0, inf]
    * 
-   * <p>MAX_TRANSLATION_SPEED (meters / second). D: double [0, inf]
+   * @param MAX_TRANSLATION_SPEED (meters / second). D: double [0, inf]
    * 
-   * <p>MAX_ROTATION_SPEED (degrees / second). D: double [0, inf]
+   * @param MAX_ROTATION_SPEED (degrees / second). D: double [0, inf]
    * 
-   * ><p>TRANSLATION_DEADBAND = how far from the desired distance from the tag the bot can be (meters). D: double [0, inf]
+   * @param TRANSLATION_DEADBAND = how far from the desired distance from the tag the bot can be (meters). D: double [0, inf]
    * 
-   * <p>ROTATION_DEADBAND = how far off from the desired rotation the bot can be (degrees). D: double [0, inf]
+   * @param ROTATION_DEADBAND = how far off from the desired rotation the bot can be (degrees). D: double [0, inf]
    * 
-   * <p>MAX_CYCLES_WITHOUT_TAG = how many cycles the command can run without seeing a tag before it stops. Prevents the robot from losing the tag for a few frames then stopping, but can make the robot keep moving when it actually loses sight of a tag. D: int [0, inf]
+   * @param MAX_CYCLES_WITHOUT_TAG = how many cycles the command can run without seeing a tag before it stops. Prevents the robot from losing the tag for a few frames then stopping, but can make the robot keep moving when it actually loses sight of a tag. D: int [0, inf]
    * 
-   * <p>OFFSET_FROM_TAG = offset from tag, (X, Z) (meters). negative x is to the left, negative z is into the stage. D: Translation2d([-inf, inf], [-inf, inf])
+   * @param OFFSET_FROM_TAG = offset from tag, (X, Z) (meters). negative x is to the left, negative z is into the stage. D: Translation2d([-inf, inf], [-inf, inf])
    * 
-   * <p>ROTATION_FROM_TAG = offset from tag, negative = counterclockwise. D: double [-inf, inf]
+   * @param ROTATION_FROM_TAG = offset from tag, negative = counterclockwise. D: double [-inf, inf]
    * 
-   * <p>Swings wide if it is in robot-centric (due to desired vector being offset by the angle the robot is facing to the tag). Not yet ready to support field centric.
+   * @param Swings wide if it is in robot-centric (due to desired vector being offset by the angle the robot is facing to the tag). Not yet ready to support field centric.
    */
   public ApproachTag(Swerve s_Swerve, Limelight limelight, double MAX_MAG, double MAX_ROT, double MAX_TRANSLATION_SPEED, double MAX_ROTATION_SPEED, double TRANSLATION_DEADBAND, double ROTATION_DEADBAND, int MAX_CYCLES_WITHOUT_TAG, Translation2d OFFSET_FROM_TAG, double ROTATION_FROM_TAG, boolean SWING_WIDE) {
     // Use addRequirements() here to declare subsystem dependencies.

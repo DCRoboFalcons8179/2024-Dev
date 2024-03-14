@@ -9,6 +9,7 @@ import frc.lib.math.Filter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Cameras;
 
+// Useless now as PETER decided he didn't want the cameras this way :(
 public class CameraPublisher extends Command {
     private Cameras camera;
     private Swerve swerve;

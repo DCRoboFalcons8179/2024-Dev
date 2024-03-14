@@ -105,7 +105,7 @@ public class RobotContainer {
                 // Shooter control
                 //shooter.setDefaultCommand(new SetShooterStates(shooter));
 
-                // Sets the camera zones unused currently
+                // Sets the camera zones unused currently thanks to PETER :(
                 // cameras.setDefaultCommand(
                 //                 new CameraPublisher(cameras, s_Swerve, () -> -driver.getRawAxis(translationAxis),
                 //                                 () -> driver.getRawAxis(strafeAxis)));
@@ -144,11 +144,15 @@ public class RobotContainer {
                 //                 new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed));
                 // rightTriggerPressed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 
+                // Sets beater bar speed
                 // feed.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.feedSpeed));
                 // feed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 
+                // Hanging commands wahoo :)
                 // hang.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangPull));
                 // hang.onFalse(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
+
+                // Changes the right camera
                 // povUp.onTrue(new InstantCommand(() -> cameras.topCam()));
                 // povDown.onTrue(new InstantCommand(() -> cameras.bottomCam()));
 
@@ -185,15 +189,9 @@ public class RobotContainer {
                 //                 .andThen(new RequestBeaterBarSetSpeed(shooter, 0)));
                 // beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
 
-                // // Cam killer and saver
-                // camKiller.onTrue(new InstantCommand(() -> cameras.cameraKiller()));
-                // camSaver.onTrue(new InstantCommand(() -> cameras.cameraSaver()));
+                // // Cam Toggling
                 // camToggler.onTrue(new InstantCommand(() -> cameras.cameraToggler()));
 
-                // dualShockPovLeft.onTrue(new InstantCommand(() ->
-                // cameras.cameraControllerRight("left")));
-                // dualShockPovRight.onTrue(new InstantCommand(() ->
-                // cameras.cameraControllerRight("right")));
                 /*
                  * approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 0.8, 20,
                  * 1, 1,
@@ -216,6 +214,7 @@ public class RobotContainer {
 
         }
 
+// Diagnostic Shuffleboard Stuff
         private void diagnostics() {
                 
                 Shuffleboard.getTab("testTab").add(shooter);
@@ -257,6 +256,7 @@ public class RobotContainer {
         //         //return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0)).andThen(new TeleopSwerve(s_Swerve, () -> -0.8 * 2.2 / Constants.Swerve.maxSpeed, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
         // } else
         {
+                // waits .5 seconds then moves the swere and waits again
                 return new WaitCommand(0.5).andThen(new TeleopSwerve(s_Swerve, () -> -0.8 * 2.2/Constants.Swerve.maxSpeed, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
         }
 

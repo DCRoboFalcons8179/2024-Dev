@@ -42,9 +42,6 @@ public class Shooter extends SubsystemBase {
     CTREConfigs.configureSRXPIDFfromTalonFXPIDV(shooterFollowerSRX, Robot.ctreConfigs.Shooter_shooterFXConfiguration);
 
 
-    // Configrue shooter motors
-
-
 
     shooterSRX.setInverted(true);
     shooterFollowerSRX.setInverted(false);
@@ -85,30 +82,49 @@ public class Shooter extends SubsystemBase {
   }
 
   private double shooterSetSpeed; // rotations per second
-  
+  /**
+   * Updates the desired set speed of the shooter. 
+   * @param speed
+   */
   public void setShooterSpeed(double speed) {
     /* Dont do this. See other functions. */
     shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS, -Constants.ShooterConstants.shooterWheelMaxRPS);
   }
-
+  /**
+   * @return desired set speed of the shooter.
+   */
   public double getShooterSpeed() {
     /* Dont do this. See other functions. */
     return -shooterSRX.getSelectedSensorVelocity() * 1.0d / Constants.ATATConstants.ThroughBoreTickPerRot * 10;
   }
 
+  /**
+   * debugging
+   * @return current of the main shooter
+   */
   public double getLeadStatorCurrent() {
     return shooterSRX.getStatorCurrent();
   }
 
+  /**
+   * @return desired speed of the shooter.
+   */
   public double getShooterSetSpeed() {
     return shooterSetSpeed;
   }
 
   private double beaterBarSetSpeed; // [-1, 1]
+  /**
+   * Updates the desired speed of the beater bar [-1, 1]
+   * @param speed
+   */
   public void setBeaterBarSpeed(double speed) {
       beaterBarSetSpeed = Filter.cutoffFilter(speed);
   } 
 
+  /**
+   * @return desired speed of the beater bar [-1, 1]
+   */
   public double getBeaterBarSpeed() {
     return beaterBarSetSpeed;
   }
@@ -116,7 +132,7 @@ public class Shooter extends SubsystemBase {
 
   public void startFeedForward() {
     beaterBarSetSpeed = 1.0;
-    beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
+    beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed); // should be handled by SetShooterStates
   }
 
   public void shoot() {
@@ -125,11 +141,10 @@ public class Shooter extends SubsystemBase {
 
 
   public void setShootSpeed(double inSpeed) {
-    shooterSRX.set(ControlMode.Velocity, inSpeed);
+    shooterSRX.set(ControlMode.Velocity, inSpeed); //feed forward?
     shooterFollowerSRX.set(ControlMode.Velocity, inSpeed);
 
     shooterSetSpeed = inSpeed;
-    
   }
 
 
@@ -179,8 +194,9 @@ public class Shooter extends SubsystemBase {
   }
 
 
-
+  //im glad you had no problem with this method
   public boolean hasRing() {
     return !limitSwitch.get();
   }
+
 }

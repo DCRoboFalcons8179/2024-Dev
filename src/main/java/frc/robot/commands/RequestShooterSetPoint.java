@@ -17,11 +17,22 @@ public class RequestShooterSetPoint extends Command {
   private DoubleSupplier speed;
   private boolean instant;
 
+  /**
+   * Requests a shooter speed [-100, 100]. Percent output for now, until encoders work.
+   * <p> Allows for constant updating of speed using a supplier.
+   * @param shooter
+   * @param speed
+   */
   public RequestShooterSetPoint(Shooter shooter, DoubleSupplier speed) {
     this.shooter = shooter;
     this.speed = speed;
   }
   
+  /**
+   * Requests a shooter speed [-100, 100]. Percent output for now, until encoders work.
+   * @param shooter
+   * @param speed
+   */
   public RequestShooterSetPoint(Shooter shooter, double speed) {
     this(shooter, () -> speed);
     this.instant = true;

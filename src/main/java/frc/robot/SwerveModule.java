@@ -43,6 +43,7 @@ public class SwerveModule {
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         
+        // Sets the module number and constants to the variables in the class
         this.moduleNumber = moduleNumber;
         this.moduleConstants = moduleConstants;
         
@@ -61,21 +62,24 @@ public class SwerveModule {
         */
         m_turningEncoder = mAngleMotor.getEncoder();
 
-
         mAngleMotor.restoreFactoryDefaults();
 
         // m_turningPIDController = mAngleMotor.getPIDController();
 
         // m_turningPIDController.setFeedbackDevice(m_turningEncoder);
 
+
+        //PID and wrapping.
         mAngleMotor.getPIDController().setP(Robot.revConfigs.angle_kP);
         mAngleMotor.getPIDController().setI(Robot.revConfigs.angle_kI);
         mAngleMotor.getPIDController().setD(Robot.revConfigs.angle_kD);
         mAngleMotor.getPIDController().setFF(Robot.ctreConfigs.swerveAngleFXConfig.Slot0.kV);
-        mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(true);
 
+        //PositionPIDWrapping allows for the wrapping by the PID controller to follow what the CANCoder expects.
+        mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(true);
         mAngleMotor.getPIDController().setPositionPIDWrappingMaxInput( Constants.Swerve.angleGearRatio / 2);
         mAngleMotor.getPIDController().setPositionPIDWrappingMinInput(-Constants.Swerve.angleGearRatio / 2);
+        
         
         mAngleMotor.getEncoder(Type.kHallSensor, 1);
         mAngleMotor.getEncoder().setPositionConversionFactor(1);

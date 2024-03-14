@@ -11,6 +11,10 @@ public class zeroGyro extends Command {
   /** Creates a new zeroGyro. */
 
   Swerve s_Swerve;
+  /**
+   * Zeroes the gyro for field-centric uses.
+   * @param s_Swerve
+   */
   public zeroGyro(Swerve s_Swerve) {
     this.s_Swerve = s_Swerve;
   }

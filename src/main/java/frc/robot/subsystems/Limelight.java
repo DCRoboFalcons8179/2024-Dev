@@ -67,19 +67,29 @@ public class Limelight extends SubsystemBase {
 
   }
 
+  /**
+   * @return tag seen by limelight. -1 if there is no tag.
+   */
   public long getTagId() {
 
     return limelightTable.getEntry("tid").getInteger(-1);
 
   }
 
-  public Rotation3d rotationFromTag() {
-      return LimelightHelpers.getBotPose3d_TargetSpace("limelight").getRotation();
-    }
 
-    public Translation3d offsetFromTag() {
-      return LimelightHelpers.getBotPose3d_TargetSpace("limelight").getTranslation();
-    }
+  /**
+   * @return rotation from the seen tag
+   */
+  public Rotation3d rotationFromTag() {
+    return LimelightHelpers.getBotPose3d_TargetSpace("limelight").getRotation();
+  }
+
+  /**
+   * @return translation from seen tag.
+   */
+  public Translation3d offsetFromTag() {
+    return LimelightHelpers.getBotPose3d_TargetSpace("limelight").getTranslation();
+  }
 
 
 }

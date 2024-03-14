@@ -44,13 +44,26 @@ public class ATAT extends SubsystemBase {
   // Front setpoint
   private double desiredFrontPostPos;
 
+  /**
+   * Updates the desired position of the front post, which it constantly tries to go to.
+   * @param dist
+   */
   public void setDesiredFrontPostPos(double dist) {
     desiredFrontPostPos = Filter.cutoffFilter(dist, Constants.ATATConstants.frontPostMaxExtension);
   }
 
+  /**
+   * @return desired position of the front post.
+   */
   public double getDesiredFrontPostPos() {
     return desiredFrontPostPos;
   }
+
+  /**
+   * Sets the motors to drive to the desired front post position. 
+   * <p>Should not be used outside of a command that requires ATAT.
+   * @param dist
+   */
   public void setFrontPostPos(double dist /*meters*/) {
     dist = Filter.cutoffFilter(dist, Constants.ATATConstants.frontPostMaxExtension);
     double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
@@ -60,14 +73,26 @@ public class ATAT extends SubsystemBase {
   // Back Setpoint
   private double desiredBackPostPos;
 
+  /**
+   * Updates the desired position of the back post, which it constantly tries to go to.
+   * @param dist
+   */
   public void setDesiredBackPostPos(double dist) {
     desiredBackPostPos = Filter.cutoffFilter(dist, Constants.ATATConstants.backPostMaxExtension);
   }
 
+  /**
+   * @return desired position of the back post.
+   */
   public double getDesiredBackPostPos() {
     return desiredBackPostPos;
   }
 
+  /**
+   * Sets the motors to drive to the desired back post position.
+   * <p>Should not be used outside of a command that requires ATAT.
+   * @param dist
+   */
   public void setBackPostPos(double dist /*meters*/) {
     dist = Filter.cutoffFilter(dist, Constants.ATATConstants.backPostMaxExtension);
     double rot = dist / Constants.ATATConstants.distanceBetweenPostParts / 2 / Math.PI;
@@ -77,21 +102,35 @@ public class ATAT extends SubsystemBase {
 
   // Angle Setpoint
   private double desiredAngle;
+  /**
+   * Updates the desired position of the angle, which it constantly tries to go to. 
+   * <p><b>THIS IS DEGREES DOWN FROM STARTING POSITION. IT DOES NOT START AT 90.
+   * </b><p> Soft and hard limits are in place so it shouldn't break.
+   * @param deg
+   */
   public void setDesiredAngle(double deg) {
     desiredAngle = Filter.cutoffFilter(deg, Constants.ATATConstants.maxAngle, Constants.ATATConstants.minAngle);//Constants.ATATConstants.maxAngle);
   }
 
+  /**
+   * @return the desired angle of the ATAT.
+   */
   public double getDesiredAngle() {
     return desiredAngle;
   }
 
+  /**
+   * Sets the angle motors to move to the desired angle.
+   * <p>Should not be used outside of a command that requires ATAT.
+   * @param deg
+   */
   public void setAngle(double deg) {
     deg = Filter.cutoffFilter(deg, Constants.ATATConstants.maxAngle, Constants.ATATConstants.minAngle);
     double rot = deg / 360;
     mAngleMotor.getPIDController().setReference(rot, ControlType.kPosition);
   }
 
-  // Manual Pull Up
+  /** Manual Pull Up */
   public void pullUp() {
 
     // Pull up needs to not use the control loop. Just use the raw power
@@ -125,17 +164,26 @@ public class ATAT extends SubsystemBase {
 
   }
 
-  //degrees for printing reasons
+  /**
+   * @return angle position in degrees
+   */
   public double getAngle() {
 
     return angleEncoder.getPosition() * 360;
     
   }
 
+  /**
+   * @return front post position in inches.
+   */
   public double getFrontPostPos() {
     return -mFrontLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
   }
-
+  
+  /**
+   * 
+   * @return back post position in inches
+   */
   public double getBackPostPos() {
     return -mBackLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
   }
@@ -156,6 +204,8 @@ public class ATAT extends SubsystemBase {
 
 
   private void bigAnnoyingMotorSetupBlock() {
+
+    // i think it's beautiful
 
     // Set up Angle motors
     mAngleMotor.restoreFactoryDefaults();
