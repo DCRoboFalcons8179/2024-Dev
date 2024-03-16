@@ -199,10 +199,11 @@ public final class Constants {
         public static final double backPostGearRatio = 90;
         public static final double angleGearRatio = 185d/3;
 
-        public static final double a_kP = 3.6 * 0.85; //TODO: configure after weight is added onto ATAT
-        public static final double a_kI = 0.0;
-        public static final double a_kD = 0.01;
+        public static final double a_kP = 3.6;
+        public static final double a_kI = 0.0004;
+        public static final double a_kD = 0.0;
         public static final double a_kF = 0.0;
+
 
         public static final double l_kP = 0.4;
         public static final double l_kI = 0.0;

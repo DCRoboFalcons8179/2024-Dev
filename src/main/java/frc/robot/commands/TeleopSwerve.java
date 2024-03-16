@@ -44,11 +44,16 @@ public class TeleopSwerve extends Command {
             strafeVal = 0;
         }
 
+
+
         rotationVal = Filter.deadband(rotationVal, 0.08);
 
         double mag = new Translation2d(translationVal, strafeVal).getNorm();
         mag = Filter.powerCurve(mag, 3);
         rotationVal = Filter.powerCurve(rotationVal, 3);
+
+        
+
 
 
         /* Drive */

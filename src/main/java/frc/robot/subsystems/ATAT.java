@@ -221,7 +221,6 @@ public class ATAT extends SubsystemBase {
     mAngleMotor.setSmartCurrentLimit(30, 30);
     mAngleMotorRight.setSmartCurrentLimit(30, 30);
 
-    // From Tim - NEED THESE TODO. Otherwise you will destroy yourself on Hang command
 
     mAngleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     mAngleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -232,16 +231,18 @@ public class ATAT extends SubsystemBase {
     mAngleMotor.enableVoltageCompensation(12.0);
     mAngleMotorRight.enableVoltageCompensation(12.0);
 
-    mAngleMotor.getPIDController().setOutputRange(-0.5, 0.4);
+    mAngleMotor.getPIDController().setOutputRange(-0.7, 0.7);
 
+    // mAngleMotor.getPIDController().
     // Angle Remote encoder setup
     angleEncoder = mAngleMotor.getAlternateEncoder(com.revrobotics.SparkMaxAlternateEncoder.Type.kQuadrature , 8192);
     angleEncoder.setInverted(false);
-
+    
     // Angle motor control loop setups
     mAngleMotor.getPIDController().setFeedbackDevice(angleEncoder);
     mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
     mAngleMotor.setInverted(false);
+    
     mAngleMotorRight.follow(mAngleMotor,true);
 
     // Need to do this line to apply settings

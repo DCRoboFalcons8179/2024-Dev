@@ -55,7 +55,7 @@ public class RobotContainer {
         // XboxController.Button.kA.value);
         // private final JoystickButton bButton = new JoystickButton(driver,
         // XboxController.Button.kB.value);
-        private final JoystickButton hangSetPoint = new JoystickButton(board, 2);
+        private final JoystickButton hangPullUp = new JoystickButton(board, 2);
         private final JoystickButton ampSetPoint = new JoystickButton(board, 5);
         private final JoystickButton pickUpSetPoint = new JoystickButton(board, 3);
     private final JoystickButton humanPickUpSetPoint = new JoystickButton(board_ext, 6);
@@ -65,7 +65,7 @@ public class RobotContainer {
         private final JoystickButton closeSetPoint = new JoystickButton(board, 8);
         private final JoystickButton beaterBarF = new JoystickButton(board, 4);
         private final JoystickButton beaterBarB = new JoystickButton(board, 7);
-        private final JoystickButton hang = new JoystickButton(board, 1);
+        private final JoystickButton hangPoint = new JoystickButton(board, 1);
         private final JoystickButton feed = new JoystickButton(board, 12);
         private final JoystickButton shoot = new JoystickButton(board, 11);
         private final JoystickButton frontPostManualUp = new JoystickButton(board_ext, 12);
@@ -133,8 +133,12 @@ public class RobotContainer {
                 // shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
                 // bButton.onFalse(new InstantCommand(() ->
                 // shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
+                
+                
                 zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-
+                
+                
+                
                 // Non-Set Point Buttons
                 // shoot.whileTrue(new RequestShooterSetPoint(shooter, Constants.ShooterConstants.shooterSpeed));                
                 // shoot.onFalse(new RequestShooterSetPoint(shooter, 0));
@@ -146,8 +150,7 @@ public class RobotContainer {
                 beaterBarB.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
                 beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 
-                beaterBarF.onTrue(
-                                 new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed));
+                beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0.6, true).andThen(new RequestBeaterBarSetSpeed(shooter, 0.0)));
                 beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 
                 // Sets beater bar speed
@@ -155,8 +158,9 @@ public class RobotContainer {
                 // feed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 
                 // Hanging commands wahoo :)
-                // hang.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangPull));
-                // hang.onFalse(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
+                hangPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
+
+                hangPullUp.whileTrue(new pullDownOnChain(atat));
 
                 // Changes the right camera
                 // povUp.onTrue(new InstantCommand(() -> cameras.topCam()));
@@ -166,7 +170,7 @@ public class RobotContainer {
                 closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
                 // mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
                 // farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
-                ampSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint));
+                ampSetPoint.onTrue(new AmpSequencing(atat, shooter));
                 carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
                 pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
                 humanPickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpHumanPlayer));

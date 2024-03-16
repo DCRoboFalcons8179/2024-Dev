@@ -30,7 +30,7 @@ public class pullDownOnChain extends Command {
   @Override
   public void execute() {
 
-    atat.releasePullUp();
+    atat.pullUp();
 
 
   }

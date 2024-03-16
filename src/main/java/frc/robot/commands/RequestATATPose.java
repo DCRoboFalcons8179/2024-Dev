@@ -132,12 +132,11 @@ public class RequestATATPose extends Command {
   public boolean isFinished() {
 
     if (instant) {
-      System.out.println("instant");
       return true;
     }
 
-    return Math.abs(atat.getFrontPostPos() - distF.getAsDouble()) < 0.02 &&
-           Math.abs(atat.getBackPostPos() - distF.getAsDouble()) < 0.02 &&
-           Math.abs(atat.getAngle() - angle.getAsDouble()) < 0.02;
+    return Math.abs(atat.getFrontPostPos() - distF.getAsDouble()) < 0.2 &&
+           Math.abs(atat.getBackPostPos() - distF.getAsDouble()) < 0.2 &&
+           Math.abs(atat.getAngle() - angle.getAsDouble()) < 0.2;
   }
 }
