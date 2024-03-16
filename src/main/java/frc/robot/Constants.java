@@ -155,12 +155,7 @@ public final class Constants {
             }
         }
 
-        public static HolonomicPathFollowerConfig swervePathFollowerConfig = 
-            new HolonomicPathFollowerConfig(new PIDConstants(driveKP, driveKI, driveKD), 
-            new PIDConstants(angleKP, angleKI, angleKD), 
-            maxSpeed, 
-            new Translation2d(wheelBase / 2, trackWidth / 2).getNorm(), 
-            new ReplanningConfig(true, true));
+
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
@@ -169,16 +164,27 @@ public final class Constants {
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
     
-        public static final double kPXController = 0.25;
-        public static final double kPYController = 1;
-        public static final double kPThetaController = 1;
+        public static final double kPXController = 0;
         public static final double kIX = 0.0;
-        public static final double kITheta = 0.0;
+
+        public static final double kPYController = 1;
+        
+        public static final double kPThetaController = 1;
+        public static final double kITheta = 0.0001;
     
         /* Constraint for the motion profilied robot angle controller */
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+
+
+        public static HolonomicPathFollowerConfig swervePathFollowerConfig = 
+            new HolonomicPathFollowerConfig(new PIDConstants(kPXController, kIX, 0), 
+            new PIDConstants(kPThetaController, kITheta, 0), 
+            kMaxSpeedMetersPerSecond, 
+            new Translation2d(Constants.Swerve.wheelBase / 2.0, Constants.Swerve.wheelBase / 2.0).getNorm(), 
+            new ReplanningConfig(false, false));
+        
     }
 
     public static final class ATATConstants {

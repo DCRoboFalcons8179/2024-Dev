@@ -274,7 +274,8 @@ public class RobotContainer {
         // return AutoBuilder.buildAuto("StraightPath");
         // return AutoBuilder.buildAuto("Test");
 
-                return new PathPlannerAuto("StraightPath");
+                s_Swerve.setPose(new Pose2d());
+                return new PathPlannerAuto("Turn");
 
         // if (board_ext.getRawAxis(1)< -0.5) {
         //         return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0));

@@ -138,7 +138,7 @@ public class Swerve extends SubsystemBase {
                         translation.getX(),
                         translation.getY(),
                         rotation,
-                        getGyroYaw().times(-1))
+                        getGyroYaw())
                         : new ChassisSpeeds(
                                 translation.getX(),
                                 translation.getY(),
@@ -195,6 +195,10 @@ public class Swerve extends SubsystemBase {
 
     public void setPose(Pose2d pose) {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
+    }
+
+    public void setPose() {
+        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), new Pose2d());
     }
 
     public Rotation2d getHeading() {

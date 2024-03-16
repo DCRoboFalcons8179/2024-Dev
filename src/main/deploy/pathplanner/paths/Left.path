@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.918780933330241,
-        "y": 6.188968458115091
+        "x": 4.5760731521463045,
+        "y": 6.714031713777714
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9369836138915715,
-        "y": 6.698643513832341
+        "x": 4.594275832707635,
+        "y": 7.223706769494964
       },
       "isLocked": false,
       "linkedName": "Test End"
@@ -34,8 +34,8 @@
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 2.0,
-    "maxAngularVelocity": 120.0,
-    "maxAngularAcceleration": 360.0
+    "maxAngularVelocity": 90.0,
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
     "velocity": 0,
