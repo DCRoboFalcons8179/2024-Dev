@@ -4,6 +4,7 @@ import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -92,6 +93,8 @@ public class SwerveModule {
         mAngleMotor.getEncoder().setPosition(Rotation2d.fromDegrees(offsetFromDesired).getRotations() * -Constants.Swerve.angleGearRatio);
         //this.angleOffset = moduleConstants.angleOffset.times(-1);
         this.angleOffset = Rotation2d.fromDegrees(0);
+        mAngleMotor.setInverted(false);
+
         mAngleMotor.burnFlash();
 
 
@@ -99,6 +102,7 @@ public class SwerveModule {
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
         mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
         mDriveMotor.getConfigurator().setPosition(0.0);
+        // mDriveMotor.setInverted(true);
 
     }
 

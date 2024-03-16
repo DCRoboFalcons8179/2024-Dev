@@ -94,10 +94,10 @@ public class Swerve extends SubsystemBase {
             this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             this::setModuleStates, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
             new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD), // Translation PID constants
-                    new PIDConstants(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD), // Rotation PID constants
-                    Constants.Swerve.maxSpeed, // Max module speed, in m/s
-                    Constants.Swerve.wheelBase, // Drive base radius in meters. Distance from robot center to furthest module.
+                    new PIDConstants(Constants.AutoConstants.kPXController, Constants.AutoConstants.kIX, 0), // Translation PID constants
+                    new PIDConstants(Constants.AutoConstants.kPThetaController, Constants.AutoConstants.kITheta, 0), // Rotation PID constants
+                    Constants.AutoConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
+                    Constants.Swerve.wheelBase / 2.0, // Drive base radius in meters. Distance from robot center to furthest module.
                     new ReplanningConfig() // Default path replanning config. See the API for the options here
             ),
             () -> {
@@ -105,10 +105,10 @@ public class Swerve extends SubsystemBase {
               // This will flip the path being followed to the red side of the field.
               // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
+            //   var alliance = DriverStation.getAlliance();
+            //   if (alliance.isPresent()) {
+            //     return alliance.get() == DriverStation.Alliance.Red;
+            //   }
               return false;
             },
             this // Reference to this subsystem to set requirements
@@ -155,9 +155,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroGyro() {
-
         gyro.zeroYaw();
-
     }
 
     public void setModuleStates(ChassisSpeeds robotChassisSpeeds) {
@@ -253,6 +251,10 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putBoolean("Field Centric", fieldCentricBoolean);
 
         SmartDashboard.putNumber("Position", mSwerveMods[0].getPosition().distanceMeters);
+
+        SmartDashboard.putNumber("Robot X", this.getPose().getX());
+        SmartDashboard.putNumber("Robot Y", this.getPose().getY());
+        SmartDashboard.putNumber("Robot T", this.getPose().getRotation().getDegrees());
 
         SmartDashboard.putNumber("Mod 0 spark state angle", mSwerveMods[0].getState().angle.getRotations());
         SmartDashboard.putNumber("Mod 0 spark angle", mSwerveMods[0].getPosition().angle.getRotations());
