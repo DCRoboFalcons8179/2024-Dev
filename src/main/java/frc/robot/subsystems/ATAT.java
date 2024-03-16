@@ -243,7 +243,10 @@ public class ATAT extends SubsystemBase {
     mAngleMotor.getPIDController().setPositionPIDWrappingEnabled(false);
     mAngleMotor.setInverted(false);
     
+    // DISABLING THE SECOND ANGLE NEO
+    // From Tim - need to change the control loop if you want to disable one of the motors.
     mAngleMotorRight.follow(mAngleMotor,true);
+    // mAngleMotorRight.set(0);
 
     // Need to do this line to apply settings
     mAngleMotor.burnFlash();
