@@ -11,6 +11,12 @@ public class ATATPose {
     public double distFollower;
     public double atatAngle;
 
+    /**
+     * Stores poses used for RequestATATPose for readability.
+     * @param distDriver
+     * @param distFollower
+     * @param atatAngle
+     */
     public ATATPose(double distDriver, double distFollower, double atatAngle) {
         this.distDriver = distDriver;
         this.distFollower = distFollower;

@@ -16,6 +16,13 @@ public class TeleopSwerve extends Command {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
 
+    /**
+     * Drives the Swerve object. Should only really be used in hard-coded auton and Swerve's default Command.
+     * @param s_Swerve
+     * @param translationSup
+     * @param strafeSup
+     * @param rotationSup
+     */
     public TeleopSwerve(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);

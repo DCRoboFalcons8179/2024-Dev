@@ -11,6 +11,11 @@ import frc.robot.subsystems.ATAT;
 public class SetATATStates extends Command {
   /** Creates a new SetATATStates. */
   private ATAT atat;
+
+  /**
+   * Updates ATAT poses from the numbers saved. Only used by the default Command. Probably shouldn't be used anywhere else.
+   * @param atat
+   */
   public SetATATStates(ATAT atat) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.atat = atat;

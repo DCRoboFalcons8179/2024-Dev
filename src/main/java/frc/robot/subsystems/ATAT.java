@@ -223,15 +223,16 @@ public class ATAT extends SubsystemBase {
 
     // From Tim - NEED THESE TODO. Otherwise you will destroy yourself on Hang command
 
-    // mAngleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    // mAngleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    // mAngleMotorRight.enableSoftLimit(SoftLimitDirection.kForward, true);
-    // mAngleMotorRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    mAngleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    mAngleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    // mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
-    // mAngleMotorRight.setSoftLimit(SoftLimitDirection.kForward, 100f/360);
-    // mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
-    // mAngleMotorRight.setSoftLimit(SoftLimitDirection.kReverse, 0);
+    mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 0.25f);
+    mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
+
+    mAngleMotor.enableVoltageCompensation(12.0);
+    mAngleMotorRight.enableVoltageCompensation(12.0);
+
+    mAngleMotor.getPIDController().setOutputRange(-0.5, 0.4);
 
     // Angle Remote encoder setup
     angleEncoder = mAngleMotor.getAlternateEncoder(com.revrobotics.SparkMaxAlternateEncoder.Type.kQuadrature , 8192);
@@ -264,10 +265,10 @@ public class ATAT extends SubsystemBase {
     mFrontLinearSRX.configPeakOutputReverse(-1.0);
 
     // TODO: GET SOFTWARE LIMITS
-    // mFrontLinearSRX.configForwardSoftLimitEnable(true);
-    // mFrontLinearSRX.configReverseSoftLimitEnable(true);
-    // mFrontLinearSRX.configReverseSoftLimitThreshold(0);
-    // mFrontLinearSRX.configForwardSoftLimitThreshold(0);
+    mFrontLinearSRX.configForwardSoftLimitEnable(true);
+    mFrontLinearSRX.configReverseSoftLimitEnable(true);
+    mFrontLinearSRX.configReverseSoftLimitThreshold(0);
+    mFrontLinearSRX.configForwardSoftLimitThreshold(7200);
 
 
 
@@ -279,8 +280,8 @@ public class ATAT extends SubsystemBase {
     mBackLinearSRX.setNeutralMode(NeutralMode.Brake);
 
     
-    mBackLinearSRX.setSensorPhase(true);
-    mBackLinearSRX.setInverted(true);
+    mBackLinearSRX.setInverted(false);
+    mBackLinearSRX.setSensorPhase(false);
 
     // From Tim - Use these functions to set up "minimum output value"
     // And Max usable value to get over static friction
@@ -291,10 +292,10 @@ public class ATAT extends SubsystemBase {
     mBackLinearSRX.configPeakOutputReverse(-1.0);
 
     // TODO: GET SOFTWARE LIMITS
-    // mBackLinearSRX.configForwardSoftLimitEnable(true);
-    // mBackLinearSRX.configReverseSoftLimitEnable(true);
-    // mBackLinearSRX.configReverseSoftLimitThreshold(0);
-    // mBackLinearSRX.configForwardSoftLimitThreshold(0);
+    mBackLinearSRX.configForwardSoftLimitEnable(true);
+    mBackLinearSRX.configReverseSoftLimitEnable(true);
+    mBackLinearSRX.configReverseSoftLimitThreshold(0);
+    mBackLinearSRX.configForwardSoftLimitThreshold(10000);
 
 
 

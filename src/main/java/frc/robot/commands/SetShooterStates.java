@@ -9,7 +9,9 @@ import frc.robot.subsystems.Shooter;
 
 public class SetShooterStates extends Command {
   private Shooter shooter;
-  /** Creates a new setShooterStates. */
+  /** 
+   * Updates Shooter and BB speeds from the numbers in Shooter. Probably shouldn't be used outside the default Command.
+   */
   public SetShooterStates(Shooter shooter) {
     this.shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.

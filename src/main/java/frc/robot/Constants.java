@@ -97,6 +97,14 @@ public final class Constants {
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
         public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
+
+
+        /*
+         * Offset tweaking has changed. . .
+         * Since we do not have a good absolute encoder on our motors with sparks, we instead use a position to aim for on the CANCoder.
+         * No invert needed for the drive motor, flip desiredCanCoderPos.
+         */
+
         /* Module Specific Constants */
         /* Front Left Module - Module 0 */
         public static final class Mod0 {
@@ -213,7 +221,7 @@ public final class Constants {
 
         public static final int ThroughBoreTickPerRot = 8192;
 
-        // setpoints
+        // ATATPose setpoints for readability in button declarations.
         public static final ATATPose carry = new ATATPose(0, 0, 0);
 
         public static final ATATPose shootClose = new ATATPose(0, 6.25, 0);
@@ -237,10 +245,10 @@ public final class Constants {
         public static final int shooterFollowMotorID = 34;
         public static final int beaterBarMotorID = 36;
 
-        public static final double shooterGearRatio = 1; // input / output
+        public static final double shooterGearRatio = 1; // input / output, shouldn't matter since encoder is after gears.
         public static final double beaterBarGearRatio = 1; // input / output
 
-        public static final double shooterMotorMaxRPS = 100d; //rotations per second
+        public static final double shooterMotorMaxRPS = 100d; //rotations per second TODO: get correct number
         public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
 
         public static final double kP = 0.0065;

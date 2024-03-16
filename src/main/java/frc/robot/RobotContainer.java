@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ATATConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -73,13 +75,16 @@ public class RobotContainer {
         private final JoystickButton angleManualDown = new JoystickButton(board_ext, 7);
         private final Trigger leftTriggerPressed = new Trigger(() -> driver.getRawAxis(2) > 0.1);
         private final Trigger rightTriggerPressed = new Trigger(() -> driver.getRawAxis(3) > 0.1);
-        private final JoystickButton camToggler = new JoystickButton(board_ext, 13);
+        private final JoystickButton camToggler = new JoystickButton(board_ext, 5);
         // private final JoystickButton camSaver = new JoystickButton(board_ext, 14);
 
         private final POVButton povUp = new POVButton(driver, 0);
         private final POVButton povDown = new POVButton(driver, 180);
         private final POVButton povLeft = new POVButton(driver, 270);
         private final POVButton povRight = new POVButton(driver, 90);
+
+        //Arbitrary Triggers
+        private Trigger hasRing = new Trigger(()->shooter.hasRing());
 
         /**
          * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -103,7 +108,7 @@ public class RobotContainer {
                 atat.setDefaultCommand(new SetATATStates(atat));
 
                 // Shooter control
-                //shooter.setDefaultCommand(new SetShooterStates(shooter));
+                shooter.setDefaultCommand(new SetShooterStates(shooter));
 
                 // Sets the camera zones unused currently thanks to PETER :(
                 // cameras.setDefaultCommand(
@@ -118,7 +123,7 @@ public class RobotContainer {
 
 
         private void buttonCommands() {
-
+                
                 //robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
                 
                 // approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2,
@@ -136,8 +141,8 @@ public class RobotContainer {
                 // Shooter will spin up and fire.
                 shoot.debounce(0.04).whileTrue(new RequestShot(shooter));
 
-                // beaterBarB.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
-                // beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+                beaterBarB.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
+                beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 
                 
                 // rightTriggerPressed.onTrue(
@@ -157,37 +162,46 @@ public class RobotContainer {
                 // povDown.onTrue(new InstantCommand(() -> cameras.bottomCam()));
 
                 // // Set Point Buttons
-                // closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
+                closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
                 // mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
                 // farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
                 // ampSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint));
-                // carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
-                // pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
+                carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
+                pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
                 // humanPickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpHumanPlayer));
                 // hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
                 // // Manual Buttons
-                // frontPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() + .25,
-                //                 () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle()));
-                // backPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
-                //                 () -> atat.getDesiredBackPostPos() + .25, () -> atat.getDesiredAngle()));
-                // angleManualUp.debounce(0.04).onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
-                //                 () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle() + 2));
-                // frontPostManualDown.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() - .25,
-                //                 () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle()));
-                // backPostManualDown.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
-                //                 () -> atat.getDesiredBackPostPos() - .25, () -> atat.getDesiredAngle()));
-                // angleManualDown.debounce(0.04).onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
-                //                 () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle() - 2));
+                 frontPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() + .25,
+                                () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle()));
+                backPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
+                                () -> atat.getDesiredBackPostPos() + .25, () -> atat.getDesiredAngle()));
+                angleManualUp.debounce(0.04).onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
+                                () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle() + 2));
+                frontPostManualDown.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() - .25,
+                                () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle()));
+                backPostManualDown.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
+                                () -> atat.getDesiredBackPostPos() - .25, () -> atat.getDesiredAngle()));
+                angleManualDown.debounce(0.04).onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
+                                () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle() - 2));
 
                 // // leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, () ->
                 // // driver.getRawAxis(2) * Constants.ShooterConstants.shooterWheelMaxRPS));
                 // leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, 100));
                 // leftTriggerPressed.onFalse(new RequestShooterSetPoint(shooter, 0));
 
-                // beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0.6, true)
-                //                 .andThen(new RequestBeaterBarSetSpeed(shooter, 0)));
-                // beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+                beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0.6, true)
+                                 .andThen(new RequestBeaterBarSetSpeed(shooter, 0)));
+                                //  .andThen(new RequestATATPose(atat, ATATConstants.carry)));
+
+                beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+
+                //Arbitrary commands yay
+                hasRing.debounce(0.06).onTrue(new RumbleController(driver));
+
+
+
+
 
                 // // Cam Toggling
                 // camToggler.onTrue(new InstantCommand(() -> cameras.cameraToggler()));

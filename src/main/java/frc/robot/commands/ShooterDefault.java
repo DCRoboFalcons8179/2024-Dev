@@ -9,7 +9,7 @@ import frc.robot.subsystems.Shooter;
 
 public class ShooterDefault extends Command {
   private Shooter shooter;
-  /** Creates a new ShooterDefault. */
+  /** Probably does the same thing as SetShooterStates, probably not used. Used as training for matt */
   public ShooterDefault(Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
