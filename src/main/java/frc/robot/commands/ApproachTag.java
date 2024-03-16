@@ -127,14 +127,17 @@ public class ApproachTag extends Command {
       
       mag = finalTranslationOffset.getNorm(); //magFilter.calculate()
       mag /= MAX_MAG;
+
       rot = rotFilter.calculate(limelight.getRobotRY() + OFFSET_RY);
       double rot_rad = Units.degreesToRadians(rot);
-      if (!SWING_WIDE) {
+
+      if (!SWING_WIDE) { // imaginary number rotation magic
         dir = new Translation2d(
           dir.getX() * Math.cos(rot_rad) - dir.getY() * Math.sin(rot_rad),
           dir.getX() * Math.sin(rot_rad) + dir.getY() * Math.cos(rot_rad)
-        );
+        ); 
       }
+
       rot /= MAX_ROT;
 
       //mapping values

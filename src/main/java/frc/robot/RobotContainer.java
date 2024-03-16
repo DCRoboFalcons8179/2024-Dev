@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -97,12 +98,12 @@ public class RobotContainer {
 
                 // Calls the swerve command and sends the joystick input to the swerve drive
                 // commands
-                // s_Swerve.setDefaultCommand(
-                //                 new TeleopSwerve(
-                //                                 s_Swerve,
-                //                                 () -> driver.getRawAxis(translationAxis),
-                //                                 () -> -driver.getRawAxis(strafeAxis),
-                //                                 () -> driver.getRawAxis(rotationAxis)));
+                s_Swerve.setDefaultCommand(
+                                new TeleopSwerve(
+                                                s_Swerve,
+                                                () -> driver.getRawAxis(translationAxis),
+                                                () -> -driver.getRawAxis(strafeAxis),
+                                                () -> driver.getRawAxis(rotationAxis)));
 
                 // Moves atat
                 atat.setDefaultCommand(new SetATATStates(atat));
@@ -132,7 +133,7 @@ public class RobotContainer {
                 // shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
                 // bButton.onFalse(new InstantCommand(() ->
                 // shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
-                // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+                zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
                 // Non-Set Point Buttons
                 // shoot.whileTrue(new RequestShooterSetPoint(shooter, Constants.ShooterConstants.shooterSpeed));                
@@ -140,14 +141,14 @@ public class RobotContainer {
                 
                 // Shooter will spin up and fire.
                 shoot.debounce(0.04).whileTrue(new RequestShot(shooter));
+                rightTriggerPressed.debounce(0.04).whileTrue(new RequestShot(shooter));
 
                 beaterBarB.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarBSpeed));
                 beaterBarB.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 
-                
-                // rightTriggerPressed.onTrue(
-                //                 new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed));
-                // rightTriggerPressed.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+                beaterBarF.onTrue(
+                                 new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.beaterBarFSpeed));
+                beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 
                 // Sets beater bar speed
                 // feed.onTrue(new RequestBeaterBarSetSpeed(shooter, Constants.ShooterConstants.feedSpeed));
@@ -165,10 +166,10 @@ public class RobotContainer {
                 closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
                 // mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
                 // farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
-                // ampSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint));
+                ampSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint));
                 carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
                 pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
-                // humanPickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpHumanPlayer));
+                humanPickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpHumanPlayer));
                 // hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
                 // // Manual Buttons
@@ -190,14 +191,13 @@ public class RobotContainer {
                 // leftTriggerPressed.whileTrue(new RequestShooterSetPoint(shooter, 100));
                 // leftTriggerPressed.onFalse(new RequestShooterSetPoint(shooter, 0));
 
-                beaterBarF.whileTrue(new RequestBeaterBarSetSpeed(shooter, 0.6, true)
-                                 .andThen(new RequestBeaterBarSetSpeed(shooter, 0)));
-                                //  .andThen(new RequestATATPose(atat, ATATConstants.carry)));
+                pickUpSetPoint.whileTrue(new RequestCarryWhenRing(atat, shooter));
 
-                beaterBarF.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
+                pickUpSetPoint.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
 
                 //Arbitrary commands yay
                 hasRing.debounce(0.06).onTrue(new RumbleController(driver));
+                //hasRing.debounce(0.06).onTrue(new SequentialCommandGroup(new RequestATATPose(atat, Constants.ATATConstants.carry), new RumbleController(driver)));
 
 
 

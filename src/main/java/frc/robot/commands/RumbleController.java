@@ -22,8 +22,8 @@ public class RumbleController extends Command {
   private Timer timer = new Timer();
   /** Creates a new RumbleController. */
 
-    /**
-     *  Starts a controller rumbling for two seconds
+    /** 
+     *  Starts a controller rumbling for 1 seconds
     * 
     * @param controller: controller you want to rumble
     */
@@ -59,7 +59,8 @@ public class RumbleController extends Command {
   @Override
   public boolean isFinished() {
     if (timer.hasElapsed(1.0)) {
-      return true;    }
+      return true;    
+    }
 
 
     return false;

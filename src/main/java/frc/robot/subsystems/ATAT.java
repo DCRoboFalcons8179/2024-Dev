@@ -268,7 +268,7 @@ public class ATAT extends SubsystemBase {
     mFrontLinearSRX.configForwardSoftLimitEnable(true);
     mFrontLinearSRX.configReverseSoftLimitEnable(true);
     mFrontLinearSRX.configReverseSoftLimitThreshold(0);
-    mFrontLinearSRX.configForwardSoftLimitThreshold(7200);
+    mFrontLinearSRX.configForwardSoftLimitThreshold(7800);
 
 
 
@@ -295,7 +295,7 @@ public class ATAT extends SubsystemBase {
     mBackLinearSRX.configForwardSoftLimitEnable(true);
     mBackLinearSRX.configReverseSoftLimitEnable(true);
     mBackLinearSRX.configReverseSoftLimitThreshold(0);
-    mBackLinearSRX.configForwardSoftLimitThreshold(10000);
+    mBackLinearSRX.configForwardSoftLimitThreshold(11000);
 
 
 

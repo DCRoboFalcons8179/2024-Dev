@@ -136,7 +136,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shoot() {
-    setShootSpeed(MAX_SPEED * 0.90);
+    setShootSpeed(MAX_SPEED * 0.80);
   }
 
 

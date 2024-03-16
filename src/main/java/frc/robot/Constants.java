@@ -188,8 +188,8 @@ public final class Constants {
         public static final int frontPostSRXID = 26;
         public static final int backPostSRXID  = 33; //TODO: fix this
 
-        public static final double frontPostMaxExtension = 6.4;
-        public static final double backPostMaxExtension = 7; //TODO: fix this
+        public static final double frontPostMaxExtension = 6.4 + 4d/8;
+        public static final double backPostMaxExtension = 8.75; //TODO: fix this
 
         public static final double distanceBetweenPostParts = (1.123);
 
@@ -229,11 +229,14 @@ public final class Constants {
         public static final ATATPose shootMedium = new ATATPose(1, 2, 20);
         public static final ATATPose shootFar = new ATATPose(0, 4.5, 0);
 
-        public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
+        //public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
         //public static final ATATPose ampSetPoint2 = new ATATPose(6.4, 2.25, 20);
 
+        public static final ATATPose ampSetPoint = new ATATPose(6.9, 8.25, 10);
+        public static final ATATPose ampSetPoint2 = new ATATPose(6.9, 2, 24);
+
         public static final ATATPose pickUpSetPoint = new ATATPose(0, 4, 88);
-        public static final ATATPose pickUpHumanPlayer = new ATATPose(6.4, 0, 16);
+        public static final ATATPose pickUpHumanPlayer = new ATATPose(6.15, 0, 16);
 
         public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
         public static final ATATPose hangPull = new ATATPose(0, 0, 0);
