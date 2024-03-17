@@ -5,6 +5,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -168,7 +169,6 @@ public class RobotContainer {
                 
                 // Hanging commands wahoo :)
                 hangPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
-
                 hangPullUp.whileTrue(new pullDownOnChain(atat));
 
                 // Changes the right camera
@@ -182,7 +182,8 @@ public class RobotContainer {
                 ampSetPoint.onTrue(new AmpSequencing(atat, shooter));
                 carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
                 pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
-                humanPickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpHumanPlayer));
+                humanPickUpSetPoint.whileTrue(new HumanPickUpAuto(atat, shooter));
+                humanPickUpSetPoint.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 // hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
                 // // Manual Buttons
@@ -205,7 +206,6 @@ public class RobotContainer {
                 // leftTriggerPressed.onFalse(new RequestShooterSetPoint(shooter, 0));
 
                 pickUpSetPoint.whileTrue(new RequestCarryWhenRing(atat, shooter));
-
                 pickUpSetPoint.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
 
                 //Arbitrary commands yay
@@ -263,26 +263,124 @@ public class RobotContainer {
          *
          * @return the command to run in autonomous
          */
+                        //setting switches
+                double switch1 = board.getRawAxis(0); //this one is negative 
+                double switch2 = board_ext.getRawAxis(1);// this one is positive
+                double switch3 = board_ext.getRawAxis(0); // this one is positive
+
+
         public Command getAutonomousCommand() {
+                 s_Swerve.setPose(new Pose2d());
+                s_Swerve.zeroGyro();
+                
+                
+                return new RequestATATPose(atat, Constants.ATATConstants.shootClose, false)
+                                        .andThen(new RequestShot(shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry));
                 // An ExampleCommand will run in autonomous
                 // return new exampleAuto(s_Swerve);
                 // return AutoBuilder.followPath(PathPlannerpath.getPathFile("spin"));
 
-        // Load the path you want to follow using its name in the GUI
-        //PathPlannerPath path = PathPlannerPat`h.fromPathFile("straight");
+                // Load the path you want to follow using its name in the GUI
+                //PathPlannerPath path = PathPlannerPat`h.fromPathFile("straight");
 
-        // Create a path following command using AutoBuilder. This will also trigger
-        // event markers.
-        //return AutoBuilder.followPath(path);
+                // Create a path following command using AutoBuilder. This will also trigger
+                // event markers.
+                //return AutoBuilder.followPath(path);
         
-        // return AutoBuilder.buildAuto("StraightPath");
-        // return AutoBuilder.buildAuto("Test");
+                // return AutoBuilder.buildAuto("StraightPath");
+                // return AutoBuilder.buildAuto("Test");
 
-                s_Swerve.setPose(new Pose2d());
-                s_Swerve.zeroGyro();
+
+                //s_Swerve.setHeading(new Rotation2d(0));
 
                 // return new PathPlannerAuto("Test");
-                return new doTraj(s_Swerve, trajs.circle).andThen(new goToHeading(s_Swerve, new Rotation2d(Math.PI /2)));
+        
+
+                //Pulling color from driver station
+               /*  var alliance = DriverStation.getAlliance();
+                boolean amIRed;
+                if (alliance.isPresent()) {
+                        amIRed = (alliance.get() == DriverStation.Alliance.Red);
+        
+                }
+                else {amIRed = false;}
+
+                //IF you are blue setting switches
+                if (amIRed = false) {
+
+                        //Blue amp far 1 1 0
+                        if (board.getRawAxis(0) < -0.5 && switch2 > 0.5 && switch3 < 0.5) {
+                        return new doTraj(s_Swerve, trajs.kickOffWall)
+                                .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-50)))
+                                .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, false))
+                                .andThen(new RequestShot(shooter))
+                                .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
+                                .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
+                                .andThen(new doTraj(s_Swerve, trajs.ampSideBlueFar))
+                                .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-90)))
+                                .andThen(new SearchForRIng(atat, shooter, s_Swerve))
+                                .andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
+                        }else if (switch1 < -0.5 && switch2 < 0.5 && switch3 < 0.5)
+                                { // blue amp close 1 0 0
+                                return new doTraj(s_Swerve, trajs.kickOffWall)
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-50)))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, false))
+                                        .andThen(new RequestShot(shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
+                                        .andThen(new doTraj(s_Swerve, trajs.ampSideBlueClose))
+                                        .andThen(new SearchForRIng(atat, shooter, s_Swerve));
+                        }else if (switch1 > -0.5 && switch2 < 0.5 && switch3 > 0.5)
+                                { //Blue Source far 0 0 1
+                                return new doTraj(s_Swerve, trajs.kickOffWall)
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(50)))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, false))
+                                        .andThen(new RequestShot(shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
+                                        .andThen(new doTraj(s_Swerve, trajs.sourceSideBlue))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(90)))
+                                        .andThen(new SearchForRIng(atat, shooter, s_Swerve))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
+                        }else if (switch1 > -0.5 && switch2 < 0.5 && switch3 < 0.5)
+                                { // Do nothing 0 0 0 
+                                return new goToHeading(s_Swerve, new Rotation2d(0));
+                        }else if (switch1 > -0.5 && switch2 > 0.5 && switch3 < 0.5)
+                                { //Center Blue 0 1 0
+                                return new RequestATATPose(atat, Constants.ATATConstants.shootClose, false)
+                                        .andThen(new RequestShot(shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
+                                        .andThen(new doTraj(s_Swerve, trajs.centerBlue))
+                                        .andThen(new SearchForRIng(atat, shooter, s_Swerve));
+                        }else if (switch1 < -0.5 && switch2 < 0.5 && switch3 > 0.5)
+                                { // shoot only 1 0 1
+                                return new RequestATATPose(atat, Constants.ATATConstants.shootClose, false)
+                                        .andThen(new RequestShot(shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry));
+                        }       
+                }
+
+
+
+                //if you are red setting switches
+                //if (amIRed == true) {
+
+               //}
+
+                //return new doTraj(s_Swerve, trajs.circle).andThen( new doTraj(s_Swerve, trajs.circle)). andThen(new goToHeading(s_Swerve, new Rotation2d(Math.PI /2)));
+                //return new doTraj(s_Swerve, trajs.kickOffWall)
+                        //.andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(50)))
+                        //.andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, false))
+                        //.andThen(new RequestShot(shooter))
+                        //.andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
+                        //.andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
+                        //.andThen(new doTraj(s_Swerve, trajs.sourceSideBlue))
+                        //.andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(90)))
+                        //.andThen(new SearchForRIng(atat, shooter, s_Swerve))
+                        //.andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
+                        //start using limelight stuff;
+
                 //return new goToHeading(s_Swerve, new Rotation2d(-Math.PI /2));
 
         // if (board_ext.getRawAxis(1)< -0.5) {
@@ -292,7 +390,7 @@ public class RobotContainer {
         // {
         //         // waits .5 seconds then moves the swere and waits again
         //         return new WaitCommand(0.5).andThen(new TeleopSwerve(s_Swerve, () -> -0.8 * 2.2/Constants.Swerve.maxSpeed, () -> 0, () -> 0).raceWith(new WaitCommand(1.5)));
-        // }
+        // }*/
 
     }
 
