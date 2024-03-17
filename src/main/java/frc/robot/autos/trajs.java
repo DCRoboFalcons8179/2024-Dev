@@ -19,6 +19,12 @@ public class trajs {
     private final static Rotation2d zero = new Rotation2d();
     
 
+    /**
+     * IMPORTANT NOTE: To use paths from Path Planner, Copy the numbers from end points and waypoints
+     * into the list of Translation2D()'s, but MAKE SURE TO PUT A NEG SIGN ON THE Y COORDINALTE
+     * 
+     */
+
     // This config sets speeds. The faster you go, the less accurate you become.
     private final static TrajectoryConfig config =
     new TrajectoryConfig(
@@ -41,15 +47,15 @@ public class trajs {
 
 
     
-    // Does a circle!
+    // Does a circle! NOTE THE NEG Y COORDINATES
     public final static Trajectory circle = 
     TrajectoryGenerator.generateTrajectory(
-        new Pose2d(2.8,7.21, zero),
+        new Pose2d(2.8,-7.21, zero),
         List.of(
-            new Translation2d(3.8 , 5.88),
-            new Translation2d(2.51, 5.16)
+            new Translation2d(3.8 , -5.88),
+            new Translation2d(2.51, -5.16)
         ),
-        new Pose2d(2.8,7.21,zero)
+        new Pose2d(2.8,-7.21,zero)
         ,config);
 
     
