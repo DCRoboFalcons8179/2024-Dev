@@ -97,7 +97,7 @@ public class Swerve extends SubsystemBase {
                     new PIDConstants(Constants.AutoConstants.kPXController, Constants.AutoConstants.kIX, 0), // Translation PID constants
                     new PIDConstants(Constants.AutoConstants.kPThetaController, Constants.AutoConstants.kITheta, 0), // Rotation PID constants
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
-                    Constants.Swerve.wheelBase / 2.0, // Drive base radius in meters. Distance from robot center to furthest module.
+                    Math.sqrt (Math.pow(Constants.Swerve.wheelBase,2) + Math.pow(Constants.Swerve.trackWidth,2)), // Drive base radius in meters. Distance from robot center to furthest module.
                     new ReplanningConfig() // Default path replanning config. See the API for the options here
             ),
             () -> {
@@ -124,6 +124,8 @@ public class Swerve extends SubsystemBase {
     private double rotationCommand = 0;
 
     public void drive(Translation2d translation, double rotation, boolean isOpenLoop) {
+        // From Tim - DO NOT SCALE VALUES IN THIS FUNCTION. SCALE BEFORE PASSING THEM IN
+        // DO NOT CHANGE POLARITIES EITHER. CHANGE THOSE IN YOUR INPUTS
 
         // Gets the values of x y and rotation and assigns them to their repestive
         // variables
@@ -223,6 +225,10 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods) {
             mod.resetToAbsolute();
         }
+    }
+
+    public void stop() {
+        this.drive(new Translation2d(0,0), 0, false);
     }
 
     @Override

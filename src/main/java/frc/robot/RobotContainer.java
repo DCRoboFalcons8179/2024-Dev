@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -18,6 +19,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ATATConstants;
+import frc.robot.autos.doTraj;
+import frc.robot.autos.exampleAuto;
+import frc.robot.autos.goToHeading;
+import frc.robot.autos.trajs;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -62,7 +67,7 @@ public class RobotContainer {
         private final JoystickButton hangPullUp = new JoystickButton(board, 2);
         private final JoystickButton ampSetPoint = new JoystickButton(board, 5);
         private final JoystickButton pickUpSetPoint = new JoystickButton(board, 3);
-    private final JoystickButton humanPickUpSetPoint = new JoystickButton(board_ext, 6);
+        private final JoystickButton humanPickUpSetPoint = new JoystickButton(board_ext, 6);
         private final JoystickButton carrySetPoint = new JoystickButton(board, 6);
         private final JoystickButton farSetPoint = new JoystickButton(board, 10);
         private final JoystickButton mediumSetPoint = new JoystickButton(board, 9);
@@ -139,7 +144,7 @@ public class RobotContainer {
                 // shooter.setShooterSpeed(0)).andThen(() -> shooter.setBeaterBarSpeed(0)));
                 
                 
-                zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+                zeroGyro.debounce(0.04).onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
                 
                 
                 
@@ -269,13 +274,16 @@ public class RobotContainer {
         // Create a path following command using AutoBuilder. This will also trigger
         // event markers.
         //return AutoBuilder.followPath(path);
-                s_Swerve.zeroGyro();
         
         // return AutoBuilder.buildAuto("StraightPath");
         // return AutoBuilder.buildAuto("Test");
 
                 s_Swerve.setPose(new Pose2d());
-                return new PathPlannerAuto("Turn");
+                s_Swerve.zeroGyro();
+
+                // return new PathPlannerAuto("Test");
+                return new doTraj(s_Swerve, trajs.circle).andThen(new goToHeading(s_Swerve, new Rotation2d(Math.PI /2)));
+                //return new goToHeading(s_Swerve, new Rotation2d(-Math.PI /2));
 
         // if (board_ext.getRawAxis(1)< -0.5) {
         //         return new RequestATATPose(atat, Constants.ATATConstants.shootClose).andThen(new RequestShooterSetPoint(shooter, 100)).andThen(new WaitCommand(1.5)).andThen(new RequestBeaterBarSetSpeed(shooter, 1)).andThen(new WaitCommand(1)).andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)).andThen(new RequestShooterSetPoint(shooter, 0)).andThen(new RequestBeaterBarSetSpeed(shooter, 0));
