@@ -46,7 +46,7 @@ public class ApproachTag extends Command {
    * 
    * @param limelight = limelight object
    *
-   * @param MAX_MAGNITUDE = when the robot should start curving speed. D: double [0, inf]
+   * @param MAX_MAG = when the robot should start curving speed. D: double [0, inf]
    * 
    * @param MAX_ROT = when the robot should start slowing down rotation. D: double [0, inf]
    * 
@@ -96,7 +96,6 @@ public class ApproachTag extends Command {
   }
 
   // Called when the command is initially scheduled.
-
 
   @Override
   public void initialize() {
@@ -174,6 +173,6 @@ public class ApproachTag extends Command {
   @Override
   public boolean isFinished() {
     // returns true when the camera does not see a tag for MAX_CYCLES_WITHOUT_TAG cycles
-    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || mag == 0 && rot == 0;
+    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || mag * MAX_MAG < 0.10 && rot * MAX_ROT < 3;
   }
 }

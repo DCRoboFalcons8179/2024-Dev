@@ -104,4 +104,13 @@ public class trajs {
         ),
         new Pose2d(2.21, -5.52, zero)
         ,config);
+
+        public final static Trajectory justGoBack = 
+    TrajectoryGenerator.generateTrajectory(
+        new Pose2d(0.37, -2.51, zero),
+        List.of(
+            new Translation2d(.38, -2.52)
+        ),
+        new Pose2d(2.74, -1.34, zero)
+        ,config);
 }

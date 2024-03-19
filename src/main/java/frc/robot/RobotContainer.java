@@ -187,7 +187,7 @@ public class RobotContainer {
                 // hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
                 // // Manual Buttons
-                 frontPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() + .25,
+                frontPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos() + .25,
                                 () -> atat.getDesiredBackPostPos(), () -> atat.getDesiredAngle()));
                 backPostManualUp.onTrue(new RequestATATPose(atat, () -> atat.getDesiredFrontPostPos(),
                                 () -> atat.getDesiredBackPostPos() + .25, () -> atat.getDesiredAngle()));
@@ -269,9 +269,10 @@ public class RobotContainer {
                 s_Swerve.zeroGyro();
                 
 
-                double switch1 = board.getRawAxis(0); //this one is negative 
-                double switch2 = board_ext.getRawAxis(1);// this one is positive
-                double switch3 = board_ext.getRawAxis(0); // this one is positive
+                //double switch1 = board.getRawAxis(0); //this one is negative 
+                boolean switch1 = Math.abs(board.getRawAxis(0)) > 0.5;
+                boolean switch2 = Math.abs(board_ext.getRawAxis(1)) > 0.5;// this one is positive
+                boolean switch3 = Math.abs(board_ext.getRawAxis(0)) > 0.5; // this one is positive
 
                 
                 //return new RequestATATPose(atat, Constants.ATATConstants.shootClose, false)
@@ -302,26 +303,25 @@ public class RobotContainer {
                 boolean amIRed;
                 if (alliance.isPresent()) {
                         amIRed = (alliance.get() == DriverStation.Alliance.Red);
-        
                 }
                 else {amIRed = false;}
 
                 //IF you are blue setting switches
-                if (amIRed = false) {
+                if (amIRed == false) {
 
                         //Blue amp far 1 1 0
-                        if (board.getRawAxis(0) < -0.5 && switch2 > 0.5 && switch3 < 0.5) {
-                        return new doTraj(s_Swerve, trajs.kickOffWall)
-                                .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-50)))
-                                .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, false))
-                                .andThen(new RequestShot(shooter))
-                                .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
-                                .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
-                                .andThen(new doTraj(s_Swerve, trajs.ampSideBlueFar))
-                                .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-90)))
-                                .andThen(new SearchForRIng(atat, shooter, s_Swerve))
-                                .andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
-                        }else if (switch1 < -0.5 && switch2 < 0.5 && switch3 < 0.5){ // blue amp close 1 0 0
+                        if (switch1 && switch2 && !switch3) {
+                                return new doTraj(s_Swerve, trajs.kickOffWall)
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-50)))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, false))
+                                        .andThen(new RequestShot(shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
+                                        .andThen(new doTraj(s_Swerve, trajs.ampSideBlueFar))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-90)))
+                                        .andThen(new SearchForRIng(atat, shooter, s_Swerve))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
+                        }else if (switch1 && !switch2 && !switch3){ // blue amp close 1 0 0
                                 return new doTraj(s_Swerve, trajs.kickOffWall)
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-50)))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, false))
@@ -330,7 +330,7 @@ public class RobotContainer {
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
                                         .andThen(new doTraj(s_Swerve, trajs.ampSideBlueClose))
                                         .andThen(new SearchForRIng(atat, shooter, s_Swerve));
-                        }else if (switch1 > -0.5 && switch2 < 0.5 && switch3 > 0.5){ //Blue Source far 0 0 1
+                        }else if (!switch1 && !switch2 && switch3){ //Blue Source far 0 0 1
                                 return new doTraj(s_Swerve, trajs.kickOffWall)
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(50)))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, false))
@@ -341,24 +341,22 @@ public class RobotContainer {
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(90)))
                                         .andThen(new SearchForRIng(atat, shooter, s_Swerve))
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
-                        }else if (switch1 > -0.5 && switch2 < 0.5 && switch3 < 0.5){ // Do nothing 0 0 0 
-                                return new goToHeading(s_Swerve, new Rotation2d(0));
-                        }else if (switch1 > -0.5 && switch2 > 0.5 && switch3 < 0.5){ //Center Blue 0 1 0
+                        }else if (!switch1 && !switch2 && !switch3){ // Do nothing 0 0 0 
+                                return new doTraj(s_Swerve, trajs.justGoBack);
+                        }else if (!switch1 && switch2 && !switch3){ //Center Blue 0 1 0
                                 return new RequestATATPose(atat, Constants.ATATConstants.shootClose, false)
                                         .andThen(new RequestShot(shooter))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
                                         .andThen(new doTraj(s_Swerve, trajs.centerBlue))
                                         .andThen(new SearchForRIng(atat, shooter, s_Swerve));
-                        }else if (switch1 < -0.5 && switch2 < 0.5 && switch3 > 0.5){ // shoot only 1 0 1
+                        }else if (switch1 && !switch2 && switch3){ // shoot only 1 0 1
                                 return new RequestATATPose(atat, Constants.ATATConstants.shootClose, false)
                                         .andThen(new RequestShot(shooter))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry));
                         }   
                 }
 
-
-
-                //if you are red setting switches
+                //if you are red setting switches -- else{}?
                 if (amIRed == true) {
 
                }
