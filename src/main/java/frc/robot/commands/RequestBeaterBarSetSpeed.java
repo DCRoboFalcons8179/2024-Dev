@@ -41,12 +41,20 @@ public class RequestBeaterBarSetSpeed extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("robot set bb speed to " + speed);
     shooter.setBeaterBarSpeed(speed);
   }
 
   @Override
   public void execute() {
     
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    if (waitForRing) {
+      shooter.stopBeaterbar();
+    }
   }
 
   @Override

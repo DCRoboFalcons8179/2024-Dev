@@ -67,8 +67,6 @@ public class Shooter extends SubsystemBase {
 
     beaterBarSPX.setInverted(InvertType.InvertMotorOutput);
 
-
-
   }
 
   @Override
@@ -88,7 +86,10 @@ public class Shooter extends SubsystemBase {
    */
   public void setShooterSpeed(double speed) {
     /* Dont do this. See other functions. */
-    shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS, -Constants.ShooterConstants.shooterWheelMaxRPS);
+    shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS, -Constants.ShooterConstants.shooterWheelMaxRPS) / 100 * Constants.ShooterConstants.shooterSpeed;
+
+    shooterSRX.set(ControlMode.Velocity, shooterSetSpeed); //feed forward?
+    shooterFollowerSRX.set(ControlMode.Velocity, shooterSetSpeed);
   }
   /**
    * @return desired set speed of the shooter.
@@ -120,6 +121,7 @@ public class Shooter extends SubsystemBase {
    */
   public void setBeaterBarSpeed(double speed) {
       beaterBarSetSpeed = Filter.cutoffFilter(speed);
+      beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
   } 
 
   /**
@@ -132,20 +134,13 @@ public class Shooter extends SubsystemBase {
 
   public void startFeedForward() {
     beaterBarSetSpeed = 1.0;
-    beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed); // should be handled by SetShooterStates
+    beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed); // should be handled by SetShooterStates?
   }
 
   public void shoot() {
-    setShootSpeed(MAX_SPEED * 0.80);
+    setShooterSpeed(Constants.ShooterConstants.shooterWheelMaxRPS * 0.80);
   }
 
-
-  public void setShootSpeed(double inSpeed) {
-    shooterSRX.set(ControlMode.Velocity, inSpeed); //feed forward?
-    shooterFollowerSRX.set(ControlMode.Velocity, inSpeed);
-
-    shooterSetSpeed = inSpeed;
-  }
 
 
   public void stopShooter() {
@@ -158,7 +153,7 @@ public class Shooter extends SubsystemBase {
   public void stopBeaterbar() {
     beaterBarSetSpeed = 0;
     beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
-
+    System.out.println("stopped beaterbar");
   }
 
   public void stop() {
@@ -182,15 +177,6 @@ public class Shooter extends SubsystemBase {
 
   public void updateMotors() {
     // Don't use this function. Have your commands call and change motors when you need them to change. 
-
-    beaterBarSPX.set(ControlMode.PercentOutput, beaterBarSetSpeed);
-
-    if (shooterSetSpeed <= 10) {
-      shooterSRX.set(ControlMode.PercentOutput, 0);
-    } else {
-      //shooterSRX.set(ControlMode.Velocity, shooterSetSpeed * Constants.ATATConstants.ThroughBoreTickPerRot / 10, DemandType.ArbitraryFeedForward, 0.01);  
-      shooterSRX.set(ControlMode.PercentOutput, shooterSetSpeed / Constants.ShooterConstants.shooterWheelMaxRPS, DemandType.ArbitraryFeedForward, 0.008);
-    }
   }
 
 

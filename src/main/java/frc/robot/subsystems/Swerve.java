@@ -235,7 +235,7 @@ public class Swerve extends SubsystemBase {
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
 
-        for (SwerveModule mod : mSwerveMods) {
+        /*for (SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle Motor Absolute Encoder",
                     mod.getAbsolueAngleEncoderPos());
@@ -267,7 +267,7 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Robot T", this.getPose().getRotation().getDegrees());
 
         SmartDashboard.putNumber("Mod 0 spark state angle", mSwerveMods[0].getState().angle.getRotations());
-        SmartDashboard.putNumber("Mod 0 spark angle", mSwerveMods[0].getPosition().angle.getRotations());
+        SmartDashboard.putNumber("Mod 0 spark angle", mSwerveMods[0].getPosition().angle.getRotations());*/
 
     }
 

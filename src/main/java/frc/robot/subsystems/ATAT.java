@@ -177,7 +177,7 @@ public class ATAT extends SubsystemBase {
    * @return front post position in inches.
    */
   public double getFrontPostPos() {
-    return -mFrontLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
+    return mFrontLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
   }
   
   /**
@@ -185,7 +185,7 @@ public class ATAT extends SubsystemBase {
    * @return back post position in inches
    */
   public double getBackPostPos() {
-    return -mBackLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
+    return mBackLinearSRX.getSelectedSensorPosition() / Constants.ATATConstants.ThroughBoreTickPerRot * 2 * Math.PI * Constants.ATATConstants.distanceBetweenPostParts;
   }
 
   @Override

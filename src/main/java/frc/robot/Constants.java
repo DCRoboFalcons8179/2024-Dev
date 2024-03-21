@@ -131,7 +131,7 @@ public final class Constants {
             public static final int driveMotorID = 39;
             public static final int angleMotorID = 19;
             public static final int canCoderID = 43;
-            public static final double desiredCanCoderPos = 97;
+            public static final double desiredCanCoderPos = 97 + 180;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, desiredCanCoderPos);
         }
@@ -235,7 +235,7 @@ public final class Constants {
 
         public static final ATATPose shootClose = new ATATPose(0, 6.25, 0);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
-        public static final ATATPose shootMedium = new ATATPose(1, 2, 20);
+        public static final ATATPose shootMedium = new ATATPose(0.5, 5, 16);
         public static final ATATPose shootFar = new ATATPose(0, 4.5, 0);
 
         //public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);

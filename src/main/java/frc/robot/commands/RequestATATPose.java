@@ -20,8 +20,9 @@ public class RequestATATPose extends Command {
   private DoubleSupplier distB;
   private DoubleSupplier angle;
 
-
-  
+  private double lastF;
+  private double lastB;
+  private double lastAngle;
   
   /**
    * Instantly requests ATAT poses individually
@@ -118,11 +119,12 @@ public class RequestATATPose extends Command {
     atat.setDesiredFrontPostPos(distF.getAsDouble());
     atat.setDesiredBackPostPos(distB.getAsDouble());
     atat.setDesiredAngle(angle.getAsDouble());
+
   }
 
   @Override
   public void execute() {
-
+    System.out.println("epsilon atat at" + Math.abs(atat.getFrontPostPos() - distF.getAsDouble()) + " " + Math.abs(atat.getBackPostPos() - distB.getAsDouble()) + " " + Math.abs(atat.getAngle() - angle.getAsDouble()));
   }
 
   @Override
@@ -136,7 +138,7 @@ public class RequestATATPose extends Command {
     }
 
     return Math.abs(atat.getFrontPostPos() - distF.getAsDouble()) < 0.2 &&
-           Math.abs(atat.getBackPostPos() - distF.getAsDouble()) < 0.2 &&
-           Math.abs(atat.getAngle() - angle.getAsDouble()) < 0.2;
+           Math.abs(atat.getBackPostPos() - distB.getAsDouble()) < 0.2 &&
+           Math.abs(atat.getAngle() - angle.getAsDouble()) < 2;
   }
 }

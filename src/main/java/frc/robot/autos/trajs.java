@@ -48,69 +48,69 @@ public class trajs {
 
     
     // Does a circle! NOTE THE NEG Y COORDINATES
-    public final static Trajectory circle = 
-    TrajectoryGenerator.generateTrajectory(
-        new Pose2d(2.8,-7.21, zero),
-        List.of(
-            new Translation2d(3.8 , -5.88),
-            new Translation2d(2.51, -5.16)
-        ),
-        new Pose2d(2.8,-7.21,zero)
-        ,config);
+    // public final static Trajectory circle = 
+    // TrajectoryGenerator.generateTrajectory(
+    //     new Pose2d(2.8,-7.21, zero),
+    //     List.of(
+    //         new Translation2d(3.8 , -5.88),
+    //         new Translation2d(2.51, -5.16)
+    //     ),
+    //     new Pose2d(2.8,-7.21,zero)
+    //     ,config);
 
     public final static Trajectory ampSideBlueFar = 
     TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0.81, -6.66, zero),
+        new Pose2d(-0.81, 6.66, zero),
         List.of(
-            new Translation2d(3.72, -6.15),
-            new Translation2d(6.01, -6.66)
+            new Translation2d(-3.72, 6.15),
+            new Translation2d(-6.01, 6.66)
         ),
-        new Pose2d(8.29, -6.66, zero)
+        new Pose2d(-8.29, 6.66, zero)
         ,config);
 
         public final static Trajectory ampSideBlueClose = 
     TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0.81, -6.67, zero),
+        new Pose2d(-0.81, 6.67, zero),
         List.of(
-            new Translation2d(0.69, -6.68)
+            new Translation2d(-0.69, 6.68)
         ),
-        new Pose2d(2.15, -7.00, zero)
+        new Pose2d(-2.15, 7.00, zero)
         ,config);
 
          public final static Trajectory kickOffWall = 
     TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0.36, -6.91, zero),
+        new Pose2d(-0.36, 6.91, zero),
         List.of(
-            new Translation2d(0.35, -6.90)
+            new Translation2d(-0.35, 6.90)
         ),
-        new Pose2d(.81, -6.91, zero)
+        new Pose2d(-.81, 6.91, zero)
         ,config);
 
         public final static Trajectory sourceSideBlue = 
     TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0.81, -4.00, zero),
+        new Pose2d(-0.81, 4.00, zero),
         List.of(
-            new Translation2d(1.92, -1.53),
-            new Translation2d(5.60, 1)
+            new Translation2d(-1.92, 1.53),
+            new Translation2d(-5.60, 1)
         ),
-        new Pose2d(8.30, -1.88, zero)
+        new Pose2d(-8.30, 1.88, zero)
         ,config);
 
         public final static Trajectory centerBlue = 
     TrajectoryGenerator.generateTrajectory(
-        new Pose2d(1.16, -5.52, zero),
+        new Pose2d(-1.16, 5.52, zero),
         List.of(
-            new Translation2d(1.17, -5.53)
+            new Translation2d(-1.17, 5.53)
         ),
-        new Pose2d(2.21, -5.52, zero)
+        new Pose2d(-2.21, 5.52, zero)
         ,config);
 
         public final static Trajectory justGoBack = 
     TrajectoryGenerator.generateTrajectory(
-        new Pose2d(0.37, -2.51, zero),
+        new Pose2d(-0.37, 2.51, zero),
         List.of(
-            new Translation2d(.38, -2.52)
+            new Translation2d(-.38, 2.52)
         ),
-        new Pose2d(2.74, -1.34, zero)
+        new Pose2d(-2.74, 1.34, zero)
         ,config);
 }

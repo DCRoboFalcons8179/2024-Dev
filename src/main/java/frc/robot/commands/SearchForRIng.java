@@ -25,9 +25,15 @@ public class SearchForRIng extends ParallelRaceGroup {
 
     //Math to figure out backwards if needed
 
-    addCommands(new RequestCarryWhenRing(atat, shooter).handleInterrupt(()-> new RequestATATPose(atat, Constants.ATATConstants.carry)),
+    addCommands (new RequestCarryWhenRing(atat, shooter).handleInterrupt(()-> new RequestATATPose(atat, Constants.ATATConstants.carry)),
                 new WaitCommand(1)
                 .andThen(new InstantCommand(()-> swerve.drive(new Translation2d(-1, 0), 0, false)))
                 .repeatedly().withTimeout(2));
+
+                // addCommands((new RequestBeaterBarSetSpeed(shooter, 0.6, true))
+                //             .andThen(new InstantCommand(()-> swerve.drive(new Translation2d(-1, 0), 0, false)))
+                //             .repeatedly().withTimeout(2)
+                //             .andThen(new RequestBeaterBarSetSpeed(shooter, 0))
+                //             .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry)));
   }
 }

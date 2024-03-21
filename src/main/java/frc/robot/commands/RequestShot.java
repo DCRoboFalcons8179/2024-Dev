@@ -25,10 +25,9 @@ public class RequestShot extends Command {
 
 
   public RequestShot(Shooter shooter) {
-    addRequirements(shooter);
+    this(shooter, Constants.ShooterConstants.shooterSpeed);
 
     this.shooter = shooter;
-    this.speed = Constants.ShooterConstants.shooterSpeed;
   }
 
   public RequestShot(Shooter shooter, Double speed) {
@@ -44,7 +43,7 @@ public class RequestShot extends Command {
   @Override
   public void initialize() {
 
-    shooter.shoot();;
+    shooter.shoot();
     timer.reset();
     timer.start();
 
@@ -58,7 +57,7 @@ public class RequestShot extends Command {
     shooter.shoot();
 
     // Timer - must make sure that we wait for the overshoot to settle out.
-    if (timer.hasElapsed(0.5)) {
+    if (timer.hasElapsed(0.3)) {
       nextStep = true;
     }
 
@@ -70,6 +69,10 @@ public class RequestShot extends Command {
 
     }
 
+    if (timer.hasElapsed(1.1)) {
+      shooter.startFeedForward();
+    }
+
 
 
   }
@@ -78,7 +81,7 @@ public class RequestShot extends Command {
   public void end(boolean interrupted) {
     
     // If interupted - aka the user takes their finger off the shot button
-
+    // end() always run when stopped. boolean interrupted is the only thing that changes when the command is either interrupted or ended via isFinished()
     shooter.stop();
 
 
@@ -88,7 +91,7 @@ public class RequestShot extends Command {
   public boolean isFinished() {
 
     if (timer.hasElapsed(2.0) && !shooter.hasRing()) {
-      return true;    
+      return true;
     }
 
 
