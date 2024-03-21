@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -120,7 +121,7 @@ public class ApproachTag extends Command {
       translationOffset = limelight.offsetFromTag();
 
       //Vector2, to desired position
-      finalTranslationOffset = (new Translation2d(translationOffset.getZ() + OFFSET_Z, -translationOffset.getX() + OFFSET_X));
+      finalTranslationOffset = (new Translation2d(translationOffset.getZ() + OFFSET_Z, -(-translationOffset.getX() + OFFSET_X)));
       
       Translation2d dir = Filter.unit(finalTranslationOffset);
       
@@ -145,7 +146,7 @@ public class ApproachTag extends Command {
 
       rot = Filter.powerCurve(Filter.deadband(Filter.cutoffFilter(rot), ROTATION_DEADBAND), 3);
 
-      s_Swerve.drive(dir.times(mag).times(MAX_TRANSLATION_SPEED),  -rot * (MAX_ROTATION_SPEED), false);
+      s_Swerve.drive(dir.times(mag).times(MAX_TRANSLATION_SPEED).rotateBy(Rotation2d.fromDegrees(180)),  rot * (MAX_ROTATION_SPEED), false);
 
       SmartDashboard.putNumber("dir x", dir.getX());
       SmartDashboard.putNumber("dir y", dir.getY());
@@ -173,6 +174,6 @@ public class ApproachTag extends Command {
   @Override
   public boolean isFinished() {
     // returns true when the camera does not see a tag for MAX_CYCLES_WITHOUT_TAG cycles
-    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || mag * MAX_MAG < 0.10 && rot * MAX_ROT < 3;
+    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || (mag * MAX_MAG < 0.10 && Math.abs(limelight.getRobotRY() * MAX_ROT) < 3);
   }
 }

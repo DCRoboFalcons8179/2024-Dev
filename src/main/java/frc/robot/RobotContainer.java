@@ -5,6 +5,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -62,8 +63,8 @@ public class RobotContainer {
         // XboxController.Button.kRightBumper.value);
         private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
         private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
-        // private final JoystickButton approachTag = new JoystickButton(driver,
-        // XboxController.Button.kA.value);
+         private final JoystickButton approachTag = new JoystickButton(driver,
+         XboxController.Button.kA.value);
         private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
         private final JoystickButton hangPullUp = new JoystickButton(board, 2);
         private final JoystickButton ampSetPoint = new JoystickButton(board, 5);
@@ -137,8 +138,8 @@ public class RobotContainer {
                 
                 //robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
                 
-                // approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2,
-                // 0.15, 6, 10, new Translation2d(0, 2), 0, false));
+                approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2,
+                 0.15, 6, 10, new Translation2d(0, 2), 0, false));
                 // bButton.onTrue(new InstantCommand(() ->
                 // shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
                 // bButton.onFalse(new InstantCommand(() ->
