@@ -196,7 +196,7 @@ public final class Constants {
         public static final int frontPostSRXID = 26;
         public static final int backPostSRXID  = 33; //TODO: fix this
 
-        public static final double frontPostMaxExtension = 6.4 + 4d/8;
+        public static final double frontPostMaxExtension = 6.4 + 8d/8;
         public static final double backPostMaxExtension = 8.75; //TODO: fix this
 
         public static final double distanceBetweenPostParts = (1.123);
@@ -207,10 +207,10 @@ public final class Constants {
         public static final double backPostGearRatio = 90;
         public static final double angleGearRatio = 185d/3;
 
-        public static final double a_kP = 3.6;
+        public static final double a_kP = 5.2;
         public static final double a_kI = 0.0004;
         public static final double a_kD = 0.0;
-        public static final double a_kF = 0.0;
+        public static final double a_kF = 0.15;
 
 
         public static final double l_kP = 0.4;
@@ -232,6 +232,7 @@ public final class Constants {
 
         // ATATPose setpoints for readability in button declarations.
         public static final ATATPose carry = new ATATPose(0, 0, 0);
+        public static final ATATPose duckPosition = new ATATPose(0,0,42);
 
         public static final ATATPose shootClose = new ATATPose(0, 6.25, 0);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
@@ -241,8 +242,8 @@ public final class Constants {
         //public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
         //public static final ATATPose ampSetPoint2 = new ATATPose(6.4, 2.25, 20);
 
-        public static final ATATPose ampSetPoint = new ATATPose(6.9, 8.25, 10);
-        public static final ATATPose ampSetPoint2 = new ATATPose(6.9, 2, 24);
+        public static final ATATPose ampSetPoint = new ATATPose(7.4, 7.75, 10);
+        public static final ATATPose ampSetPoint2 = new ATATPose(7.4, 2, 30);
 
         public static final ATATPose pickUpSetPoint = new ATATPose(0, 4, 88);
         public static final ATATPose pickUpHumanPlayer = new ATATPose(6.15, 0, 16);

@@ -13,6 +13,7 @@ public class goToHeading extends Command {
 
     Swerve swerve;
     Rotation2d target;
+    boolean isEnding = false;
     /**
      * TODO - Make the bot go to a certian heading.
      * 
@@ -60,7 +61,8 @@ public class goToHeading extends Command {
       rotPow = -0.5;
     }
     else {
-      this.cancel();
+      this.isEnding = true;
+      // this.cancel() will cancel the entire SequentialCommandGroup - .andThen makes a command group, and what 'this' is gets lost.
     }
 
     swerve.drive(new Translation2d(0,0), rotPow, false);
@@ -88,7 +90,7 @@ public class goToHeading extends Command {
     // May need to add in something for sensing if bott/all motors are at the right spot.
     // if so, we go into a more "stable" control loop mode
     
-    return false;
+    return isEnding;
 
 
   }

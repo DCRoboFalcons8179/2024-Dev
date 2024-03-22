@@ -163,7 +163,7 @@ public class ApproachTag extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("ApproachTag ran out of camera cycles");
+    System.out.println("ApproachTag ended");
     magFilter.reset();
     rotFilter.reset();
     xFilter.reset();

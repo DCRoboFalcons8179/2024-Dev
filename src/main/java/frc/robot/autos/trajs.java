@@ -17,7 +17,6 @@ import java.util.List;
 public class trajs {
 
     private final static Rotation2d zero = new Rotation2d();
-    
 
     /**
      * IMPORTANT NOTE: To use paths from Path Planner, Copy the numbers from end points and waypoints
@@ -112,5 +111,15 @@ public class trajs {
             new Translation2d(-.38, 2.52)
         ),
         new Pose2d(-2.74, 1.34, zero)
+        ,config);
+
+         public final static Trajectory sourceSideRed = 
+    TrajectoryGenerator.generateTrajectory(
+        new Pose2d(-0.81, -4.00, zero),
+        List.of(
+            new Translation2d(-1.92, -1.53),
+            new Translation2d(-5.60, -1)
+        ),
+        new Pose2d(-8.30, -1.88, zero)
         ,config);
 }

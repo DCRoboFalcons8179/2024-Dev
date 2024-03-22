@@ -140,7 +140,7 @@ public class Swerve extends SubsystemBase {
                         translation.getX(),
                         translation.getY(),
                         rotation,
-                        getGyroYaw())
+                        getGyroYaw().times(-1))
                         : new ChassisSpeeds(
                                 translation.getX(),
                                 translation.getY(),
@@ -235,7 +235,7 @@ public class Swerve extends SubsystemBase {
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
 
-        /*for (SwerveModule mod : mSwerveMods) {
+        for (SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle Motor Absolute Encoder",
                     mod.getAbsolueAngleEncoderPos());
@@ -254,11 +254,8 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Velocity X Error",
                 Math.abs(translationX) - Math.abs(mSwerveMods[0].getState().speedMetersPerSecond));
 
-        SmartDashboard.putNumber("Gyro Value", gyro.getAngle());
-
         SmartDashboard.putNumber("Gyro Nice Value", this.getGyroYaw().getDegrees());
 
-        SmartDashboard.putBoolean("Field Centric", fieldCentricBoolean);
 
         SmartDashboard.putNumber("Position", mSwerveMods[0].getPosition().distanceMeters);
 
@@ -267,7 +264,11 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Robot T", this.getPose().getRotation().getDegrees());
 
         SmartDashboard.putNumber("Mod 0 spark state angle", mSwerveMods[0].getState().angle.getRotations());
-        SmartDashboard.putNumber("Mod 0 spark angle", mSwerveMods[0].getPosition().angle.getRotations());*/
+        SmartDashboard.putNumber("Mod 0 spark angle", mSwerveMods[0].getPosition().angle.getRotations());
+
+        SmartDashboard.putNumber("Gyro Value", gyro.getAngle());
+        SmartDashboard.putBoolean("Field Centric", fieldCentricBoolean);
+
 
     }
 
