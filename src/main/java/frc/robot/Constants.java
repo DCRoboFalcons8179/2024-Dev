@@ -246,7 +246,7 @@ public final class Constants {
         public static final ATATPose ampSetPoint2 = new ATATPose(7.4, 2, 30);
 
         public static final ATATPose pickUpSetPoint = new ATATPose(0, 4, 88);
-        public static final ATATPose pickUpHumanPlayer = new ATATPose(6.15, 0, 16);
+        public static final ATATPose pickUpHumanPlayer = new ATATPose(5.65, 0, 16);
 
         public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
         public static final ATATPose hangPull = new ATATPose(0, 0, 0);

@@ -467,6 +467,281 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Mod 0 Angle Motor Absolute Encoder",
+              "_title": "Mod 0 Angle Motor Absolute Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Mod 1 Angle Motor Absolute Encoder",
+              "_title": "Mod 1 Angle Motor Absolute Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Mod 2 Angle Motor Absolute Encoder",
+              "_title": "Mod 2 Angle Motor Absolute Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Mod 3 Angle Motor Absolute Encoder",
+              "_title": "Mod 3 Angle Motor Absolute Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot X",
+              "_title": "Robot X",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot Y",
+              "_title": "Robot Y",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot T",
+              "_title": "Robot T",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Mod 0 spark state angle",
+              "_title": "Mod 0 spark state angle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Mod 0 spark angle",
+              "_title": "Mod 0 spark angle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Lead Stator Current",
+              "_title": "Lead Stator Current",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter Set Speed",
+              "_title": "Shooter Set Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Has Ring",
+              "_title": "Has Ring",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/desiredAngle",
+              "_title": "desiredAngle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/actual angle encoder value",
+              "_title": "actual angle encoder value",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/motor requested speed",
+              "_title": "motor requested speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/desiredFrontPostPos",
+              "_title": "desiredFrontPostPos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/frontPostPos",
+              "_title": "frontPostPos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/desiredBackPostPos",
+              "_title": "desiredBackPostPos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/backPostPos",
+              "_title": "backPostPos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Angle Motor Integrated Encoder",
+              "_title": "Angle Motor Integrated Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Motor output",
+              "_title": "Right Motor output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -504,27 +779,6 @@
               "_type": "Camera Stream",
               "_source0": "camera_server://LeftCam",
               "_title": "LeftCam",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": 30,
-              "imageWidth": 160,
-              "imageHeight": 120
-            }
-          },
-          "6,0": {
-            "size": [
-              5,
-              5
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://RightCam",
-              "_title": "RightCam",
               "_glyph": 148,
               "_showGlyph": false,
               "Crosshair/Show crosshair": true,
@@ -653,6 +907,27 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "6,0": {
+            "size": [
+              5,
+              5
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight",
+              "_title": "limelight",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
           }
         }
       }
@@ -660,8 +935,8 @@
   ],
   "windowGeometry": {
     "x": -7.0,
-    "y": -7.0,
-    "width": 1551.0,
+    "y": 0.0,
+    "width": 1932.0,
     "height": 839.0
   }
 }

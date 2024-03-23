@@ -414,6 +414,40 @@ public class RobotContainer {
                                         //.andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-90)))
                                         //.andThen(new SearchForRIng(atat, shooter, s_Swerve))
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
+                        } else if (switch1 && !switch2 && switch3){ // shoot only 1 0 1
+                                return new RequestATATPose(atat, Constants.ATATConstants.shootClose)
+                                        .andThen(new WaitCommand(.5))
+                                        .andThen(new RequestShot(shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry));
+                        } else if (!switch1 && switch2 && !switch3){ //Center Red 0 1 0
+                                return new RequestATATPose(atat, Constants.ATATConstants.shootClose)
+                                        /* .andThen(new WaitCommand(.7))
+                                        .andThen(new RequestShot(shooter).withTimeout(3))
+                                        //.andThen(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint))
+                                        //.andThen(new RequestCarryWhenRing(atat, shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint, false))
+                                        .andThen(new RequestBeaterBarSetSpeed(shooter, 0.6, true))
+                                        .andThen(new RequestBeaterBarSetSpeed(shooter, 0))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
+                                        .andThen(new doTraj(s_Swerve, trajs.centerBlue));
+                                        // .andThen(new SearchForRIng(atat, shooter, s_Swerve));*/
+
+                                        .andThen(new WaitCommand(.8))
+                                        .andThen(new RequestShot(shooter).withTimeout(3))
+                                        //.andThen(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint))
+                                        //.andThen(new RequestCarryWhenRing(atat, shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint, false))
+                                        .andThen(new RequestBeaterBarSetSpeed(shooter, 0.6, true).alongWith(new doTraj(s_Swerve, trajs.centerRed)))
+                                        .andThen(new RequestBeaterBarSetSpeed(shooter, 0))
+                                        // .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, true))
+                                        // .andThen(new doTraj(s_Swerve, trajs.centerRedToSpeaker))
+                                        .andThen(new InstantCommand(() -> s_Swerve.drive(new Translation2d(-1.3, 0.0), 0, false)).repeatedly().withTimeout(1.0))
+                                        .andThen(new RequestShot(shooter))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry));
+
+                                        // .andThen(new SearchForRIng(atat, shooter, s_Swerve));*/
+                                        
                         }
                 }
 

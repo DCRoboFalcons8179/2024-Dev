@@ -104,6 +104,25 @@ public class trajs {
         new Pose2d(-2.21, 5.52, zero)
         ,config);
 
+        public final static Trajectory centerRed = 
+    TrajectoryGenerator.generateTrajectory(
+        new Pose2d(-1.16, -5.52, zero),
+        List.of(
+            new Translation2d(-1.17, -5.53)
+        ),
+        new Pose2d(-2.21, -5.52, zero)
+        ,config);
+
+        public final static Trajectory centerRedToSpeaker = 
+    TrajectoryGenerator.generateTrajectory(
+        new Pose2d(-2.21, -5.52, zero),
+        List.of(
+            new Translation2d(-2.20, -5.53)
+        ),
+        new Pose2d(-1.16, -5.52, zero)
+        ,config);
+        
+
         public final static Trajectory justGoBack = 
     TrajectoryGenerator.generateTrajectory(
         new Pose2d(-0.37, 2.51, zero),
