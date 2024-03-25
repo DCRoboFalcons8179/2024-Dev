@@ -138,7 +138,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shoot() {
-    setShooterSpeed(Constants.ShooterConstants.shooterWheelMaxRPS * 0.80);
+    setShooterSpeed(Constants.ShooterConstants.shooterWheelMaxRPS * 0.95);
   }
 
 

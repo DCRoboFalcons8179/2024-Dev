@@ -57,7 +57,7 @@ public class RequestShot extends Command {
     shooter.shoot();
 
     // Timer - must make sure that we wait for the overshoot to settle out.
-    if (timer.hasElapsed(0.3)) {
+    if (timer.hasElapsed(0.6)) {
       nextStep = true;
     }
 
@@ -69,7 +69,7 @@ public class RequestShot extends Command {
 
     }
 
-    if (timer.hasElapsed(1.1)) {
+    if (timer.hasElapsed(1.7)) {
       shooter.startFeedForward();
     }
 

@@ -7,6 +7,7 @@ import frc.robot.subsystems.Swerve;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
@@ -38,6 +39,9 @@ public class TeleopSwerve extends Command {
         double translationVal = translationSup.getAsDouble();
         double strafeVal = strafeSup.getAsDouble();
         double rotationVal = rotationSup.getAsDouble();
+
+        SmartDashboard.putNumber("Translation", translationVal);
+        SmartDashboard.putNumber("Strafe", strafeVal);
 
         if ((translationVal * translationVal) + (strafeVal * strafeVal) < 0.02) {
             translationVal = 0;

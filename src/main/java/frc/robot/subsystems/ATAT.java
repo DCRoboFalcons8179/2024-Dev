@@ -225,13 +225,16 @@ public class ATAT extends SubsystemBase {
     mAngleMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     mAngleMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 0.25f);
+    mAngleMotor.setSoftLimit(SoftLimitDirection.kForward, 0.25f + 8f/360);
     mAngleMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
 
     mAngleMotor.enableVoltageCompensation(12.0);
     mAngleMotorRight.enableVoltageCompensation(12.0);
 
-    mAngleMotor.getPIDController().setOutputRange(-0.7, 0.7);
+    // mAngleMotor.getPIDController().setOutputRange(-0.7, 0.7);
+    mAngleMotor.getPIDController().setOutputRange(-1.0, 1.0);
+    mAngleMotor.getPIDController().setIZone(0);
+    mAngleMotor.getPIDController().setIMaxAccum(0.5, 0);
 
     // mAngleMotor.getPIDController().
     // Angle Remote encoder setup

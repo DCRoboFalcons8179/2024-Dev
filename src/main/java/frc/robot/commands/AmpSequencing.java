@@ -18,7 +18,9 @@ public class AmpSequencing extends SequentialCommandGroup {
   public AmpSequencing(ATAT atat, Shooter shooter) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint).alongWith(new WaitCommand(0.5)),
+
+    addCommands(
+                new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint).alongWith(new WaitCommand(.80)),
                 new RequestBeaterBarSetSpeed(shooter, -0.3),
                 new WaitCommand(1.5),
                 new RequestBeaterBarSetSpeed(shooter, 0),

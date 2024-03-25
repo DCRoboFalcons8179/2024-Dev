@@ -207,10 +207,10 @@ public final class Constants {
         public static final double backPostGearRatio = 90;
         public static final double angleGearRatio = 185d/3;
 
-        public static final double a_kP = 5.2;
-        public static final double a_kI = 0.0004;
-        public static final double a_kD = 0.0;
-        public static final double a_kF = 0.15;
+        public static final double a_kP = 7.0;
+        public static final double a_kI = 0.000; //0.0006;
+        public static final double a_kD = 0;
+        public static final double a_kF = 0.0;
 
 
         public static final double l_kP = 0.4;
@@ -224,7 +224,7 @@ public final class Constants {
         public static final double f_kF = l_kF;
         
         public static final double minAngle = -4;
-        public static final double maxAngle = 90;
+        public static final double maxAngle = 98;
 
         public static final double lowAngleBackPostMinLength = 4;
 
@@ -234,7 +234,7 @@ public final class Constants {
         public static final ATATPose carry = new ATATPose(0, 0, 0);
         public static final ATATPose duckPosition = new ATATPose(0,0,42);
 
-        public static final ATATPose shootClose = new ATATPose(0, 6.25, 0);
+        public static final ATATPose shootClose = new ATATPose(0, 6.25 + 1, 0);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
         public static final ATATPose shootMedium = new ATATPose(0.5, 5, 16);
         public static final ATATPose shootFar = new ATATPose(0, 4.5, 0);
@@ -242,8 +242,9 @@ public final class Constants {
         //public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
         //public static final ATATPose ampSetPoint2 = new ATATPose(6.4, 2.25, 20);
 
-        public static final ATATPose ampSetPoint = new ATATPose(7.4, 7.75, 10);
-        public static final ATATPose ampSetPoint2 = new ATATPose(7.4, 2, 30);
+        public static final ATATPose ampSetPoint = new ATATPose(7.4, 7.75, 0); //10
+        public static final ATATPose ampSetPoint1half = new ATATPose(7.4, 7.75, 5); //10
+        public static final ATATPose ampSetPoint2 = new ATATPose(7.4, 2, 50); //30
 
         public static final ATATPose pickUpSetPoint = new ATATPose(0, 4, 88);
         public static final ATATPose pickUpHumanPlayer = new ATATPose(5.65, 0, 16);
