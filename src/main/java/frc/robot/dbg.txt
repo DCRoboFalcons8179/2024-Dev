@@ -1,0 +1,40 @@
+
+(Not field relative)
+Step 1. Enforce this on the joystick
+JOYSTICK
+        1 (Y)
+        |       1,1
+        |
+    ---------1 (X)
+        |
+        |
+
+
+Step 2. Make sure this is the standard on the robot (e.g. when Joystick is right, robot & navX move in the positive X direction)
+ROBOT
+        Front (+Y)
+        |       1,1
+        |
+    --------- Right (+X)
+        |
+        |
+
+navX
+        Front (+Y)
+        |       1,1
+        |
+    --------- Right (+X)
+        |
+        |
+
+Step 3. Find the "Zero" point on the field in PathPlanner - all paths generated will be relative to this
+
+Red Human pickup on blue side
+
+        -1
+        |
+        |
+    1-------- -1
+        |
+        |
+        1

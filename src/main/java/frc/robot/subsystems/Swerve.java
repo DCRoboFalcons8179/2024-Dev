@@ -131,19 +131,19 @@ public class Swerve extends SubsystemBase {
         // variables
         translationX = translation.getX();
 
-        translationY = translation.getY();
+        translationY = -translation.getY();
 
         rotationCommand = rotation;
 
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                 fieldCentricBoolean ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                        translation.getX(),
-                        translation.getY(),
+                        translationX,
+                        translationY,
                         rotation,
                         getGyroYaw().times(-1))
                         : new ChassisSpeeds(
-                                translation.getX(),
-                                translation.getY(),
+                                translationX,
+                                translationY,
                                 rotation));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 

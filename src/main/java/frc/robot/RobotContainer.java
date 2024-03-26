@@ -118,7 +118,7 @@ public class RobotContainer {
                                 new TeleopSwerve(
                                                 s_Swerve,
                                                 () -> driver.getRawAxis(translationAxis) * (rightBumber.getAsBoolean() ? 0.5 : 1),
-                                                () -> -driver.getRawAxis(strafeAxis) * (rightBumber.getAsBoolean() ? 0.5 : 1),
+                                                () -> driver.getRawAxis(strafeAxis) * (rightBumber.getAsBoolean() ? 0.5 : 1),
                                                 () -> driver.getRawAxis(rotationAxis)));
 
                 // Moves atat
@@ -298,7 +298,7 @@ public class RobotContainer {
                 SmartDashboard.putNumber("requested auton", 100 * (switch1 ? 1 : 0) + 10 * (switch2 ? 1 : 0) + (switch3 ? 1 : 0));
 
 
-                return new PathPlannerAuto("Straight and Down");
+                return new PathPlannerAuto("New Auto");
 
                 //return new RequestATATPose(atat, Constants.ATATConstants.shootClose, false)
                                         //.andThen(new RequestShot(shooter))

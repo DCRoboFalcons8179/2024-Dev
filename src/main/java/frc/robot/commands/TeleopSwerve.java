@@ -40,8 +40,9 @@ public class TeleopSwerve extends Command {
         double strafeVal = strafeSup.getAsDouble();
         double rotationVal = rotationSup.getAsDouble();
 
-        SmartDashboard.putNumber("Translation", translationVal);
-        SmartDashboard.putNumber("Strafe", strafeVal);
+        SmartDashboard.putNumber("SWERVE: Translation", translationVal);
+        SmartDashboard.putNumber("SWERVE: Strafe", strafeVal);
+        SmartDashboard.putNumber("SWERVE: Rotation", strafeVal);
 
         if ((translationVal * translationVal) + (strafeVal * strafeVal) < 0.02) {
             translationVal = 0;
