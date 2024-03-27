@@ -262,7 +262,7 @@ public final class Constants {
         public static final double shooterGearRatio = 1; // input / output, shouldn't matter since encoder is after gears.
         public static final double beaterBarGearRatio = 1; // input / output
 
-        public static final double shooterMotorMaxRPS = 100d; //rotations per second TODO: get correct number
+        public static final double shooterMotorMaxRPS = 300d; //rotations per second TODO: get correct number
         public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
 
         public static final double kP = 0.0065;
@@ -272,7 +272,7 @@ public final class Constants {
 
         public static final double shooterSpeed = 70000;
         public static final double beaterBarFSpeed = 1;
-        public static final double beaterBarBSpeed = -0.7;
+        public static final double beaterBarBSpeed = -1;
         public static final double feedSpeed = 0;
         //beater bar does not have pid, no pidf no matter what
     }
