@@ -56,22 +56,20 @@ public class RequestShot extends Command {
 
     shooter.shoot();
 
-    // // Timer - must make sure that we wait for the overshoot to settle out.
-    // if (timer.hasElapsed(0.6)) {
-    //   nextStep = true;
-    // }
+    // Timer - must make sure that we wait for the overshoot to settle out.
+    if (timer.hasElapsed(0.6)) {
+      nextStep = true;
+    }
 
+    if (shooter.isAtSpeed() && nextStep) {
 
+      shooter.startFeedForward();
 
-    // if (shooter.isAtSpeed() && nextStep) {
+    }
 
-    //   shooter.startFeedForward();
-
-    // }
-
-  //  if (timer.hasElapsed(2.0)) {
-  //     shooter.startFeedForward();
-  //   }
+    if (timer.hasElapsed(2.0)) {
+      shooter.startFeedForward();
+    }
  
 
   }
@@ -91,7 +89,7 @@ public class RequestShot extends Command {
 
     // if (timer.hasElapsed(2.0) && !shooter.hasRing()) {
     //   return true;
-    // }
+    //}
 
 
     return false;

@@ -187,7 +187,7 @@ public class RobotContainer {
                 closeSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootClose));
                 
                 mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
-                // farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
+                farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
                 ampSetPoint.onTrue(new AmpSequencing(atat, shooter));
                 carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
                 pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));

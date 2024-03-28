@@ -121,7 +121,7 @@ public final class Constants {
             public static final int driveMotorID = 29;
             public static final int angleMotorID = 18;
             public static final int canCoderID = 45;
-            public static final double desiredCanCoderPos = 50.76;
+            public static final double desiredCanCoderPos = 168.13 - 180;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, desiredCanCoderPos);
         }
@@ -234,16 +234,21 @@ public final class Constants {
         public static final ATATPose carry = new ATATPose(0, 0, 0);
         public static final ATATPose duckPosition = new ATATPose(0,0,42);
 
-        public static final ATATPose shootClose = new ATATPose(0, 6.25 + 1, 0);
+        //public static final ATATPose shootClose = new ATATPose(0, 6.25 + 1, 0);
+        public static final ATATPose shootClose = new ATATPose(0, 6.5, 14);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
-        public static final ATATPose shootMedium = new ATATPose(0.5, 5, 16);
-        public static final ATATPose shootFar = new ATATPose(0, 4.5, 0);
+        public static final ATATPose shootMedium = new ATATPose(0.5, 4.75, 16);
+        public static final ATATPose shootFar = new ATATPose(0.5, 4.5, 18);
 
         //public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
         //public static final ATATPose ampSetPoint2 = new ATATPose(6.4, 2.25, 20);
 
-        public static final ATATPose ampSetPoint = new ATATPose(7.4, 7.75, 0); //10
+        /*public static final ATATPose ampSetPoint = new ATATPose(7.4, 7.75, 0); //10
         public static final ATATPose ampSetPoint1half = new ATATPose(7.4, 7.75, 5); //10
+        public static final ATATPose ampSetPoint2 = new ATATPose(7.4, 2, 50); //30*/
+
+        public static final ATATPose ampSetPoint = new ATATPose(7.4, 7, 0); //10
+        public static final ATATPose ampSetPoint1half = new ATATPose(7.4, 7.75, 0); //10
         public static final ATATPose ampSetPoint2 = new ATATPose(7.4, 2, 50); //30
 
         public static final ATATPose pickUpSetPoint = new ATATPose(0, 4, 88);
@@ -262,17 +267,18 @@ public final class Constants {
         public static final double shooterGearRatio = 1; // input / output, shouldn't matter since encoder is after gears.
         public static final double beaterBarGearRatio = 1; // input / output
 
-        public static final double shooterMotorMaxRPS = 300d; //rotations per second TODO: get correct number
+        public static final double shooterMotorMaxRPS = 100d; //rotations per second TODO: get correct number
         public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
 
         public static final double kP = 0.0065;
         public static final double kI = 0.000006;
         public static final double kD = 0.001;
-        public static final double kF = 0.0145;
+        public static final double kF = 0;
+        // public static final double kF = 0.0145;
 
-        public static final double shooterSpeed = 70000;
+        public static final double shooterSpeed = 100000;
         public static final double beaterBarFSpeed = 1;
-        public static final double beaterBarBSpeed = -1;
+        public static final double beaterBarBSpeed = -.7;
         public static final double feedSpeed = 0;
         //beater bar does not have pid, no pidf no matter what
     }

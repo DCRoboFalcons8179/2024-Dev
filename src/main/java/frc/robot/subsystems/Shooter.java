@@ -96,7 +96,7 @@ public class Shooter extends SubsystemBase {
    */
   public double getShooterSpeed() {
     /* Dont do this. See other functions. */
-    return -shooterSRX.getSelectedSensorVelocity() * 1.0d / Constants.ATATConstants.ThroughBoreTickPerRot * 10;
+    return shooterSRX.getSelectedSensorVelocity();
   }
 
   /**
@@ -138,7 +138,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shoot() {
-    setShooterSpeed(Constants.ShooterConstants.shooterWheelMaxRPS * 0.95);
+    setShooterSpeed(Constants.ShooterConstants.shooterWheelMaxRPS * 0.90);
   }
 
 
