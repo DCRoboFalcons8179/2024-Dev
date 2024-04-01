@@ -340,26 +340,26 @@ public class RobotContainer {
                         if (switch1 && switch2 && !switch3) {
                                 return new doTraj(s_Swerve, trajs.kickOffWall)
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-50)))
-                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootAuton))
                                         .andThen(new RequestShot(shooter))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
-                                        .andThen(new doTraj(s_Swerve, trajs.ampSideBlueFar))
-                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-90)))
-                                        .andThen(new SearchForRIng(atat, shooter, s_Swerve))
-                                        .andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
+                                        .andThen(new doTraj(s_Swerve, trajs.ampSideBlueFar));
+                                        // .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-90)))
+                                        // .andThen(new SearchForRIng(atat, shooter, s_Swerve))
+                                        // .andThen(new goToHeading(s_Swerve, new Rotation2d(0)));
                         }else if (switch1 && !switch2 && !switch3){ // blue amp close 1 0 0
                                 return new doTraj(s_Swerve, trajs.kickOffWall)
-                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(60)))
-                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(50)))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootAuton))
                                         .andThen(new RequestShot(shooter))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))
                                         .andThen(new doTraj(s_Swerve, trajs.ampSideBlueClose));
                         }else if (!switch1 && !switch2 && switch3){ //Blue Source far 0 0 1
                                 return new doTraj(s_Swerve, trajs.kickOffWall)
-                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-60)))
-                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, true))
+                                        .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-50)))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootAuton, true))
                                         .andThen(new WaitCommand(0.7))
                                         .andThen(new RequestShot(shooter))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
@@ -394,7 +394,7 @@ public class RobotContainer {
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint, false))
                                         .andThen(new RequestBeaterBarSetSpeed(shooter, 0.6, true).alongWith(new doTraj(s_Swerve, trajs.centerBlue)))
                                         .andThen(new RequestBeaterBarSetSpeed(shooter, 0))
-                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootMedium, false))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.medAuton, false))
                                         .andThen(new RequestShot(shooter));
 
                                         // .andThen(new SearchForRIng(atat, shooter, s_Swerve));*/
@@ -412,7 +412,7 @@ public class RobotContainer {
                         if(!switch1 && !switch2 && switch3){ //SourceSideRedFar 0 0 1
                                 return new doTraj(s_Swerve, trajs.kickOffWall)
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(60)))
-                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose, true))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootAuton, true))
                                         .andThen(new WaitCommand(0.7))
                                         .andThen(new RequestShot(shooter))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
@@ -461,7 +461,7 @@ public class RobotContainer {
                         }else if (switch1 && !switch2 && !switch3){ // red amp close 1 0 0
                                 return new doTraj(s_Swerve, trajs.kickOffWall)
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d().fromDegrees(-60)))
-                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootClose))
+                                        .andThen(new RequestATATPose(atat, Constants.ATATConstants.shootAuton))
                                         .andThen(new RequestShot(shooter))
                                         .andThen(new RequestATATPose(atat, Constants.ATATConstants.carry))
                                         .andThen(new goToHeading(s_Swerve, new Rotation2d(0)))

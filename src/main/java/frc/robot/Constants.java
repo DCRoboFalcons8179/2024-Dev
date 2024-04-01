@@ -63,7 +63,7 @@ public final class Constants {
         /* These values are used by the drive falcon to ramp in open loop and closed loop driving.
          * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc */
         public static final double openLoopRamp = 0.25;
-        public static final double closedLoopRamp = 0.0;
+        public static final double closedLoopRamp = 0.25;
 
         /* Angle Motor PID Values */
         public static final double angleKP = .18;
@@ -207,10 +207,10 @@ public final class Constants {
         public static final double backPostGearRatio = 90;
         public static final double angleGearRatio = 185d/3;
 
-        public static final double a_kP = 7.0;
+        public static final double a_kP = 8;
         public static final double a_kI = 0.000; //0.0006;
         public static final double a_kD = 0;
-        public static final double a_kF = 0.0;
+        public static final double a_kF = 0.3;
 
 
         public static final double l_kP = 0.4;
@@ -238,7 +238,10 @@ public final class Constants {
         public static final ATATPose shootClose = new ATATPose(0, 6.5, 14);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
         public static final ATATPose shootMedium = new ATATPose(0.5, 4.75, 16);
+        public static final ATATPose medAuton = new ATATPose(0.5, 4.25, 16);
         public static final ATATPose shootFar = new ATATPose(0.5, 4.5, 18);
+        public static final ATATPose shootAuton = new ATATPose(0, 5, 14);
+
 
         //public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
         //public static final ATATPose ampSetPoint2 = new ATATPose(6.4, 2.25, 20);
@@ -252,7 +255,7 @@ public final class Constants {
         public static final ATATPose ampSetPoint2 = new ATATPose(7.4, 2, 50); //30
 
         public static final ATATPose pickUpSetPoint = new ATATPose(0, 4, 88);
-        public static final ATATPose pickUpHumanPlayer = new ATATPose(5.65, 0, 16);
+        public static final ATATPose pickUpHumanPlayer = new ATATPose(5.65 - 0.25, 0, 16);
 
         public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
         public static final ATATPose hangPull = new ATATPose(0, 0, 0);
@@ -273,7 +276,7 @@ public final class Constants {
         public static final double kP = 0.0065;
         public static final double kI = 0.000006;
         public static final double kD = 0.001;
-        public static final double kF = 0;
+        public static final double kF = 0.00725;
         // public static final double kF = 0.0145;
 
         public static final double shooterSpeed = 100000;

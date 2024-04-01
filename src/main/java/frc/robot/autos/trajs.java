@@ -68,12 +68,12 @@ public class trajs {
         ,config);
 
         public final static Trajectory ampSideBlueClose = 
-    TrajectoryGenerator.generateTrajectory(
+        TrajectoryGenerator.generateTrajectory(
         new Pose2d(-0.81, 6.67, zero),
         List.of(
-            new Translation2d(-0.69, 6.68)
+            new Translation2d(-1, 7.65)
         ),
-        new Pose2d(-2.46, 7.65, zero)
+        new Pose2d(-5.21, 7.65, zero)
         ,config);
 
          public final static Trajectory kickOffWall = 
@@ -82,7 +82,7 @@ public class trajs {
         List.of(
             new Translation2d(-0.35, 6.90)
         ),
-        new Pose2d(-.81, 6.91, zero)
+        new Pose2d(-1.19, 6.91, zero)
         ,config);
 
         public final static Trajectory sourceSideBlue = 
@@ -159,5 +159,25 @@ public class trajs {
             new Translation2d(-0.82, -6.68)
         ),
         new Pose2d(-2.46, -7.65, zero)
+        ,config);
+
+        public final static Trajectory destructionRed = 
+    TrajectoryGenerator.generateTrajectory(
+        new Pose2d(-1.61, -7.81, zero),
+        List.of(
+            new Translation2d(-8.27, -7.81),
+            new Translation2d(-8.54, -6.68)
+        ),
+        new Pose2d(-8.54, -1.17, zero)
+        ,config);
+
+        public final static Trajectory destructionBlue = 
+    TrajectoryGenerator.generateTrajectory(
+        new Pose2d(-1.61, 7.81, zero),
+        List.of(
+            new Translation2d(-8.27, 7.81),
+            new Translation2d(-8.54, 6.68)
+        ),
+        new Pose2d(-8.54, 1.17, zero)
         ,config);
 }

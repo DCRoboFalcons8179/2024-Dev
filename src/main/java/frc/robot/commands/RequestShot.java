@@ -87,9 +87,9 @@ public class RequestShot extends Command {
 
   public boolean isFinished() {
 
-    // if (timer.hasElapsed(2.0) && !shooter.hasRing()) {
-    //   return true;
-    //}
+    if (timer.hasElapsed(2.5) && !shooter.hasRing()) {
+       return true;
+    }
 
 
     return false;

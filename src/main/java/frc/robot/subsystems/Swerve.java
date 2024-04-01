@@ -269,6 +269,12 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Gyro Value", gyro.getAngle());
         SmartDashboard.putBoolean("Field Centric", fieldCentricBoolean);
 
+        double currentDraw = 0;
+        for (SwerveModule mod : mSwerveMods) {
+            currentDraw += mod.getAngleCurrent() + mod.getDriveCurrent();
+        }
+
+        SmartDashboard.putNumber("Swerve total current applied", currentDraw);
 
     }
 
