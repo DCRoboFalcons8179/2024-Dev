@@ -139,6 +139,6 @@ public class RequestATATPose extends Command {
 
     return Math.abs(atat.getFrontPostPos() - distF.getAsDouble()) < 0.2 &&
            Math.abs(atat.getBackPostPos() - distB.getAsDouble()) < 0.2 &&
-           Math.abs(atat.getAngle() - angle.getAsDouble()) < 2;
+           Math.abs(atat.getAngle() - angle.getAsDouble()) < 3; // From Tim - Changed from 2 to 3 on 4/1 night
   }
 }
