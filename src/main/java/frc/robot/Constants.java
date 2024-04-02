@@ -275,10 +275,10 @@ public final class Constants {
         public static final double shooterMotorMaxRPS = 100d; //rotations per second TODO: get correct number
         public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
 
-        public static final double kP = 0.0065;
-        public static final double kI = 0.000006;
-        public static final double kD = 0.001;
-        public static final double kF = 0.00725;
+        public static final double kP = 0.02;
+        public static final double kI = 0.000000;
+        public static final double kD = 0.000;
+        public static final double kF = 0.0135;
         // public static final double kF = 0.0145;
 
         public static final double shooterSpeed = 100000;

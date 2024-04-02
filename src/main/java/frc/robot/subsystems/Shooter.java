@@ -165,8 +165,8 @@ public class Shooter extends SubsystemBase {
     // Important note - this function does not account for overshoot. Make sure to turn the motors 
     // on for 0.20 sec before asking if the motors are at the setpoint
     if 
-      (Math.abs(shooterSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 2000 
-      && Math.abs(shooterFollowerSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 2000)
+      (Math.abs(shooterSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 3000 
+      && Math.abs(shooterFollowerSRX.getSelectedSensorVelocity() - shooterSetSpeed) < 3000)
       {
         return true;
       }
