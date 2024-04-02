@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -40,6 +41,10 @@ public class Limelight extends SubsystemBase {
     return LimelightHelpers.getBotPose_TargetSpace("limelight")[4];
   }
 
+  public double getTX() {
+    return LimelightHelpers.getTX("limelight");
+  }
+
   // This method will be called once per scheduler run
   @Override
   public void periodic() {
@@ -58,7 +63,7 @@ public class Limelight extends SubsystemBase {
     refreshValues();
     SmartDashboard.putNumber("Tag ID", getTagId());
     //SmartDashboard.putNumberArray("Robot Pose", robotPose)
-
+    SmartDashboard.putNumber("rotation from directly at target", getTX());
   }
 
   private void refreshValues() {

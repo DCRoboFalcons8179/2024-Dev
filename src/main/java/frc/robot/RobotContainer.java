@@ -143,8 +143,9 @@ public class RobotContainer {
                 
                 //robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
                 
-                approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 2,
-                 0.15, 6, 10, new Translation2d(0, 2), 0, false));
+                approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 1,
+                 0.15, 6, 10, new Translation2d(0, 1.7), 7, false));
+                 
                 // bButton.onTrue(new InstantCommand(() ->
                 // shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
                 // bButton.onFalse(new InstantCommand(() ->

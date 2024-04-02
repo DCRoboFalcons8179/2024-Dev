@@ -63,15 +63,15 @@ public class ApproachTag extends Command {
    * 
    * @param OFFSET_FROM_TAG = offset from tag, (X, Z) (meters). negative x is to the left, negative z is into the stage. D: Translation2d([-inf, inf], [-inf, inf])
    * 
-   * @param ROTATION_FROM_TAG = offset from tag, negative = counterclockwise. D: double [-inf, inf]
+   * @param ROTATION_FROM_TAG = offset from tag, positive = clockwise. D: double [-inf, inf]
    * 
-   * @param Swings wide if it is in robot-centric (due to desired vector being offset by the angle the robot is facing to the tag). Not yet ready to support field centric.
+   * @param SWING_WIDE swings wide if it is in robot-centric (due to desired vector being offset by the angle the robot is facing to the tag). Not yet ready to support field centric.
    */
   public ApproachTag(Swerve s_Swerve, Limelight limelight, double MAX_MAG, double MAX_ROT, double MAX_TRANSLATION_SPEED, double MAX_ROTATION_SPEED, double TRANSLATION_DEADBAND, double ROTATION_DEADBAND, int MAX_CYCLES_WITHOUT_TAG, Translation2d OFFSET_FROM_TAG, double ROTATION_FROM_TAG, boolean SWING_WIDE) {
     // Use addRequirements() here to declare subsystem dependencies.
     
     addRequirements(s_Swerve);
-
+    OFFSET_FROM_TAG.rotateBy(Rotation2d.fromDegrees(-ROTATION_FROM_TAG));
     //TrapezoidProfile.Constraints() ?
     this.s_Swerve               = s_Swerve;
     this.limelight              = limelight;
@@ -91,9 +91,16 @@ public class ApproachTag extends Command {
 
   public ApproachTag(Swerve swerve, Limelight limelight, int id, boolean SWING_WIDE) {
     this(swerve, limelight, 0.8, 20,
-    1, 1,
+    4.5, 1,
     0.15, 6, 10,
     Constants.Swerve.getTranslationFromID(id), 0, SWING_WIDE);
+  }
+
+  public ApproachTag(Swerve swerve, Limelight limelight, Translation2d offset, boolean SWING_WIDE) {
+    this(swerve, limelight, 0.8, 20,
+    4.5, 1,
+    0.15, 6, 10,
+    offset, 7, SWING_WIDE);
   }
 
   // Called when the command is initially scheduled.
@@ -104,6 +111,7 @@ public class ApproachTag extends Command {
     rotFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
     xFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
     zFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
+    s_Swerve.fieldCentricBoolean = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -128,10 +136,12 @@ public class ApproachTag extends Command {
       mag = finalTranslationOffset.getNorm(); //magFilter.calculate()
       mag /= MAX_MAG;
 
-      rot = rotFilter.calculate(limelight.getRobotRY() + OFFSET_RY);
-      double rot_rad = Units.degreesToRadians(rot);
+      //rot = rotFilter.calculate(limelight.getRobotRY() + OFFSET_RY);
+      //rot = rotFilter.calculate(limelight.getTX());
+      rot = limelight.getTX() + OFFSET_RY;
+      double rot_rad = Units.degreesToRadians(limelight.getRobotRY() + OFFSET_RY);
 
-      if (!SWING_WIDE) { // imaginary number rotation magic
+      if (!SWING_WIDE) { // imaginary number rotation magic (x + yi) * (cos(theta) + sin(theta)i)
         dir = new Translation2d(
           dir.getX() * Math.cos(rot_rad) - dir.getY() * Math.sin(rot_rad),
           dir.getX() * Math.sin(rot_rad) + dir.getY() * Math.cos(rot_rad)
@@ -144,7 +154,8 @@ public class ApproachTag extends Command {
       
       mag = Filter.powerCurve(Filter.cutoffFilter(mag, 1, TRANSLATION_DEADBAND), 1.5);
 
-      rot = Filter.powerCurve(Filter.deadband(Filter.cutoffFilter(rot), ROTATION_DEADBAND), 3);
+      rot = Filter.powerCurve(Filter.deadband(Filter.cutoffFilter(rot), ROTATION_DEADBAND), 2.2);
+      
 
       s_Swerve.drive(dir.times(mag).times(MAX_TRANSLATION_SPEED).rotateBy(Rotation2d.fromDegrees(180)),  rot * (MAX_ROTATION_SPEED), false);
 
@@ -164,6 +175,7 @@ public class ApproachTag extends Command {
   @Override
   public void end(boolean interrupted) {
     System.out.println("ApproachTag ended");
+    s_Swerve.fieldCentricBoolean = true;
     magFilter.reset();
     rotFilter.reset();
     xFilter.reset();
@@ -174,6 +186,6 @@ public class ApproachTag extends Command {
   @Override
   public boolean isFinished() {
     // returns true when the camera does not see a tag for MAX_CYCLES_WITHOUT_TAG cycles
-    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || (mag * MAX_MAG < 0.10 && Math.abs(limelight.getRobotRY() * MAX_ROT) < 3);
+    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || (mag * MAX_MAG < TRANSLATION_DEADBAND && Math.abs(limelight.getRobotRY()) < ROTATION_DEADBAND);
   }
 }

@@ -22,7 +22,7 @@ public class AmpSequencing extends SequentialCommandGroup {
     addCommands(
                 new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint).alongWith(new WaitCommand(.80)),
                 new RequestBeaterBarSetSpeed(shooter, -0.3),
-                new WaitCommand(1.5),
+                new WaitCommand(.7),
                 new RequestBeaterBarSetSpeed(shooter, 0),
                 new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint2).alongWith(new WaitCommand(1)),
                 new RequestATATPose(atat, Constants.ATATConstants.carry));

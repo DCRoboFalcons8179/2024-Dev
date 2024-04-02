@@ -149,7 +149,7 @@ public final class Constants {
         public static final Translation2d getTranslationFromID(int id) {
             switch(id){
                 case 7:
-                return new Translation2d(0, 2);
+                return new Translation2d(0, 1.7);
                 default:
                 return getTranslationFromID(7);
             }
@@ -237,7 +237,7 @@ public final class Constants {
         //public static final ATATPose shootClose = new ATATPose(0, 6.25 + 1, 0);
         public static final ATATPose shootClose = new ATATPose(0, 6.5, 14);
         // public static final ATATPose shootMedium = new ATATPose(8, 8, 27);
-        public static final ATATPose shootMedium = new ATATPose(0.5, 4.75, 16);
+        public static final ATATPose shootMedium = new ATATPose(0.5, 5.35, 16); //new ATATPose(0.5, 4.75, 16);
         public static final ATATPose medAuton = new ATATPose(0.5, 4.25, 16);
         public static final ATATPose shootFar = new ATATPose(0.5, 4.5, 18);
         public static final ATATPose shootAuton = new ATATPose(0, 5, 14);
@@ -259,6 +259,8 @@ public final class Constants {
 
         public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
         public static final ATATPose hangPull = new ATATPose(0, 0, 0);
+
+        public static final ATATPose twoMeterSetPoint = new ATATPose(0.5, 5.35, 16);
     }
 
     public static final class ShooterConstants {
