@@ -66,11 +66,11 @@ public class RobotContainer {
         private final JoystickButton rightBumber = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
         private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
         private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
-        private final JoystickButton approachTag = new JoystickButton(driver, XboxController.Button.kA.value);
 
+        private final JoystickButton approachTagCenter = new JoystickButton(driver, XboxController.Button.kA.value);
+        private final JoystickButton approachTagRight = new JoystickButton(driver, XboxController.Button.kB.value);
+        private final JoystickButton approachTagLeft = new JoystickButton(driver, XboxController.Button.kX.value);
 
-
-        private final JoystickButton bButton = new JoystickButton(driver, XboxController.Button.kB.value);
         private final JoystickButton hangPullUp = new JoystickButton(board, 2);
         private final JoystickButton ampSetPoint = new JoystickButton(board, 5);
         private final JoystickButton pickUpSetPoint = new JoystickButton(board, 3);
@@ -145,8 +145,14 @@ public class RobotContainer {
                 
                 //robotCentric.onTrue(new InstantCommand(() -> s_Swerve.toggleFieldCentric()));
                 
-                approachTag.whileTrue(new ApproachTag(s_Swerve, limelight, 2, 20, 4.5, 1,
-                 0.15, 6, 10, new Translation2d(0, 1.7), 7, false));
+                approachTagCenter.whileTrue(new ApproachTag(s_Swerve, limelight, atat, 2, 8, 4.5, 1,
+                 0.15, 6, 10, new Translation2d(0, 0.85), 3, false, new RequestATATPose(atat, Constants.ATATConstants.shootClose)));
+
+                approachTagRight.whileTrue(new ApproachTag(s_Swerve, limelight, atat, 2, 14, 4.5, 1,
+                 0.15, 6, 10, new Translation2d(-1, 0.5), 12, false, new RequestATATPose(atat, Constants.ATATConstants.shootMedium)));
+
+                approachTagLeft.whileTrue(new ApproachTag(s_Swerve, limelight, atat, 2, 14, 4.5, 1,
+                 0.15, 6, 10, new Translation2d(1, 0.5), 3, false, new RequestATATPose(atat, Constants.ATATConstants.shootMedium)));
                  
                 // bButton.onTrue(new InstantCommand(() ->
                 // shooter.setShooterSpeed(0.5)).andThen(() -> shooter.setBeaterBarSpeed(0.1)));
@@ -191,7 +197,7 @@ public class RobotContainer {
                 
                 mediumSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootMedium));
                 farSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.shootFar));
-                ampSetPoint.onTrue(new AmpSequencing(atat, shooter));
+                ampSetPoint.onTrue(new AmpSequencing(atat, shooter, driver));
                 carrySetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.carry));
                 pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
                 humanPickUpSetPoint.whileTrue(new HumanPickUpAuto(atat, shooter));

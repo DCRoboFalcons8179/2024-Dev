@@ -11,9 +11,11 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Swerve;
 import frc.lib.math.Filter;
 import frc.robot.Constants;
+import frc.robot.subsystems.ATAT;
 import frc.robot.subsystems.Limelight;
 
 public class ApproachTag extends Command {
@@ -24,6 +26,8 @@ public class ApproachTag extends Command {
   private Limelight limelight;
   private double rot; // [-60, 60] else it loses the tag **degrees
   private double mag; // [0, inf] if infinite resolution
+  private ATAT atat;
+  private Command toRunWhenClose;
   LinearFilter magFilter;
   LinearFilter rotFilter;
   LinearFilter xFilter;
@@ -63,18 +67,19 @@ public class ApproachTag extends Command {
    * 
    * @param OFFSET_FROM_TAG = offset from tag, (X, Z) (meters). negative x is to the left, negative z is into the stage. D: Translation2d([-inf, inf], [-inf, inf])
    * 
-   * @param ROTATION_FROM_TAG = offset from tag, positive = clockwise. D: double [-inf, inf]
+   * @param ROTATION_FROM_TAG = offset from tag, negative = counterclockwise. D: double [-inf, inf]
    * 
-   * @param SWING_WIDE swings wide if it is in robot-centric (due to desired vector being offset by the angle the robot is facing to the tag). Not yet ready to support field centric.
+   * @param Swings wide if it is in robot-centric (due to desired vector being offset by the angle the robot is facing to the tag). Not yet ready to support field centric.
    */
-  public ApproachTag(Swerve s_Swerve, Limelight limelight, double MAX_MAG, double MAX_ROT, double MAX_TRANSLATION_SPEED, double MAX_ROTATION_SPEED, double TRANSLATION_DEADBAND, double ROTATION_DEADBAND, int MAX_CYCLES_WITHOUT_TAG, Translation2d OFFSET_FROM_TAG, double ROTATION_FROM_TAG, boolean SWING_WIDE) {
+  public ApproachTag(Swerve s_Swerve, Limelight limelight, ATAT atat, double MAX_MAG, double MAX_ROT, double MAX_TRANSLATION_SPEED, double MAX_ROTATION_SPEED, double TRANSLATION_DEADBAND, double ROTATION_DEADBAND, int MAX_CYCLES_WITHOUT_TAG, Translation2d OFFSET_FROM_TAG, double ROTATION_FROM_TAG, boolean SWING_WIDE, Command toRunWhenClose) {
     // Use addRequirements() here to declare subsystem dependencies.
     
     addRequirements(s_Swerve);
-    OFFSET_FROM_TAG.rotateBy(Rotation2d.fromDegrees(-ROTATION_FROM_TAG));
+
     //TrapezoidProfile.Constraints() ?
     this.s_Swerve               = s_Swerve;
     this.limelight              = limelight;
+    this.atat                   = atat;
     this.MAX_MAG                = MAX_MAG;                              //default 2 (double), distance from desired position when the robot starts ramping down speed
     this.MAX_ROT                = MAX_ROT;                              //default 8 (double), rotation from desired orientation, when the robot starts ramping down rotation speed
     this.MAX_TRANSLATION_SPEED  = MAX_TRANSLATION_SPEED;                //max translation speed of the robot (m/s)
@@ -86,21 +91,22 @@ public class ApproachTag extends Command {
     this.OFFSET_Z               = OFFSET_FROM_TAG.getY();               //^^^
     this.OFFSET_RY              = ROTATION_FROM_TAG;
     this.SWING_WIDE             = SWING_WIDE;
+    this.toRunWhenClose         = toRunWhenClose;
 
   }
 
-  public ApproachTag(Swerve swerve, Limelight limelight, int id, boolean SWING_WIDE) {
-    this(swerve, limelight, 0.8, 20,
+  public ApproachTag(Swerve swerve, Limelight limelight, ATAT atat, int id, boolean SWING_WIDE, Command toRunWhenClose) {
+    this(swerve, limelight, atat, 2, 8,
     4.5, 1,
     0.15, 6, 10,
-    Constants.Swerve.getTranslationFromID(id), 0, SWING_WIDE);
+    Constants.Swerve.getTranslationFromID(id), 3, SWING_WIDE, toRunWhenClose);
   }
 
-  public ApproachTag(Swerve swerve, Limelight limelight, Translation2d offset, boolean SWING_WIDE) {
-    this(swerve, limelight, 0.8, 20,
-    4.5, 1,
-    0.15, 6, 10,
-    offset, 7, SWING_WIDE);
+  public ApproachTag(Swerve swerve, Limelight limelight, ATAT atat, Translation2d OFFSET_FROM_TAG, boolean SWING_WIDE, Command toRunWhenClose) {
+    this(swerve, limelight, atat, 2, 8, 
+    4.5, 1, 
+    0.15, 6, 10, 
+    OFFSET_FROM_TAG, 3, SWING_WIDE, toRunWhenClose);
   }
 
   // Called when the command is initially scheduled.
@@ -134,14 +140,16 @@ public class ApproachTag extends Command {
       Translation2d dir = Filter.unit(finalTranslationOffset);
       
       mag = finalTranslationOffset.getNorm(); //magFilter.calculate()
+      if (mag < MAX_MAG) {
+        CommandScheduler.getInstance().schedule(toRunWhenClose);
+      }
       mag /= MAX_MAG;
 
       //rot = rotFilter.calculate(limelight.getRobotRY() + OFFSET_RY);
-      //rot = rotFilter.calculate(limelight.getTX());
-      rot = limelight.getTX() + OFFSET_RY;
+      rot = rotFilter.calculate(limelight.getTX() + OFFSET_RY);
       double rot_rad = Units.degreesToRadians(limelight.getRobotRY() + OFFSET_RY);
 
-      if (!SWING_WIDE) { // imaginary number rotation magic (x + yi) * (cos(theta) + sin(theta)i)
+      if (!SWING_WIDE) { // imaginary number rotation magic
         dir = new Translation2d(
           dir.getX() * Math.cos(rot_rad) - dir.getY() * Math.sin(rot_rad),
           dir.getX() * Math.sin(rot_rad) + dir.getY() * Math.cos(rot_rad)
@@ -154,8 +162,7 @@ public class ApproachTag extends Command {
       
       mag = Filter.powerCurve(Filter.cutoffFilter(mag, 1, TRANSLATION_DEADBAND), 1.5);
 
-      rot = Filter.powerCurve(Filter.deadband(Filter.cutoffFilter(rot), ROTATION_DEADBAND), 2.2);
-      
+      rot = Filter.powerCurve(Filter.deadband(Filter.cutoffFilter(rot), ROTATION_DEADBAND), 3);
 
       s_Swerve.drive(dir.times(mag).times(MAX_TRANSLATION_SPEED).rotateBy(Rotation2d.fromDegrees(180)),  rot * (MAX_ROTATION_SPEED), false);
 
@@ -175,17 +182,17 @@ public class ApproachTag extends Command {
   @Override
   public void end(boolean interrupted) {
     System.out.println("ApproachTag ended");
-    s_Swerve.fieldCentricBoolean = true;
     magFilter.reset();
     rotFilter.reset();
     xFilter.reset();
     zFilter.reset();
+    s_Swerve.fieldCentricBoolean = true;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     // returns true when the camera does not see a tag for MAX_CYCLES_WITHOUT_TAG cycles
-    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || (mag * MAX_MAG < TRANSLATION_DEADBAND && Math.abs(limelight.getRobotRY()) < ROTATION_DEADBAND);
+    return cyclesWithoutTag > MAX_CYCLES_WITHOUT_TAG || (mag * MAX_MAG < 0.10 && Math.abs(limelight.getRobotRY()) < 3);
   }
 }

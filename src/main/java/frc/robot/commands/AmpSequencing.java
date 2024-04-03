@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -15,7 +16,7 @@ import frc.robot.subsystems.Shooter;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AmpSequencing extends SequentialCommandGroup {
   /** Creates a new AmpSequencing. */
-  public AmpSequencing(ATAT atat, Shooter shooter) {
+  public AmpSequencing(ATAT atat, Shooter shooter, Joystick driver) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
@@ -24,7 +25,7 @@ public class AmpSequencing extends SequentialCommandGroup {
                 new RequestBeaterBarSetSpeed(shooter, -0.3),
                 new WaitCommand(.7),
                 new RequestBeaterBarSetSpeed(shooter, 0),
-                new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint2).alongWith(new WaitCommand(1)),
-                new RequestATATPose(atat, Constants.ATATConstants.carry));
+                new RequestATATPose(atat, Constants.ATATConstants.ampSetPoint2).alongWith(new WaitCommand(0.5)),
+                new RequestATATPose(atat, Constants.ATATConstants.carry).alongWith(new RumbleController(driver)));
   }
 }
