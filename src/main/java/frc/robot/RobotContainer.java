@@ -204,6 +204,8 @@ public class RobotContainer {
                 humanPickUpSetPoint.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
                 leftTriggerPressed.onTrue(new RequestATATPose(atat, Constants.ATATConstants.duckPosition));
                 
+                // Yeet
+                camToggler.onTrue(new RequestATATPose(atat, Constants.ATATConstants.yeet));
                 // hangSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.hangSetPoint));
 
                 // // Manual Buttons

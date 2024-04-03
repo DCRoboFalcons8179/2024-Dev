@@ -261,6 +261,11 @@ public final class Constants {
         public static final ATATPose hangPull = new ATATPose(0, 0, 0);
 
         public static final ATATPose twoMeterSetPoint = new ATATPose(0.5, 5.35, 16);
+
+
+        public static final ATATPose yeet = new ATATPose(4.8, 8.58, 0);
+
+
     }
 
     public static final class ShooterConstants {
@@ -272,8 +277,8 @@ public final class Constants {
         public static final double shooterGearRatio = 1; // input / output, shouldn't matter since encoder is after gears.
         public static final double beaterBarGearRatio = 1; // input / output
 
-        public static final double shooterMotorMaxRPS = 100d; //rotations per second TODO: get correct number
-        public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
+        // public static final double shooterMotorMaxRPS = 100d; //rotations per second TODO: get correct number
+        // public static final double shooterWheelMaxRPS = shooterMotorMaxRPS / shooterGearRatio;
 
         public static final double kP = 0.02;
         public static final double kI = 0.000000;
@@ -281,7 +286,7 @@ public final class Constants {
         public static final double kF = 0.0135;
         // public static final double kF = 0.0145;
 
-        public static final double shooterSpeed = 100000;
+        public static final double shooterSpeed = 70000;
         public static final double beaterBarFSpeed = 1;
         public static final double beaterBarBSpeed = -.7;
         public static final double feedSpeed = 0;

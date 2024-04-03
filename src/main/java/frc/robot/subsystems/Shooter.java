@@ -75,7 +75,10 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Speed", getShooterSpeed());
     SmartDashboard.putNumber("Lead Stator Current", getLeadStatorCurrent());
     SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
+    SmartDashboard.putNumber("m1 speed", shooterSRX.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("m2 speed", shooterFollowerSRX.getSelectedSensorVelocity());
     SmartDashboard.putBoolean("Has Ring", hasRing());
+    SmartDashboard.putBoolean("At Speed", isAtSpeed());
     //System.out.println(hasRing());
   }
 
@@ -86,7 +89,10 @@ public class Shooter extends SubsystemBase {
    */
   public void setShooterSpeed(double speed) {
     /* Dont do this. See other functions. */
-    shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS, -Constants.ShooterConstants.shooterWheelMaxRPS) / 100 * Constants.ShooterConstants.shooterSpeed;
+    // shooterSetSpeed = Filter.cutoffFilter(speed, Constants.ShooterConstants.shooterWheelMaxRPS, -Constants.ShooterConstants.shooterWheelMaxRPS) / 100 * Constants.ShooterConstants.shooterSpeed;
+
+    shooterSetSpeed = MAX_SPEED * 0.9;
+
 
     shooterSRX.set(ControlMode.Velocity, shooterSetSpeed); //feed forward?
     shooterFollowerSRX.set(ControlMode.Velocity, shooterSetSpeed);
@@ -138,7 +144,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shoot() {
-    setShooterSpeed(Constants.ShooterConstants.shooterWheelMaxRPS * 0.90);
+    setShooterSpeed(MAX_SPEED * 0.90);
   }
 
 
@@ -164,6 +170,7 @@ public class Shooter extends SubsystemBase {
   public boolean isAtSpeed() {
     // Important note - this function does not account for overshoot. Make sure to turn the motors 
     // on for 0.20 sec before asking if the motors are at the setpoint
+        
     if 
       ((shooterSRX.getSelectedSensorVelocity() - shooterSetSpeed) > -3000 
       && (shooterFollowerSRX.getSelectedSensorVelocity() - shooterSetSpeed) > -3000)

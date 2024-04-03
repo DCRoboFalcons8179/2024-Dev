@@ -21,7 +21,7 @@ public class RequestShot extends Command {
 
   // used to step to next step
   private Timer timer = new Timer();
-  private boolean nextStep = false;
+  private boolean nextStep;
 
 
   public RequestShot(Shooter shooter) {
@@ -46,6 +46,8 @@ public class RequestShot extends Command {
     shooter.shoot();
     timer.reset();
     timer.start();
+
+    nextStep = false;
 
   }
 
