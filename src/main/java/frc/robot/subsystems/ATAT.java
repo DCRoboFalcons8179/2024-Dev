@@ -193,13 +193,13 @@ public class ATAT extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("desiredAngle", getDesiredAngle());
     SmartDashboard.putNumber("actual angle encoder value", getAngle());
-    SmartDashboard.putNumber("motor requested speed", mAngleMotor.get());
+    //SmartDashboard.putNumber("motor requested speed", mAngleMotor.get());
     SmartDashboard.putNumber("desiredFrontPostPos", getDesiredFrontPostPos());
     SmartDashboard.putNumber("frontPostPos", getFrontPostPos());
     SmartDashboard.putNumber("desiredBackPostPos", getDesiredBackPostPos());
     SmartDashboard.putNumber("backPostPos", getBackPostPos());
     SmartDashboard.putNumber("Angle Motor Integrated Encoder", mAngleMotor.getEncoder().getPosition());
-    SmartDashboard.putNumber("Right Motor output", mAngleMotorRight.getAppliedOutput());
+    //SmartDashboard.putNumber("Right Motor output", mAngleMotorRight.getAppliedOutput());
   }
 
 

@@ -123,6 +123,16 @@ public class trajs {
             config
         );
 
+        public final static Trajectory pullOutFromSourceBlue = 
+        TrajectoryGenerator.generateTrajectory(
+            new Pose2d(-0.43, 1.96, zero),
+            List.of(
+                new Translation2d(-0.44, 1.97)
+            ),
+            new Pose2d(-2.7, 0.7, zero),
+            config
+        );
+
         public final static Trajectory centerRedToSpeaker = 
     TrajectoryGenerator.generateTrajectory(
         new Pose2d(-2.21, -5.52, zero),
@@ -156,9 +166,9 @@ public class trajs {
     TrajectoryGenerator.generateTrajectory(
         new Pose2d(-0.81, -6.67, zero),
         List.of(
-            new Translation2d(-0.82, -6.68)
+            new Translation2d(-1, -7.65)
         ),
-        new Pose2d(-2.46, -7.65, zero)
+        new Pose2d(-5.21, -7.65, zero)
         ,config);
 
         public final static Trajectory destructionRed = 

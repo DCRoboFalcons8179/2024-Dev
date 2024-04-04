@@ -240,7 +240,7 @@ public final class Constants {
         public static final ATATPose shootMedium = new ATATPose(0.5, 6, 16); //new ATATPose(0.5, 4.75, 16);
         public static final ATATPose medAuton = new ATATPose(0.5, 4.25, 16);
         public static final ATATPose shootFar = new ATATPose(0.5, 4.5, 18);
-        public static final ATATPose shootAuton = new ATATPose(0, 5, 14);
+        public static final ATATPose shootAuton = new ATATPose(0.5, 6, 14);
 
 
         //public static final ATATPose ampSetPoint = new ATATPose(6.4, 4, 20);
@@ -254,7 +254,7 @@ public final class Constants {
         public static final ATATPose ampSetPoint1half = new ATATPose(7.4, 7.75, 0); //10
         public static final ATATPose ampSetPoint2 = new ATATPose(7.4, 2, 50); //30
 
-        public static final ATATPose pickUpSetPoint = new ATATPose(0, 4, 88);
+        public static final ATATPose pickUpSetPoint = new ATATPose(0, 4.5, 88);
         public static final ATATPose pickUpHumanPlayer = new ATATPose(5.65 - 0.25, 0, 16);
 
         public static final ATATPose hangSetPoint = new ATATPose(0, 0, 0);
@@ -264,6 +264,9 @@ public final class Constants {
 
 
         public static final ATATPose yeet = new ATATPose(4.8, 8.58, 0);
+
+        public static final ATATPose wave1 = new ATATPose(0, 4.5, 0);
+        public static final ATATPose wave2 = new ATATPose(4.5, 0, 0);
 
 
     }

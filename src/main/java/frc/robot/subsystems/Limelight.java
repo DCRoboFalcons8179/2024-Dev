@@ -54,11 +54,11 @@ public class Limelight extends SubsystemBase {
 
     //SmartDashboard offset logging
     SmartDashboard.putNumber("tX", translationOffset.getX());
-    SmartDashboard.putNumber("tY", translationOffset.getY());
+    //SmartDashboard.putNumber("tY", translationOffset.getY());
     SmartDashboard.putNumber("tZ", translationOffset.getZ());
-    SmartDashboard.putNumber("roll",  rotationOffset.getX());
+    //SmartDashboard.putNumber("roll",  rotationOffset.getX());
     SmartDashboard.putNumber("ry", getRobotRY());
-    SmartDashboard.putNumber("rz", getRobotRZ());
+    //SmartDashboard.putNumber("rz", getRobotRZ());
 
     refreshValues();
     SmartDashboard.putNumber("Tag ID", getTagId());

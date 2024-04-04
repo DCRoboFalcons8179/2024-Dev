@@ -72,13 +72,12 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Shooter Speed", getShooterSpeed());
-    SmartDashboard.putNumber("Lead Stator Current", getLeadStatorCurrent());
-    SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
-    SmartDashboard.putNumber("m1 speed", shooterSRX.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("m2 speed", shooterFollowerSRX.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("Shooter Speed", getShooterSpeed());
+    // SmartDashboard.putNumber("Lead Stator Current", getLeadStatorCurrent());
+    // SmartDashboard.putNumber("Shooter Set Speed", shooterSetSpeed);
+    // SmartDashboard.putNumber("m1 speed", shooterSRX.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("m2 speed", shooterFollowerSRX.getSelectedSensorVelocity());
     SmartDashboard.putBoolean("Has Ring", hasRing());
-    SmartDashboard.putBoolean("At Speed", isAtSpeed());
     //System.out.println(hasRing());
   }
 
