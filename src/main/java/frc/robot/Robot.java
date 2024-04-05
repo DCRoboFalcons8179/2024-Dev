@@ -110,8 +110,8 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.getSwerveObject().playMusic();
-    m_robotContainer.getSwerveObject().musicCheck();
+    m_robotContainer.getSwerveObject().music.playMusic();
+    m_robotContainer.getSwerveObject().music.musicCheck();
   }
 
   /** This function is called periodically during operator control. */

@@ -10,6 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import java.util.Collection;
 
+import org.photonvision.estimation.OpenCVHelp;
+
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
@@ -34,7 +36,8 @@ public class Swerve extends SubsystemBase {
     public AHRS gyro;
 
     public boolean fieldCentricBoolean = true;
-    public Orchestra orchestra = new Orchestra();
+    public Music music = new Music();
+
 
     public Swerve() {
 
@@ -52,7 +55,7 @@ public class Swerve extends SubsystemBase {
         gyro.enableBoardlevelYawReset(true);
         zeroGyro();
 
-        loadMusic("SuperMarioSuperMan.chrp");
+        music.loadMusic("Final_Fantasy_VII_Intro.chrp");
 
         mSwerveMods = new SwerveModule[] {
                 new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -62,10 +65,9 @@ public class Swerve extends SubsystemBase {
         };
 
         for (SwerveModule mSwerveMod : mSwerveMods) {
-            orchestra.addInstrument(mSwerveMod.getDriveMotorPointer());
+            music.orchestra.addInstrument(mSwerveMod.getDriveMotorPointer());
         }
         
-
         /*
          * By pausing init for a second before setting module offsets, we avoid a bug
          * with inverting motors.
@@ -126,23 +128,6 @@ public class Swerve extends SubsystemBase {
             this // Reference to this subsystem to set requirements
          );
 
-    }
-
-    public void loadMusic(String songLocation) {
-        orchestra.loadMusic(songLocation);
-        System.out.println("Music Loaded");
-    }
-
-    public void playMusic() {
-        orchestra.play();
-    }
-
-    public void musicCheck() {
-        if(orchestra.isPlaying()) System.out.println("Playing");
-    
-        else if (!orchestra.isPlaying()){
-            System.out.println("Not playing");
-        }
     }
 
     // Helper variables for drive command
