@@ -8,6 +8,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
+import java.util.Collection;
+
+import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -30,6 +34,7 @@ public class Swerve extends SubsystemBase {
     public AHRS gyro;
 
     public boolean fieldCentricBoolean = true;
+    public Orchestra orchestra = new Orchestra();
 
     public Swerve() {
 
@@ -47,12 +52,19 @@ public class Swerve extends SubsystemBase {
         gyro.enableBoardlevelYawReset(true);
         zeroGyro();
 
+        loadMusic("SuperMarioSuperMan.chrp");
+
         mSwerveMods = new SwerveModule[] {
                 new SwerveModule(0, Constants.Swerve.Mod0.constants),
                 new SwerveModule(1, Constants.Swerve.Mod1.constants),
                 new SwerveModule(2, Constants.Swerve.Mod2.constants),
                 new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
+
+        for (SwerveModule mSwerveMod : mSwerveMods) {
+            orchestra.addInstrument(mSwerveMod.getDriveMotorPointer());
+        }
+        
 
         /*
          * By pausing init for a second before setting module offsets, we avoid a bug
@@ -113,10 +125,25 @@ public class Swerve extends SubsystemBase {
             },
             this // Reference to this subsystem to set requirements
          );
+
     }
 
-    
+    public void loadMusic(String songLocation) {
+        orchestra.loadMusic(songLocation);
+        System.out.println("Music Loaded");
+    }
 
+    public void playMusic() {
+        orchestra.play();
+    }
+
+    public void musicCheck() {
+        if(orchestra.isPlaying()) System.out.println("Playing");
+    
+        else if (!orchestra.isPlaying()){
+            System.out.println("Not playing");
+        }
+    }
 
     // Helper variables for drive command
     private double translationX = 0;

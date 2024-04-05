@@ -188,4 +188,8 @@ public class SwerveModule {
         return mAngleMotor.getBusVoltage();
     }
 
+    public TalonFX getDriveMotorPointer() {
+        return mDriveMotor;
+    }
+
 }
