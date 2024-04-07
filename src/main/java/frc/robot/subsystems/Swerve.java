@@ -55,7 +55,7 @@ public class Swerve extends SubsystemBase {
         gyro.enableBoardlevelYawReset(true);
         zeroGyro();
 
-        music.loadMusic("Final_Fantasy_VII_Intro.chrp");
+        music.loadMusic(0);
 
         mSwerveMods = new SwerveModule[] {
                 new SwerveModule(0, Constants.Swerve.Mod0.constants),

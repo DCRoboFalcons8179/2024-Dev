@@ -242,6 +242,9 @@ public class RobotContainer {
                 //hasRing.debounce(0.06).onTrue(new SequentialCommandGroup(new RequestATATPose(atat, Constants.ATATConstants.carry), new RumbleController(driver)));
 
 
+                // Music controls
+                povLeft.onTrue(new InstantCommand(() -> s_Swerve.music.backTrack()));
+                povRight.onTrue(new InstantCommand(() -> s_Swerve.music.nextTrack()));
 
                 // bButton.onTrue(getAutonomousCommand());
 

@@ -62,7 +62,7 @@ public class TeleopSwerve extends Command {
         }
         else {
             speedScale = 1.0;
-            s_Swerve.music.loadMusic("SuperMarioSuperMan.chrp");
+            s_Swerve.music.loadMusic(1);
         }
 
 
