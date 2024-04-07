@@ -12,7 +12,7 @@ public class Music {
     Orchestra orchestra = new Orchestra();
 
     ArrayList<String> songList = new ArrayList<>();
-    int songIndex;
+    int songIndex = 0;
 
     public Music() {
         // Nice puts it a pain if you add more music
@@ -54,12 +54,14 @@ public class Music {
     }
 
     public void nextTrack() {
-        this.songIndex += 1;
+        songIndex = songIndex + 1 == songList.size() ? songIndex++ : 0;
+
         loadMusic(this.songIndex);
     }
 
     public void backTrack() {
-        this.songIndex -= 1;
+        songIndex = songIndex-1 < 0 ? songIndex-- : songList.size() -1;
+
         loadMusic(this.songIndex);
     }
 }
