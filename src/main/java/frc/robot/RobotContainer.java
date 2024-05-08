@@ -64,8 +64,8 @@ public class RobotContainer {
         // private final JoystickButton zeroGyro = new JoystickButton(driver,
         // XboxController.Button.kRightBumper.value);
         private final JoystickButton rightBumber = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-        private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-        private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
+        // private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+        // private final JoystickButton dumpToLogger = new JoystickButton(driver, XboxController.Button.kStart.value);
 
         private final JoystickButton approachTagCenter = new JoystickButton(driver, XboxController.Button.kA.value);
         private final JoystickButton approachTagRight = new JoystickButton(driver, XboxController.Button.kB.value);
@@ -73,12 +73,12 @@ public class RobotContainer {
 
         private final JoystickButton hangPullUp = new JoystickButton(board, 2);
         private final JoystickButton ampSetPoint = new JoystickButton(board, 5);
-        private final JoystickButton pickUpSetPoint = new JoystickButton(board, 3);
+        private final Trigger pickUpSetPoint = new Trigger(() -> driver.getRawAxis(2) > 0.1);
         private final JoystickButton humanPickUpSetPoint = new JoystickButton(board_ext, 6);
-        private final JoystickButton carrySetPoint = new JoystickButton(board, 6);
+        private final JoystickButton carrySetPoint = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
         private final JoystickButton farSetPoint = new JoystickButton(board, 10);
         private final JoystickButton mediumSetPoint = new JoystickButton(board, 9);
-        private final JoystickButton closeSetPoint = new JoystickButton(board, 8);
+        private final JoystickButton closeSetPoint = new JoystickButton(driver, XboxController.Button.kStart.value);
         private final JoystickButton beaterBarF = new JoystickButton(board, 4);
         private final JoystickButton beaterBarB = new JoystickButton(board, 7);
         private final JoystickButton hangPoint = new JoystickButton(board, 1);
@@ -90,7 +90,7 @@ public class RobotContainer {
         private final JoystickButton backPostManualDown = new JoystickButton(board_ext, 9);
         private final JoystickButton angleManualUp = new JoystickButton(board_ext, 8);
         private final JoystickButton angleManualDown = new JoystickButton(board_ext, 7);
-        private final Trigger leftTriggerPressed = new Trigger(() -> driver.getRawAxis(2) > 0.1);
+        // private final Trigger leftTriggerPressed = new Trigger(() -> driver.getRawAxis(2) > 0.1);
         private final Trigger rightTriggerPressed = new Trigger(() -> driver.getRawAxis(3) > 0.1);
         private final JoystickButton camToggler = new JoystickButton(board_ext, 5);
         // private final JoystickButton camSaver = new JoystickButton(board_ext, 14);
@@ -209,7 +209,7 @@ public class RobotContainer {
                 pickUpSetPoint.onTrue(new RequestATATPose(atat, Constants.ATATConstants.pickUpSetPoint));
                 humanPickUpSetPoint.whileTrue(new HumanPickUpAuto(atat, shooter));
                 humanPickUpSetPoint.onFalse(new RequestBeaterBarSetSpeed(shooter, 0));
-                leftTriggerPressed.onTrue(new RequestATATPose(atat, Constants.ATATConstants.duckPosition));
+                // leftTriggerPressed.onTrue(new RequestATATPose(atat, Constants.ATATConstants.duckPosition));
                 
                 // Yeet
                 camToggler.onTrue(new RequestATATPose(atat, Constants.ATATConstants.yeet));
