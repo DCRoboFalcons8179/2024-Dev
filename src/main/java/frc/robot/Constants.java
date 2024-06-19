@@ -121,7 +121,7 @@ public final class Constants {
             public static final int driveMotorID = 29;
             public static final int angleMotorID = 18;
             public static final int canCoderID = 45;
-            public static final double desiredCanCoderPos = 168.13 - 180;
+            public static final double desiredCanCoderPos = 217.617;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, desiredCanCoderPos);
         }
