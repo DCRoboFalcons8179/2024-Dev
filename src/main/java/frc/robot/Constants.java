@@ -7,6 +7,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -121,7 +122,8 @@ public final class Constants {
             public static final int driveMotorID = 29;
             public static final int angleMotorID = 18;
             public static final int canCoderID = 45;
-            public static final double desiredCanCoderPos = 217.617;
+            // Phoenix tuner gives rotations now ig - Mason
+            public static final double desiredCanCoderPos = Rotation2d.fromRotations(0.467285 + 0.5).getDegrees();
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, desiredCanCoderPos);
         }
